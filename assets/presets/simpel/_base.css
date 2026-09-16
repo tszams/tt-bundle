@@ -1,0 +1,22 @@
+/*
+ * Simpel — basis (flat design reset)
+ * Verwijdert radii + shadows overal. Alleen pill-buttons houden hun radius.
+ */
+.tt-preset-simpel .tt-services__card,
+.tt-preset-simpel .tt-usp,
+.tt-preset-simpel .tt-routes__card,
+.tt-preset-simpel .taxibookingform,
+.tt-preset-simpel .tt-hero__form,
+.tt-preset-simpel .tt-service-area__item,
+.tt-preset-simpel .tt-services-detail__media,
+.tt-preset-simpel .tt-page-header,
+.tt-preset-simpel .tt-features__image {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.tt-preset-simpel .tt-usp:hover,
+.tt-preset-simpel .tt-services__card:hover,
+.tt-preset-simpel .tt-routes__card:hover {
+    transform: none;
+    box-shadow: none !important;
+}

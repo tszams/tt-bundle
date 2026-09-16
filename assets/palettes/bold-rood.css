@@ -1,0 +1,10 @@
+/*
+ * TaxiTheme — palette: Bold + Zwart+Rood
+ * Alleen accent-swap: rood ipv geel. Preset-CSS (bold.css) leest deze variabelen.
+ */
+
+.tt-palette-bold-rood {
+    --tt-accent:     #dc2626;
+    --tt-accent-rgb: 220, 38, 38;
+    --tt-accent-fg:  #ffffff;
+}

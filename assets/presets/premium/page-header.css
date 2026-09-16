@@ -1,0 +1,59 @@
+/*
+ * Premium — page header (sub-pages)
+ * Cinematic dark met subtle gradient — past bij Premium's editorial hero-stijl.
+ * Grote display-typografie, wit-op-donker, ruim.
+ */
+.tt-preset-premium .tt-page-header {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 140px 0 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+/* Wanneer USP-cards overhangen: overflow niet clippen (anders wordt de translated
+   helft van de cards weggeknipt door de radial-gradient overflow: hidden).
+   Compactere top-padding omdat de header alleen titel + eyebrow toont. */
+.tt-preset-premium .tt-page-header.has-usps {
+    overflow: visible;
+    padding: 120px 0 0;
+}
+.tt-preset-premium .tt-page-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center top, rgba(var(--tt-accent-rgb), 0.12) 0%, transparent 60%);
+    pointer-events: none;
+}
+.tt-preset-premium .tt-page-header > .tt-container {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+}
+.tt-preset-premium .tt-page-header__eyebrow {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+.tt-preset-premium .tt-page-header__title {
+    color: #ffffff;
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 28px;
+}
+.tt-preset-premium .tt-page-header__intro {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 0 auto;
+    font-weight: 400;
+}

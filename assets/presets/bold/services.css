@@ -1,0 +1,46 @@
+/*
+ * Bold — services (homepage grid + sub-page variant)
+ * Donker met subtle borders. Accent-icons hebben glow.
+ */
+.tt-preset-bold .tt-services {
+    background: #14161f;
+    padding: 100px 0;
+}
+.tt-preset-bold .tt-services .tt-section__header h2 { color: #fff; }
+.tt-preset-bold .tt-services .tt-section__header p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 1.1rem;
+}
+.tt-preset-bold .tt-services__card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+    padding: 36px 32px;
+}
+.tt-preset-bold .tt-services__card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(var(--tt-accent-rgb), 0.4);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+}
+.tt-preset-bold .tt-services__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px -6px rgba(var(--tt-accent-rgb), 0.45);
+}
+.tt-preset-bold .tt-services__title {
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+.tt-preset-bold .tt-services__text {
+    color: rgba(255, 255, 255, 0.65);
+}
+.tt-preset-bold .tt-services__link {
+    color: var(--tt-accent);
+}
+
+/* Services grid op sub-pages — dark achtergrond zoals homepage */
+.tt-preset-bold .tt-services--page {
+    background: #14161f;
+    padding: 80px 0 100px;
+}

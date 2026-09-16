@@ -1,0 +1,27 @@
+/*
+ * Simpel — routes
+ * Flat rijen met surface bg. Prijs in accent-pill.
+ */
+.tt-preset-simpel .tt-routes__card {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.tt-preset-simpel .tt-routes__route,
+.tt-preset-simpel .tt-routes__from,
+.tt-preset-simpel .tt-routes__to {
+    color: var(--tt-fg);
+}
+.tt-preset-simpel .tt-routes__price {
+    color: var(--tt-fg);
+    font-weight: 800;
+    font-size: 1.15rem;
+    padding: 4px 12px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 999px;
+}

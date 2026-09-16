@@ -1,0 +1,18 @@
+/*
+ * TaxiTheme — palette: Simpel + Licht+Blauw
+ * Wit bg, helderblauw accent, donker text. Staxi vibe.
+ */
+
+.tt-palette-simpel-licht {
+    --tt-bg:         #ffffff;
+    --tt-surface:    #ffffff;
+    --tt-fg:         #1a1a1a;
+    --tt-muted:      #6b7280;
+    --tt-line:       #e5e7eb;
+    --tt-nav:        #00a3e0;
+    --tt-nav-fg:     #ffffff;
+    --tt-accent:     #00a3e0;
+    --tt-accent-rgb: 0, 163, 224;
+    --tt-accent-fg:  #ffffff;
+    --tt-link:       #00a3e0;
+}

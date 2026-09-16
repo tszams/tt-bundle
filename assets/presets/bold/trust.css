@@ -1,0 +1,35 @@
+/*
+ * Bold — trust bar
+ * Smalle strip onder de hero met subtle bg + accent icons.
+ */
+.tt-preset-bold .tt-trust {
+    background: #14161f;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 20px 0;
+}
+.tt-preset-bold .tt-trust__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.tt-preset-bold .tt-trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.tt-preset-bold .tt-trust__item svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-bold .tt-trust__inner {
+        justify-content: flex-start;
+        gap: 14px 24px;
+    }
+}

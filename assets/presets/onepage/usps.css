@@ -1,0 +1,46 @@
+/*
+ * Onepage — USPs
+ * Glass cards, auto-fit grid, subtle hover lift.
+ */
+.tt-preset-onepage .tt-usps {
+    background: transparent;
+    padding: 40px 0;
+}
+.tt-preset-onepage .tt-usps__grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+}
+.tt-preset-onepage .tt-usp {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s, background 0.2s;
+}
+.tt-preset-onepage .tt-usp:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: none;
+}
+.tt-preset-onepage .tt-usp__icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    margin-bottom: 16px;
+}
+.tt-preset-onepage .tt-usp h3 {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+}
+.tt-preset-onepage .tt-usp p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}

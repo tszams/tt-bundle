@@ -1,0 +1,25 @@
+/*
+ * Onepage — legal-content (privacy/voorwaarden)
+ * Base --tt-fg (dark navy) wordt onzichtbaar op de dark gradient bg.
+ * Hier wit/muted-white gescopt, links accent.
+ */
+.tt-preset-onepage .tt-legal-content {
+    color: rgba(255, 255, 255, 0.85);
+}
+.tt-preset-onepage .tt-legal-content h2,
+.tt-preset-onepage .tt-legal-content h3 {
+    color: #ffffff;
+    letter-spacing: -0.015em;
+}
+.tt-preset-onepage .tt-legal-content p,
+.tt-preset-onepage .tt-legal-content ul,
+.tt-preset-onepage .tt-legal-content ol {
+    color: rgba(255, 255, 255, 0.72);
+}
+.tt-preset-onepage .tt-legal-content strong {
+    color: #ffffff;
+}
+.tt-preset-onepage .tt-legal-content a {
+    color: var(--tt-accent);
+    text-decoration-color: rgba(var(--tt-accent-rgb), 0.5);
+}

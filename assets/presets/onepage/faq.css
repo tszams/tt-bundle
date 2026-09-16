@@ -1,0 +1,26 @@
+/*
+ * Onepage — FAQ
+ * Glass cards op dark bg met accent-border op open item.
+ */
+.tt-preset-onepage .tt-faq {
+    background: transparent;
+}
+.tt-preset-onepage .tt-faq__item {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+}
+.tt-preset-onepage .tt-faq__item:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+.tt-preset-onepage .tt-faq__item[open] {
+    border-color: rgba(var(--tt-accent-rgb), 0.5);
+    background: rgba(255, 255, 255, 0.06);
+}
+.tt-preset-onepage .tt-faq__question {
+    color: #fff;
+}
+.tt-preset-onepage .tt-faq__answer {
+    color: rgba(255, 255, 255, 0.7);
+}

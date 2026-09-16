@@ -1,0 +1,15 @@
+/*
+ * Simpel — service area
+ * Flat chips (geen pill), 1px border, accent-border op hover.
+ */
+.tt-preset-simpel .tt-service-area__item {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 0;
+    padding: 10px 18px;
+    font-weight: 600;
+}
+.tt-preset-simpel .tt-service-area__item:hover {
+    border-color: var(--tt-accent);
+    transform: none;
+}

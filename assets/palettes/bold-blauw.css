@@ -1,0 +1,10 @@
+/*
+ * TaxiTheme — palette: Bold + Zwart+Blauw
+ * Alleen accent-swap: elektrisch blauw ipv geel.
+ */
+
+.tt-palette-bold-blauw {
+    --tt-accent:     #2563eb;
+    --tt-accent-rgb: 37, 99, 235;
+    --tt-accent-fg:  #ffffff;
+}

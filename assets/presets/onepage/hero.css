@@ -1,0 +1,89 @@
+/*
+ * Onepage — hero + booking
+ * Gecentreerde hero met pulsing dot in eyebrow, en glass-styled booking form eronder.
+ */
+.tt-preset-onepage .tt-onepage-hero {
+    padding: 40px 0 80px;
+    text-align: center;
+}
+.tt-preset-onepage .tt-onepage-hero__inner {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.tt-preset-onepage .tt-onepage-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+.tt-preset-onepage .tt-onepage-hero__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--tt-accent);
+    animation: tt-onepage-pulse 2s ease-in-out infinite;
+}
+@keyframes tt-onepage-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+}
+.tt-preset-onepage .tt-onepage-hero__title {
+    font-size: clamp(2.4rem, 6vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 20px;
+    color: #fff;
+}
+.tt-preset-onepage .tt-onepage-hero__sub {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0 auto 32px;
+}
+.tt-preset-onepage .tt-onepage-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+.tt-preset-onepage .tt-onepage-hero__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.tt-preset-onepage .tt-onepage-hero__tag svg {
+    color: var(--tt-accent);
+    stroke-width: 3;
+}
+
+/* Booking section direct onder de hero — geen wrapper card, alleen de widget */
+.tt-preset-onepage .tt-onepage-booking {
+    padding: 0 0 20px;
+    scroll-margin-top: 30px;
+}
+.tt-preset-onepage .tt-onepage-booking .taxibookingform {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+@media (max-width: 700px) {
+    /* Form edge-to-edge op mobile */
+    .tt-preset-onepage .tt-onepage-booking .taxibookingform {
+        margin-left: -24px;
+        margin-right: -24px;
+        border-radius: 0 !important;
+    }
+}

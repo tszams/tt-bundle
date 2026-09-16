@@ -1,0 +1,211 @@
+/*
+ * Premium — hero
+ * Cinematic hero met bg-image + donker overlay, of gradient fallback zonder image.
+ * Grote titel, subtle eyebrow, wit-op-donker CTA + ghost variant.
+ */
+.tt-preset-premium .tt-premium-hero {
+    position: relative;
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    color: #ffffff;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-premium-hero.no-image {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #334155 100%);
+    color: #ffffff;
+}
+.tt-preset-premium .tt-premium-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+.tt-preset-premium .tt-premium-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.75) 100%);
+    z-index: 1;
+}
+.tt-preset-premium .tt-premium-hero__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+}
+.tt-preset-premium .tt-premium-hero__eyebrow {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+.tt-preset-premium .tt-premium-hero__title {
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 20px;
+    color: #ffffff;
+}
+.tt-preset-premium .tt-premium-hero__sub {
+    font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 620px;
+    line-height: 1.5;
+    margin: 0 0 40px;
+    font-weight: 400;
+}
+.tt-preset-premium .tt-premium-hero__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.tt-preset-premium .tt-premium-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.tt-preset-premium .tt-premium-hero__cta--primary {
+    background: #ffffff;
+    color: #0f172a !important;
+}
+.tt-preset-premium .tt-premium-hero__cta--primary:hover {
+    background: #f8fafc;
+    opacity: 1;
+    transform: translateY(-1px);
+}
+.tt-preset-premium .tt-premium-hero__cta--ghost {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+}
+.tt-preset-premium .tt-premium-hero__cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+}
+
+/* ============ Variant: form ============
+   Two-column: tekst links, booking-widget rechts in premium white card. */
+.tt-preset-premium .tt-premium-hero--form {
+    min-height: 0;
+    padding: 90px 0 100px;
+    align-items: stretch;
+}
+.tt-preset-premium .tt-premium-hero__inner--form {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+}
+.tt-preset-premium .tt-premium-hero__text {
+    max-width: 520px;
+}
+.tt-preset-premium .tt-premium-hero__inner--form .tt-premium-hero__title {
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    margin-bottom: 18px;
+}
+.tt-preset-premium .tt-premium-hero__inner--form .tt-premium-hero__sub {
+    margin-bottom: 28px;
+}
+.tt-preset-premium .tt-premium-hero__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+}
+.tt-preset-premium .tt-premium-hero__meta svg {
+    color: #ffffff;
+    opacity: 0.7;
+}
+.tt-preset-premium .tt-premium-hero__meta a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.tt-preset-premium .tt-premium-hero__meta a:hover {
+    border-bottom-color: #ffffff;
+    opacity: 1;
+}
+.tt-preset-premium .tt-premium-hero__form {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+}
+.tt-preset-premium .tt-premium-hero__form .taxibookingform {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+@media (max-width: 900px) {
+    /* Split bg pattern (mobile):
+       - Bovenste 55% van sectie: hero image / dark gradient met tekst er overheen
+       - Onderste 45%: lichte bg-strip (via ::after) — de bottom-helft van het
+         formulier hangt hierin, waardoor de widget als losstaande card wordt.
+       - Formulier zelf houdt subtiele side-padding via .tt-container (24px). */
+    .tt-preset-premium .tt-premium-hero--form {
+        padding: 50px 0 60px;
+        min-height: 0;
+    }
+    .tt-preset-premium .tt-premium-hero--form::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* max() zorgt dat de licht-strip minimaal 260px is (dekt bottom-helft
+           van de 450px widget + ~35px eronder), maar bij grote schermen naar
+           40% schaalt zodat de verhouding klopt. */
+        height: max(260px, 38%);
+        background: #ffffff;
+        z-index: 2;
+    }
+    .tt-preset-premium .tt-premium-hero__inner--form {
+        position: relative;
+        z-index: 3;
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .tt-preset-premium .tt-premium-hero__text {
+        max-width: none;
+        padding-bottom: 8px;
+    }
+    .tt-preset-premium .tt-premium-hero__inner--form .tt-premium-hero__title {
+        font-size: clamp(2rem, 8vw, 2.6rem);
+    }
+    .tt-preset-premium .tt-premium-hero__inner--form .tt-premium-hero__sub {
+        margin-bottom: 4px;
+    }
+    /* Form: subtle side inset via container; kleine drop-shadow zodat het
+       als losstaande card leest over de bg-transition */
+    .tt-preset-premium .tt-premium-hero__form {
+        margin: 0;
+        padding: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35);
+    }
+    .tt-preset-premium .tt-premium-hero__form .taxibookingform {
+        border-radius: 12px !important;
+    }
+}

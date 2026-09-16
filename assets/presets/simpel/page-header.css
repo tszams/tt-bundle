@@ -1,0 +1,44 @@
+/*
+ * Simpel — page header (sub-pages)
+ * Flat: nav-kleur bg (zoals de home hero), geen radii, geen shadows.
+ * Linkerlijn eyebrow met accent-kleur, wit-op-donker titel.
+ */
+.tt-preset-simpel .tt-page-header {
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+    padding: 80px 0 60px;
+    border-radius: 0 !important;
+    box-shadow: none;
+    text-align: left;
+}
+.tt-preset-simpel .tt-page-header > .tt-container {
+    max-width: 900px;
+}
+.tt-preset-simpel .tt-page-header__eyebrow {
+    color: var(--tt-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    display: inline-block;
+}
+.tt-preset-simpel .tt-page-header__title {
+    color: var(--tt-nav-fg);
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin: 0 0 20px;
+}
+.tt-preset-simpel .tt-page-header__intro {
+    color: var(--tt-nav-fg);
+    opacity: 0.75;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 0;
+}

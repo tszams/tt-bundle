@@ -1,0 +1,58 @@
+/*
+ * Premium — reviews
+ * Editorial cards met veel witruimte, subtiel border, italic quote.
+ */
+.tt-preset-premium .tt-reviews {
+    background: #ffffff;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-reviews .tt-section__header h2 {
+    color: #0f172a;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+.tt-preset-premium .tt-reviews .tt-section__header p {
+    color: #64748b;
+    font-size: 1.15rem;
+}
+.tt-preset-premium .tt-reviews__grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.tt-preset-premium .tt-reviews__card {
+    background: #fafbfc;
+    border: 1px solid #eef1f4;
+    border-radius: 18px;
+    padding: 32px 28px;
+}
+.tt-preset-premium .tt-reviews__star svg {
+    stroke: #d0d5dc;
+}
+.tt-preset-premium .tt-reviews__star.is-filled svg {
+    fill: var(--tt-accent);
+    stroke: var(--tt-accent);
+}
+.tt-preset-premium .tt-reviews__text {
+    color: #334155;
+    font-size: 1rem;
+    line-height: 1.65;
+    font-style: italic;
+}
+.tt-preset-premium .tt-reviews__meta {
+    border-top: 1px solid #eef1f4;
+}
+.tt-preset-premium .tt-reviews__name {
+    color: #0f172a;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+}
+.tt-preset-premium .tt-reviews__date {
+    color: #94a3b8;
+}
+.tt-preset-premium .tt-reviews__cta {
+    color: #0f172a;
+    border-bottom: 1px solid var(--tt-accent);
+    padding-bottom: 2px;
+}

@@ -1,0 +1,36 @@
+/*
+ * Simpel — trust bar
+ * Flat strip met dunne borders. Palette-adaptive (werkt op simpel-licht en dark).
+ */
+.tt-preset-simpel .tt-trust {
+    background: var(--tt-bg);
+    border-top: 1px solid var(--tt-line);
+    border-bottom: 1px solid var(--tt-line);
+    padding: 20px 0;
+}
+.tt-preset-simpel .tt-trust__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.tt-preset-simpel .tt-trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--tt-fg);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.tt-preset-simpel .tt-trust__item svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-simpel .tt-trust__inner {
+        justify-content: flex-start;
+        gap: 14px 24px;
+    }
+}

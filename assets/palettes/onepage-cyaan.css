@@ -1,0 +1,11 @@
+/*
+ * TaxiTheme — palette: One-page + Dark+Cyaan
+ * Alleen accent-swap: neon cyaan ipv geel. Cyaan is licht -> dark tekst op accent.
+ */
+
+.tt-palette-onepage-cyaan {
+    --tt-accent:     #06b6d4;
+    --tt-accent-rgb: 6, 182, 212;
+    --tt-accent-fg:  #0a0b10;
+}
+

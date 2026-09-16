@@ -1,0 +1,55 @@
+/*
+ * Bold — service area
+ * Dark panel met grote cards. Icons in accent-vierkant, tekst wit.
+ */
+.tt-preset-bold .tt-service-area {
+    background: #14161f;
+    color: #fff;
+    padding: 100px 0;
+}
+.tt-preset-bold .tt-service-area .tt-section__header {
+    max-width: 640px;
+    margin: 0 auto 56px;
+}
+.tt-preset-bold .tt-service-area .tt-section__header h2 {
+    color: #fff;
+}
+.tt-preset-bold .tt-service-area .tt-section__header p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 1.1rem;
+}
+.tt-preset-bold .tt-service-area__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    max-width: none;
+}
+.tt-preset-bold .tt-service-area__item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 22px 26px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.tt-preset-bold .tt-service-area__item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(var(--tt-accent-rgb), 0.5);
+    transform: translateY(-2px);
+}
+.tt-preset-bold .tt-service-area__item svg {
+    width: 22px;
+    height: 22px;
+    color: var(--tt-accent-fg);
+    background: var(--tt-accent);
+    padding: 6px;
+    border-radius: 8px;
+    box-sizing: content-box;
+    flex-shrink: 0;
+}

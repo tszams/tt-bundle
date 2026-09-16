@@ -1,0 +1,11 @@
+/*
+ * Simpel — sectie basis
+ * Meer ruimte + bolder headings, geen accent-fills.
+ */
+.tt-preset-simpel .tt-section {
+    padding: 72px 0;
+}
+.tt-preset-simpel .tt-section__header h2 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}

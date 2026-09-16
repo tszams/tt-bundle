@@ -1,0 +1,35 @@
+/*
+ * Simpel — fleet
+ * Flat, geen radius, palette-adaptive tag.
+ */
+.tt-preset-simpel .tt-fleet {
+    background: var(--tt-bg);
+    padding: 72px 0;
+}
+.tt-preset-simpel .tt-fleet .tt-section__header h2 {
+    color: var(--tt-fg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+.tt-preset-simpel .tt-fleet .tt-section__header p {
+    color: var(--tt-muted);
+}
+.tt-preset-simpel .tt-fleet__card {
+    border-radius: 0;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+}
+.tt-preset-simpel .tt-fleet__tag {
+    background: var(--tt-fg);
+    color: var(--tt-bg);
+    border-radius: 0;
+    font-weight: 700;
+    padding: 6px 12px;
+}
+.tt-preset-simpel .tt-fleet__card--feature .tt-fleet__overlay {
+    background: linear-gradient(180deg, transparent 25%, rgba(0, 0, 0, 0.7) 100%);
+}
+.tt-preset-simpel .tt-fleet__title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}

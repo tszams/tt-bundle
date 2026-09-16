@@ -1,0 +1,38 @@
+/*
+ * Premium — trust bar
+ * Subtle strip onder de hero: witte bg, dunne separator, editorial spacing.
+ * Items: muted labels, accent icons, ruime letterspacing voor premium feel.
+ */
+.tt-preset-premium .tt-trust {
+    background: #ffffff;
+    border-bottom: 1px solid #eef1f4;
+    padding: 22px 0;
+}
+.tt-preset-premium .tt-trust__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.tt-preset-premium .tt-trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+.tt-preset-premium .tt-trust__item svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-premium .tt-trust__inner {
+        justify-content: flex-start;
+        gap: 14px 24px;
+    }
+}

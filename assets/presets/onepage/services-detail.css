@@ -1,0 +1,59 @@
+/*
+ * Onepage — services-detail (Diensten-pagina)
+ * Alternerende image/tekst rows in dark glassmorphism theme.
+ */
+.tt-preset-onepage .tt-services-detail {
+    background: transparent;
+    padding: 40px 0 80px;
+}
+.tt-preset-onepage .tt-services-detail__row {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    padding: 48px 0;
+    gap: 56px;
+}
+.tt-preset-onepage .tt-services-detail__media {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+}
+.tt-preset-onepage .tt-services-detail__media.is-icon-only {
+    background: rgba(var(--tt-accent-rgb), 0.08);
+    border-color: rgba(var(--tt-accent-rgb), 0.2);
+}
+.tt-preset-onepage .tt-services-detail__icon-small {
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    color: var(--tt-accent);
+    border-radius: 12px;
+}
+.tt-preset-onepage .tt-services-detail__title {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+.tt-preset-onepage .tt-services-detail__price {
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    color: var(--tt-accent);
+}
+.tt-preset-onepage .tt-services-detail__text {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.75;
+}
+.tt-preset-onepage .tt-services-detail__features li {
+    color: rgba(255, 255, 255, 0.85);
+}
+.tt-preset-onepage .tt-services-detail__link {
+    color: var(--tt-accent);
+}
+
+@media (max-width: 900px) {
+    .tt-preset-onepage .tt-services-detail__row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 0;
+    }
+    .tt-preset-onepage .tt-services-detail__row.is-flipped .tt-services-detail__media,
+    .tt-preset-onepage .tt-services-detail__row.is-flipped .tt-services-detail__body {
+        order: initial;
+    }
+}

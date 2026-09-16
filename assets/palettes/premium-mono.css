@@ -1,0 +1,10 @@
+/*
+ * TaxiTheme — palette: Premium + Monochrome
+ * Geen kleur — accent is dark neutral. Ultra-minimaal, zwart-wit alleen.
+ */
+
+.tt-palette-premium-mono {
+    --tt-accent:     #0f172a;
+    --tt-accent-rgb: 15, 23, 42;
+    --tt-accent-fg:  #ffffff;
+}

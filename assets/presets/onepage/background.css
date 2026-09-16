@@ -1,0 +1,26 @@
+/*
+ * Onepage — background
+ * Fixed dark gradient met accent-glow rond bovenaan.
+ */
+.tt-preset-onepage .tt-onepage-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+.tt-preset-onepage .tt-onepage-bg__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 11, 16, 0.7) 0%, rgba(10, 11, 16, 0.85) 50%, #0a0b10 100%);
+}
+.tt-preset-onepage .tt-onepage-bg__glow {
+    position: absolute;
+    top: -128px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: rgba(var(--tt-accent-rgb), 0.1);
+    filter: blur(120px);
+}

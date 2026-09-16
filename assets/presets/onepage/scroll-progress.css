@@ -1,0 +1,20 @@
+/*
+ * Onepage — scroll progress bar
+ * Fixed bar bovenaan die met scroll positie meebeweegt (via JS in de home template).
+ */
+.tt-preset-onepage .tt-onepage-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 999;
+    background: transparent;
+    pointer-events: none;
+}
+.tt-preset-onepage .tt-onepage-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: var(--tt-accent);
+    transition: width 0.15s;
+}

@@ -1,0 +1,31 @@
+/*
+ * Bold — fleet (Ons wagenpark)
+ * Dark bg, subtiele glass-tag met accent-border, big feature card.
+ */
+.tt-preset-bold .tt-fleet {
+    background: #0b0d14;
+    padding: 100px 0;
+}
+.tt-preset-bold .tt-fleet .tt-section__header h2 { color: #fff; }
+.tt-preset-bold .tt-fleet .tt-section__header p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 1.1rem;
+}
+.tt-preset-bold .tt-fleet__card {
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+}
+.tt-preset-bold .tt-fleet__tag {
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.4);
+    backdrop-filter: blur(6px);
+    font-weight: 700;
+}
+.tt-preset-bold .tt-fleet__card--feature .tt-fleet__overlay {
+    background: linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.75) 100%);
+}
+.tt-preset-bold .tt-fleet__title {
+    font-weight: 900;
+    letter-spacing: -0.025em;
+}

@@ -1,0 +1,17 @@
+/*
+ * Simpel — spotlight
+ * Flat card, geen radius. Werkt voor beide varianten (subtle + promo).
+ */
+.tt-preset-simpel .tt-spotlight__card {
+    border-radius: 0 !important;
+    padding: 40px;
+}
+.tt-preset-simpel .tt-spotlight--subtle .tt-spotlight__card {
+    border: 1px solid var(--tt-line);
+    background: var(--tt-surface);
+}
+.tt-preset-simpel .tt-spotlight__icon {
+    border-radius: 0;
+    box-shadow: none;
+}
+.tt-preset-simpel .tt-spotlight__decoration { opacity: 0.05; }

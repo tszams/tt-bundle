@@ -1,0 +1,169 @@
+/*
+ * Simpel — hero (beide varianten: met car photo + met booking form)
+ * Flat pill-buttons, nav-kleur background op image-variant.
+ */
+.tt-preset-simpel .tt-simpel-hero {
+    padding: 80px 0 100px;
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+}
+.tt-preset-simpel .tt-simpel-hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+.tt-preset-simpel .tt-simpel-hero__body {
+    max-width: 560px;
+}
+.tt-preset-simpel .tt-simpel-hero__eyebrow {
+    display: inline-block;
+    color: var(--tt-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+.tt-preset-simpel .tt-simpel-hero__title {
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin: 0 0 20px;
+    color: var(--tt-nav-fg);
+}
+.tt-preset-simpel .tt-simpel-hero__sub {
+    color: var(--tt-nav-fg);
+    opacity: 0.7;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0 0 32px;
+}
+.tt-preset-simpel .tt-simpel-hero__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Simpel hero CTAs — pills, flat, geen shadow */
+.tt-preset-simpel .tt-simpel-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: filter 0.15s;
+}
+/* Primary = wit met nav-kleur tekst */
+.tt-preset-simpel .tt-simpel-cta--primary {
+    background: #ffffff;
+    color: var(--tt-nav) !important;
+    border: 1px solid #ffffff;
+}
+.tt-preset-simpel .tt-simpel-cta--primary:hover {
+    filter: brightness(0.95);
+    opacity: 1;
+}
+/* Ghost = outline in nav-fg */
+.tt-preset-simpel .tt-simpel-cta--ghost {
+    background: transparent;
+    color: var(--tt-nav-fg) !important;
+    border: 1px solid var(--tt-nav-fg);
+}
+.tt-preset-simpel .tt-simpel-cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}
+
+/* Hero met afbeelding — car photo rechts */
+.tt-preset-simpel .tt-simpel-hero--image .tt-simpel-hero__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tt-preset-simpel .tt-simpel-hero--image img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.tt-preset-simpel .tt-simpel-hero__placeholder {
+    color: var(--tt-accent);
+    opacity: 0.4;
+}
+
+/* Hero met formulier — split (tekst links, form rechts).
+   Bg volgt palette (wit bij licht, dark bij dark). */
+.tt-preset-simpel .tt-simpel-hero--form {
+    background: var(--tt-bg);
+    color: var(--tt-fg);
+    padding: 60px 0 80px;
+}
+.tt-preset-simpel .tt-simpel-hero--form .tt-simpel-hero__title {
+    color: var(--tt-fg);
+}
+.tt-preset-simpel .tt-simpel-hero--form .tt-simpel-hero__sub {
+    color: var(--tt-fg);
+    opacity: 0.7;
+}
+/* CTAs op palette-bg: primary = fg-kleur inverted, ghost = fg outline. */
+.tt-preset-simpel .tt-simpel-hero--form .tt-simpel-cta--primary {
+    background: var(--tt-fg);
+    color: var(--tt-bg) !important;
+    border: 1px solid var(--tt-fg);
+}
+.tt-preset-simpel .tt-simpel-hero--form .tt-simpel-cta--ghost {
+    background: transparent;
+    color: var(--tt-fg) !important;
+    border: 1px solid var(--tt-fg);
+}
+.tt-preset-simpel .tt-simpel-hero--form .tt-simpel-cta--ghost:hover {
+    background: rgba(0, 0, 0, 0.05);
+    opacity: 1;
+}
+.tt-preset-simpel .tt-simpel-hero__media--form {
+    display: block;
+    align-items: initial;
+    justify-content: initial;
+}
+.tt-preset-simpel .tt-simpel-hero--form .taxibookingform {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+}
+/* Simpel = flat design → forceer ook de interne widget-elementen naar
+   border-radius: 0. Widget-CDN gebruikt anders eigen rounded corners. */
+.tt-preset-simpel .tt-simpel-hero--form .taxibookingform,
+.tt-preset-simpel .tt-simpel-hero--form .taxibookingform * {
+    border-radius: 0 !important;
+}
+
+@media (max-width: 800px) {
+    .tt-preset-simpel .tt-simpel-hero__inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .tt-preset-simpel .tt-simpel-hero {
+        padding: 48px 0 60px;
+    }
+    /* Form-variant: form loopt door tot onderkant hero (geen padding-bottom) */
+    .tt-preset-simpel .tt-simpel-hero--form {
+        padding-bottom: 0;
+    }
+    /* Form edge-to-edge op mobile */
+    .tt-preset-simpel .tt-simpel-hero--form .taxibookingform {
+        margin-left: -24px;
+        margin-right: -24px;
+        margin-bottom: 0;
+        max-width: none;
+    }
+    /* Media-wrapper mag geen extra ruimte onder de form geven */
+    .tt-preset-simpel .tt-simpel-hero__media--form {
+        margin-bottom: 0;
+    }
+}

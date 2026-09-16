@@ -1,0 +1,10 @@
+/*
+ * TaxiTheme — palette: Premium + Amber
+ * Zachte amber accent op wit — warm en luxueus.
+ */
+
+.tt-palette-premium-amber {
+    --tt-accent:     #f59e0b;
+    --tt-accent-rgb: 245, 158, 11;
+    --tt-accent-fg:  #0f172a;
+}

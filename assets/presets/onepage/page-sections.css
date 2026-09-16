@@ -1,0 +1,111 @@
+/*
+ * Onepage — page-sections + over-ons USP-cards
+ * Dark bg met glassmorphism accents. Split-layout uit de base (titel links,
+ * tekst rechts) blijft — hier alleen kleur/typografie voor de dark theme.
+ */
+
+/* Over-ons USP-cards — glassmorphism ipv wit card (past bij rest onepage) */
+.tt-preset-onepage .tt-over-usps {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    box-shadow: none;
+}
+.tt-preset-onepage .tt-over-usp {
+    border-right-color: rgba(255, 255, 255, 0.08);
+}
+.tt-preset-onepage .tt-over-usp__icon {
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    color: var(--tt-accent);
+}
+.tt-preset-onepage .tt-over-usp__title {
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.tt-preset-onepage .tt-over-usp__text {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 900px) {
+    .tt-preset-onepage .tt-over-usp {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+}
+
+/* Contact-pagina info-cards — glassmorphism ipv wit card */
+.tt-preset-onepage .tt-contact-info__card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    color: #ffffff !important;
+}
+.tt-preset-onepage a.tt-contact-info__card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+}
+.tt-preset-onepage .tt-contact-info__icon {
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    color: var(--tt-accent);
+}
+.tt-preset-onepage .tt-contact-info__label {
+    color: rgba(255, 255, 255, 0.55);
+}
+.tt-preset-onepage .tt-contact-info__value {
+    color: #ffffff;
+}
+.tt-preset-onepage .tt-page-sections-wrap {
+    background: transparent;
+    padding: 60px 0 80px;
+}
+.tt-preset-onepage .tt-page-sections {
+    gap: 72px;
+    max-width: 1200px;
+}
+.tt-preset-onepage .tt-page-section {
+    gap: 60px;
+}
+.tt-preset-onepage .tt-page-section__head {
+    position: sticky;
+    top: 100px;
+}
+.tt-preset-onepage .tt-page-section__image {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+}
+.tt-preset-onepage .tt-page-section__title {
+    color: #ffffff;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+.tt-preset-onepage .tt-page-section__body {
+    padding-top: 8px;
+}
+.tt-preset-onepage .tt-page-section__text {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin: 0 0 20px;
+}
+.tt-preset-onepage .tt-page-section__text:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-onepage .tt-page-sections {
+        gap: 48px;
+    }
+    .tt-preset-onepage .tt-page-section {
+        gap: 20px;
+    }
+    .tt-preset-onepage .tt-page-section__head {
+        position: static;
+    }
+}

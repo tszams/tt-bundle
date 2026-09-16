@@ -1,0 +1,18 @@
+/*
+ * Bold — page-sections
+ * De 3 vrije info-blokken die klant per sub-page (tarieven, diensten, etc) invult.
+ * Bold: op een dark achtergrond passen bij de rest van de preset.
+ */
+.tt-preset-bold .tt-page-sections-wrap {
+    background: #14161f;
+    padding: 80px 0 100px;
+}
+.tt-preset-bold .tt-page-section__title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+.tt-preset-bold .tt-page-section__text {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.05rem;
+}

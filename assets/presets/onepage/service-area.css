@@ -1,0 +1,32 @@
+/*
+ * Onepage — service area
+ * Chips layout: pill-buttons met accent-checkmark.
+ */
+.tt-preset-onepage .tt-service-area {
+    background: transparent;
+}
+.tt-preset-onepage .tt-service-area__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+.tt-preset-onepage .tt-service-area__item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 8px 16px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.tt-preset-onepage .tt-service-area__item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: none;
+}
+.tt-preset-onepage .tt-service-area__item svg {
+    width: 12px;
+    height: 12px;
+    color: var(--tt-accent);
+}

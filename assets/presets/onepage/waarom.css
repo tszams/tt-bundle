@@ -1,0 +1,45 @@
+/*
+ * Onepage — waarom
+ * Als glass block met accent-gradient background.
+ */
+.tt-preset-onepage .tt-waarom {
+    background: transparent;
+}
+.tt-preset-onepage .tt-waarom__inner {
+    background: linear-gradient(135deg, rgba(var(--tt-accent-rgb), 0.08), rgba(var(--tt-accent-rgb), 0.02));
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.2);
+    border-radius: 24px;
+    padding: 40px;
+    grid-template-columns: 1fr;
+    gap: 40px;
+}
+.tt-preset-onepage .tt-waarom.has-image .tt-waarom__inner {
+    grid-template-columns: 1fr 1.4fr;
+}
+.tt-preset-onepage .tt-waarom__image {
+    border-radius: 16px;
+    aspect-ratio: 4 / 3;
+}
+.tt-preset-onepage .tt-waarom__body h2 {
+    color: #fff;
+    font-size: 1.6rem;
+}
+.tt-preset-onepage .tt-check li {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+}
+.tt-preset-onepage .tt-check li::before {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+}
+@media (max-width: 700px) {
+    .tt-preset-onepage .tt-waarom__inner,
+    .tt-preset-onepage .tt-waarom.has-image .tt-waarom__inner {
+        grid-template-columns: 1fr;
+        padding: 28px;
+        gap: 24px;
+    }
+    .tt-preset-onepage .tt-check {
+        grid-template-columns: 1fr;
+    }
+}

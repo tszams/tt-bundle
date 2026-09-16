@@ -1,0 +1,48 @@
+/*
+ * Onepage — header
+ * Transparant, brand met accent-punt achter naam, pill-CTA.
+ */
+.tt-preset-onepage .tt-header {
+    background: transparent;
+    box-shadow: none;
+    border-bottom: none;
+    position: relative;
+}
+.tt-preset-onepage .tt-header__inner {
+    padding: 20px 0;
+}
+.tt-preset-onepage .tt-brand {
+    color: #fff;
+    font-size: 1.1rem;
+}
+.tt-preset-onepage .tt-brand::before {
+    display: none;
+}
+.tt-preset-onepage .tt-brand::after {
+    content: ".";
+    color: var(--tt-accent);
+}
+.tt-preset-onepage .tt-nav a {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
+}
+.tt-preset-onepage .tt-nav a:hover,
+.tt-preset-onepage .tt-nav .current-menu-item a {
+    color: #fff;
+    opacity: 1;
+}
+.tt-preset-onepage .tt-cta {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg) !important;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 999px;
+    box-shadow: none;
+    transition: filter 0.15s;
+}
+.tt-preset-onepage .tt-cta:hover {
+    filter: brightness(0.88);
+    transform: none;
+    box-shadow: none;
+    opacity: 1;
+}

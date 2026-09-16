@@ -1,0 +1,23 @@
+/*
+ * Onepage — fleet
+ * Transparent bg met glass-tag (backdrop-blur).
+ */
+.tt-preset-onepage .tt-fleet {
+    background: transparent;
+    padding: 40px 0;
+}
+.tt-preset-onepage .tt-fleet__card {
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.tt-preset-onepage .tt-fleet__tag {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    padding: 5px 12px;
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+.tt-preset-onepage .tt-fleet__title { font-weight: 700; }

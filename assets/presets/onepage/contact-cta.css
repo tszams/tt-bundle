@@ -1,0 +1,46 @@
+/*
+ * Onepage — contact CTA
+ * Gecentreerde strip onderaan met accent-primary + ghost-CTA.
+ */
+.tt-preset-onepage .tt-contact-cta {
+    background: transparent;
+    padding: 60px 0 80px;
+}
+.tt-preset-onepage .tt-contact-cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+.tt-preset-onepage .tt-contact-cta h2 {
+    color: #fff;
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    max-width: 520px;
+    margin: 0;
+}
+.tt-preset-onepage .tt-contact-cta p {
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 520px;
+    margin: 0;
+}
+.tt-preset-onepage .tt-contact-cta__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+.tt-preset-onepage .tt-contact-cta .tt-cta {
+    background: var(--tt-accent) !important;
+    color: var(--tt-accent-fg) !important;
+    padding: 14px 26px;
+    border-radius: 999px;
+    box-shadow: none;
+    border: 1px solid var(--tt-accent);
+}
+/* Ghost variant — moet MEER specifiek zijn dan de primary regel hierboven,
+   anders zetten primary-regels de accent-bg over de ghost-bg. */
+.tt-preset-onepage .tt-contact-cta .tt-cta.tt-cta--ghost {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}

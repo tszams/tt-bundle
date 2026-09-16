@@ -1,0 +1,12 @@
+/*
+ * Simpel — footer
+ * Minimaal: nav-kleur bg, muted links.
+ */
+.tt-preset-simpel .tt-footer {
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+    opacity: 1;
+    padding: 40px 0 24px;
+}
+.tt-preset-simpel .tt-footer a { color: var(--tt-nav-fg); opacity: 0.75; }
+.tt-preset-simpel .tt-footer a:hover { opacity: 1; }

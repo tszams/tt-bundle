@@ -1,0 +1,58 @@
+/*
+ * Klassiek — about
+ * Voegt gele skewed accent-shapes toe achter de about-image, zoals de shapes
+ * achter het booking-form in de hero.
+ */
+.tt-preset-klassiek .tt-about.has-image .tt-about__image {
+    position: relative;
+    overflow: visible;
+    border-radius: 0;
+    background: transparent;
+    aspect-ratio: auto;
+    z-index: 1;
+}
+.tt-preset-klassiek .tt-about__image::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80%;
+    height: 90%;
+    background: var(--tt-accent);
+    transform: skewY(-6deg);
+    border-radius: 10px;
+    z-index: 0;
+    pointer-events: none;
+}
+.tt-preset-klassiek .tt-about__image::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 55%;
+    height: 55%;
+    background: rgba(var(--tt-accent-rgb), 0.35);
+    transform: skewY(-6deg);
+    border-radius: 10px;
+    z-index: 0;
+    pointer-events: none;
+}
+.tt-preset-klassiek .tt-about__image img {
+    position: relative;
+    z-index: 2;
+    border-radius: var(--tt-radius);
+    aspect-ratio: 4 / 3;
+    display: block;
+}
+
+@media (max-width: 800px) {
+    /* Op mobile de shapes verbergen — anders veroorzaken ze horizontal scroll */
+    .tt-preset-klassiek .tt-about__image::before,
+    .tt-preset-klassiek .tt-about__image::after {
+        display: none;
+    }
+    .tt-preset-klassiek .tt-about.has-image .tt-about__image {
+        border-radius: var(--tt-radius);
+        overflow: hidden;
+    }
+}

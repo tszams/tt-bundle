@@ -1,0 +1,187 @@
+/*
+ * Bold — hero-fullscreen
+ * Fullscreen dark hero met radial gradient glows + subtiel dot-pattern. Grote CTA buttons.
+ * Mobile: minder padding, full-width CTAs.
+ */
+.tt-preset-bold .tt-hero-fs {
+    position: relative;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+    padding: 80px 0 100px;
+}
+.tt-preset-bold .tt-hero-fs__bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at top right, rgba(var(--tt-accent-rgb), 0.35) 0%, transparent 55%),
+        radial-gradient(ellipse at bottom left, rgba(var(--tt-accent-rgb), 0.15) 0%, transparent 60%),
+        linear-gradient(135deg, #0b0d14 0%, #14161f 60%, #1a1d2b 100%);
+    z-index: 0;
+}
+.tt-preset-bold .tt-hero-fs__bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 25% 30%, rgba(255,255,255,0.03) 1px, transparent 1px),
+        radial-gradient(circle at 75% 70%, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.6;
+}
+.tt-preset-bold .tt-hero-fs__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+}
+.tt-preset-bold .tt-hero-fs__eyebrow {
+    display: inline-block;
+    padding: 8px 18px;
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    color: var(--tt-accent);
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.3);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+}
+.tt-preset-bold .tt-hero-fs__title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 28px;
+    color: #fff;
+}
+.tt-preset-bold .tt-hero-fs__sub {
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 640px;
+    line-height: 1.5;
+    margin: 0 0 40px;
+}
+.tt-preset-bold .tt-hero-fs__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.tt-preset-bold .tt-hero-fs__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 32px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.tt-preset-bold .tt-hero-fs__cta--primary {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    box-shadow: 0 10px 30px -8px rgba(var(--tt-accent-rgb), 0.6);
+}
+.tt-preset-bold .tt-hero-fs__cta--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px -8px rgba(var(--tt-accent-rgb), 0.75);
+    opacity: 1;
+}
+.tt-preset-bold .tt-hero-fs__cta--ghost {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+}
+.tt-preset-bold .tt-hero-fs__cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+}
+.tt-preset-bold .tt-hero-fs__cta--wa {
+    background: #25d366;
+    color: #fff !important;
+    box-shadow: 0 10px 30px -8px rgba(37, 211, 102, 0.55);
+}
+.tt-preset-bold .tt-hero-fs__cta--wa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px -8px rgba(37, 211, 102, 0.7);
+    opacity: 1;
+}
+
+@media (max-width: 600px) {
+    .tt-preset-bold .tt-hero-fs {
+        min-height: auto;
+        padding: 60px 0 80px;
+    }
+    .tt-preset-bold .tt-hero-fs__cta {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ============ Variant: form ============
+   Two-column split op de bold dark bg — tekst links, booking-widget rechts. */
+.tt-preset-bold .tt-hero-fs--form {
+    min-height: 0;
+    padding: 80px 0 100px;
+    align-items: stretch;
+}
+.tt-preset-bold .tt-hero-fs__inner--form {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 56px;
+    align-items: center;
+}
+.tt-preset-bold .tt-hero-fs__text {
+    max-width: 560px;
+}
+.tt-preset-bold .tt-hero-fs__inner--form .tt-hero-fs__title {
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+}
+.tt-preset-bold .tt-hero-fs__inner--form .tt-hero-fs__sub {
+    margin-bottom: 28px;
+}
+.tt-preset-bold .tt-hero-fs__inner--form .tt-hero-fs__actions {
+    margin-top: 8px;
+}
+.tt-preset-bold .tt-hero-fs__inner--form .tt-hero-fs__cta {
+    padding: 14px 24px;
+    font-size: 1rem;
+}
+.tt-preset-bold .tt-hero-fs__form {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+}
+.tt-preset-bold .tt-hero-fs__form .taxibookingform {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+@media (max-width: 900px) {
+    .tt-preset-bold .tt-hero-fs--form {
+        padding: 60px 0 80px;
+    }
+    .tt-preset-bold .tt-hero-fs__inner--form {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .tt-preset-bold .tt-hero-fs__text {
+        max-width: none;
+    }
+    /* Form edge-to-edge op mobile — breekt uit container padding */
+    .tt-preset-bold .tt-hero-fs__form {
+        margin-left: -24px;
+        margin-right: -24px;
+    }
+    .tt-preset-bold .tt-hero-fs__form,
+    .tt-preset-bold .tt-hero-fs__form .taxibookingform {
+        border-radius: 0 !important;
+    }
+}

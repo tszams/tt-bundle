@@ -1,0 +1,20 @@
+/*
+ * Onepage — about
+ * Transparant met witte tekst voor dark bg.
+ */
+.tt-preset-onepage .tt-about {
+    background: transparent;
+}
+.tt-preset-onepage .tt-about__eyebrow {
+    color: var(--tt-accent);
+}
+.tt-preset-onepage .tt-about__title {
+    color: #fff;
+}
+.tt-preset-onepage .tt-about__text {
+    color: rgba(255, 255, 255, 0.75);
+}
+.tt-preset-onepage .tt-about__image {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+}

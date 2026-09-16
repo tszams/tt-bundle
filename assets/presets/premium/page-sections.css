@@ -1,0 +1,68 @@
+/*
+ * Premium — page-sections
+ * Base doet de split-layout (titel links, tekst rechts). Hier alleen editorial
+ * presentation: witruimte, sticky titel, subtiele shadow op image.
+ */
+.tt-preset-premium .tt-page-sections-wrap {
+    background: #f8fafc;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-page-sections {
+    gap: 100px;
+    max-width: 1200px;
+}
+.tt-preset-premium .tt-page-section {
+    gap: 80px;
+}
+.tt-preset-premium .tt-page-section__head {
+    position: sticky;
+    top: 120px;
+    gap: 24px;
+}
+.tt-preset-premium .tt-page-section__image {
+    border-radius: 18px;
+    border: none;
+    background: #ffffff;
+    box-shadow: 0 20px 40px -20px rgba(15, 23, 42, 0.2);
+}
+.tt-preset-premium .tt-page-section__image img {
+    transition: transform 0.6s ease;
+}
+.tt-preset-premium .tt-page-section__image:hover img {
+    transform: scale(1.03);
+}
+.tt-preset-premium .tt-page-section__title {
+    color: #0f172a;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+.tt-preset-premium .tt-page-section__body {
+    padding-top: 12px;
+}
+.tt-preset-premium .tt-page-section__text {
+    color: #475569;
+    font-size: 1.08rem;
+    line-height: 1.8;
+    margin: 0 0 22px;
+    font-weight: 400;
+}
+.tt-preset-premium .tt-page-section__text:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-premium .tt-page-sections-wrap {
+        padding: 60px 0;
+    }
+    .tt-preset-premium .tt-page-sections {
+        gap: 56px;
+    }
+    .tt-preset-premium .tt-page-section {
+        gap: 20px;
+    }
+    .tt-preset-premium .tt-page-section__head {
+        position: static;
+    }
+}

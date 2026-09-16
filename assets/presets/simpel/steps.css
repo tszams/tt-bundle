@@ -1,0 +1,71 @@
+/*
+ * Simpel — steps
+ * Flat card met dunne border. Grote genummerde stappen naast elkaar,
+ * met accent-nummer boven titel. Geen shadows/radius.
+ */
+.tt-preset-simpel .tt-steps {
+    background: var(--tt-bg);
+    padding: 72px 0;
+}
+.tt-preset-simpel .tt-steps__card {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    padding: 48px 40px;
+    border-radius: 0;
+}
+.tt-preset-simpel .tt-steps__title {
+    color: var(--tt-fg);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin: 0 0 10px;
+}
+.tt-preset-simpel .tt-steps__subtitle {
+    color: var(--tt-muted);
+    font-size: 1rem;
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto 40px;
+}
+.tt-preset-simpel .tt-steps__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px 40px;
+}
+.tt-preset-simpel .tt-steps__item {
+    padding-left: 24px;
+    border-left: 1px solid var(--tt-line);
+    text-align: left;
+    gap: 6px;
+}
+.tt-preset-simpel .tt-steps__item:first-child {
+    padding-left: 0;
+    border-left: none;
+}
+.tt-preset-simpel .tt-steps__num {
+    color: var(--tt-accent);
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+}
+.tt-preset-simpel .tt-steps__item-title {
+    color: var(--tt-fg);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+.tt-preset-simpel .tt-steps__item-text {
+    color: var(--tt-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 700px) {
+    .tt-preset-simpel .tt-steps__card {
+        padding: 32px 24px;
+    }
+}

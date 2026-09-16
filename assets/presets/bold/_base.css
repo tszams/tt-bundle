@@ -1,0 +1,7 @@
+/*
+ * Bold — basis
+ * Body-bg dark zodat de transparant-header-strip aan de top naadloos overloopt in de hero.
+ */
+.tt-preset-bold {
+    background: #0b0d14;
+}

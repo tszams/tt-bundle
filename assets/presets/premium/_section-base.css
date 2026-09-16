@@ -1,0 +1,25 @@
+/*
+ * Premium — algemene sectie basis
+ * Wit met gecentreerde section headers.
+ */
+.tt-preset-premium .tt-section {
+    background: #ffffff;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-section__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+}
+.tt-preset-premium .tt-section__header h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #0f172a;
+    margin: 0 0 14px;
+}
+.tt-preset-premium .tt-section__header p,
+.tt-preset-premium .tt-muted {
+    color: #64748b;
+    font-size: 1.05rem;
+}

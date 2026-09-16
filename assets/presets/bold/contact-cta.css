@@ -1,0 +1,33 @@
+/*
+ * Bold — contact CTA
+ * Grote accent-gele band onderaan de home + sub-pages, met donkere knop.
+ */
+.tt-preset-bold .tt-contact-cta {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    padding: 100px 0;
+}
+.tt-preset-bold .tt-contact-cta h2 {
+    color: var(--tt-accent-fg);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+}
+.tt-preset-bold .tt-contact-cta p {
+    color: var(--tt-accent-fg);
+    opacity: 0.75;
+    font-size: 1.15rem;
+}
+.tt-preset-bold .tt-contact-cta .tt-cta {
+    background: #14161f !important;
+    color: var(--tt-accent) !important;
+    padding: 18px 34px;
+    font-size: 1.05rem;
+    box-shadow: 0 10px 30px -8px rgba(20, 22, 31, 0.4);
+}
+.tt-preset-bold .tt-contact-cta .tt-cta--ghost {
+    background: transparent !important;
+    color: var(--tt-accent-fg) !important;
+    border: 2px solid var(--tt-accent-fg);
+    box-shadow: none;
+}

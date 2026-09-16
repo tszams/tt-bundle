@@ -1,0 +1,59 @@
+/*
+ * Premium — fleet
+ * Editorial met veel rounded corners, subtiele shadows, elegant tag pill.
+ */
+.tt-preset-premium .tt-fleet {
+    background: #ffffff;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-fleet .tt-section__header h2 {
+    color: #0f172a;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+.tt-preset-premium .tt-fleet .tt-section__header p {
+    color: #64748b;
+    font-size: 1.15rem;
+}
+.tt-preset-premium .tt-fleet__grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;
+    grid-template-rows: 240px 240px 300px;
+}
+.tt-preset-premium .tt-fleet__card {
+    border-radius: 20px;
+    background: #f1f5f9;
+    box-shadow: 0 20px 40px -20px rgba(15, 23, 42, 0.2);
+}
+.tt-preset-premium .tt-fleet__tag {
+    background: rgba(255, 255, 255, 0.95);
+    color: #0f172a;
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.3);
+}
+.tt-preset-premium .tt-fleet__card--feature .tt-fleet__overlay {
+    background: linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.72) 100%);
+    padding: 36px 40px;
+}
+.tt-preset-premium .tt-fleet__title {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+.tt-preset-premium .tt-fleet__subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+@media (max-width: 800px) {
+    .tt-preset-premium .tt-fleet {
+        padding: 60px 0;
+    }
+    .tt-preset-premium .tt-fleet__card {
+        border-radius: 16px;
+    }
+}

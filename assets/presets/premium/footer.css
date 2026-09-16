@@ -1,0 +1,19 @@
+/*
+ * Premium — footer
+ * Wit met subtle border-top, dark links, accent-hover.
+ */
+.tt-preset-premium .tt-footer {
+    background: #ffffff;
+    border-top: 1px solid #f1f5f9;
+    color: #64748b;
+    padding: 60px 0 30px;
+}
+.tt-preset-premium .tt-footer a { color: #0f172a; }
+.tt-preset-premium .tt-footer a:hover { color: var(--tt-accent); opacity: 1; }
+.tt-preset-premium .tt-footer__brand { color: #0f172a; }
+.tt-preset-premium .tt-footer__heading { color: #0f172a; }
+.tt-preset-premium .tt-footer__list li svg { color: var(--tt-accent); }
+.tt-preset-premium .tt-footer__bottom {
+    border-top-color: #f1f5f9;
+    color: #94a3b8;
+}

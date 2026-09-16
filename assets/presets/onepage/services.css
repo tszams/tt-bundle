@@ -1,0 +1,49 @@
+/*
+ * Onepage — services
+ * Glass cards met accent icons.
+ */
+.tt-preset-onepage .tt-services {
+    background: transparent;
+    padding: 40px 0;
+}
+.tt-preset-onepage .tt-services__grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+}
+.tt-preset-onepage .tt-services__card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(6px);
+}
+.tt-preset-onepage .tt-services__card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+}
+.tt-preset-onepage .tt-services__icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+.tt-preset-onepage .tt-services__title {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+}
+.tt-preset-onepage .tt-services__text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+.tt-preset-onepage .tt-services__link {
+    color: var(--tt-accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+}

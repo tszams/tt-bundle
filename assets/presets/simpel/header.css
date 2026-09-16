@@ -1,0 +1,60 @@
+/*
+ * Simpel — header
+ * Minimaal: nav-kleur bg, uppercase caps, alleen CTA is een pill.
+ * Mobile menu: flat, geen radii.
+ */
+.tt-preset-simpel .tt-header {
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+    box-shadow: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tt-preset-simpel .tt-header__inner {
+    padding: 18px 0;
+}
+.tt-preset-simpel .tt-brand {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+.tt-preset-simpel .tt-brand::before {
+    border-radius: 0;
+    background: var(--tt-accent);
+}
+.tt-preset-simpel .tt-nav ul {
+    gap: 28px;
+}
+.tt-preset-simpel .tt-nav a {
+    color: var(--tt-nav-fg);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+}
+.tt-preset-simpel .tt-nav a:hover,
+.tt-preset-simpel .tt-nav .current-menu-item a {
+    opacity: 1;
+}
+.tt-preset-simpel .tt-header .tt-cta {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg) !important;
+    padding: 10px 22px;
+    border-radius: 999px; /* pill — enige rounded element */
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: none;
+}
+.tt-preset-simpel .tt-header .tt-cta:hover {
+    filter: brightness(0.92);
+    transform: none;
+    box-shadow: none;
+    opacity: 1;
+}
+
+/* Hamburger + mobile menu — flat design, geen radii */
+.tt-preset-simpel .tt-mobile-menu__inner {
+    background: var(--tt-nav);
+}
+.tt-preset-simpel .tt-mobile-menu__phone {
+    border-radius: 0;
+}

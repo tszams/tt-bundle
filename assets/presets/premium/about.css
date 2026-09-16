@@ -1,0 +1,107 @@
+/*
+ * Premium — about (homepage)
+ * Editorial/Apple-esthetiek: veel witruimte, grote rounded image,
+ * elegante typografie met tight letter-spacing, dark pill CTA.
+ */
+.tt-preset-premium .tt-about {
+    background: #ffffff;
+    padding: 120px 0;
+}
+.tt-preset-premium .tt-about__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 48px;
+    align-items: center;
+}
+.tt-preset-premium .tt-about.has-image .tt-about__inner {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    max-width: 1200px;
+}
+.tt-preset-premium .tt-about__body {
+    max-width: 560px;
+}
+.tt-preset-premium .tt-about__eyebrow {
+    display: inline-block;
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+.tt-preset-premium .tt-about__title {
+    color: #0f172a;
+    font-size: clamp(2rem, 3.8vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 0 0 28px;
+}
+.tt-preset-premium .tt-about__text {
+    color: #475569;
+    font-size: 1.1rem;
+    line-height: 1.75;
+    margin: 0 0 20px;
+    font-weight: 400;
+}
+.tt-preset-premium .tt-about__text:last-of-type {
+    margin-bottom: 36px;
+}
+.tt-preset-premium .tt-about__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: #0f172a;
+    color: #ffffff !important;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    box-shadow: none;
+    transition: background 0.15s, transform 0.15s;
+}
+.tt-preset-premium .tt-about__cta:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+    opacity: 1;
+    box-shadow: none;
+}
+.tt-preset-premium .tt-about__image {
+    aspect-ratio: 5 / 6;
+    max-width: 420px;
+    justify-self: end;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #f1f5f9;
+    box-shadow:
+        0 30px 60px -30px rgba(15, 23, 42, 0.25),
+        0 0 0 1px rgba(15, 23, 42, 0.04);
+}
+.tt-preset-premium .tt-about__image img {
+    transition: transform 0.6s ease;
+}
+.tt-preset-premium .tt-about__image:hover img {
+    transform: scale(1.03);
+}
+
+@media (max-width: 900px) {
+    .tt-preset-premium .tt-about {
+        padding: 72px 0;
+    }
+    .tt-preset-premium .tt-about.has-image .tt-about__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .tt-preset-premium .tt-about__image {
+        aspect-ratio: 4 / 3;
+        border-radius: 18px;
+        max-width: none;
+        justify-self: stretch;
+    }
+}

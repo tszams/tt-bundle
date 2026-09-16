@@ -1,0 +1,75 @@
+/*
+ * Simpel — about
+ * Clean two-column met image links, tekst rechts. Flat, geen radius.
+ */
+.tt-preset-simpel .tt-about {
+    background: var(--tt-bg);
+    padding: 72px 0;
+}
+.tt-preset-simpel .tt-about__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.tt-preset-simpel .tt-about.has-image .tt-about__inner {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+}
+.tt-preset-simpel .tt-about__image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+}
+.tt-preset-simpel .tt-about__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-preset-simpel .tt-about__title {
+    color: var(--tt-fg);
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0 0 12px;
+}
+.tt-preset-simpel .tt-about__subtitle {
+    color: var(--tt-muted);
+    font-size: 1.05rem;
+    margin: 0 0 20px;
+}
+.tt-preset-simpel .tt-about__text {
+    color: var(--tt-fg);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 24px;
+}
+.tt-preset-simpel .tt-about__text p + p {
+    margin-top: 1em;
+}
+.tt-preset-simpel .tt-about__cta {
+    display: inline-block;
+    padding: 12px 24px;
+    background: var(--tt-fg);
+    color: var(--tt-bg) !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid var(--tt-fg);
+    transition: filter 0.15s;
+}
+.tt-preset-simpel .tt-about__cta:hover {
+    filter: brightness(1.15);
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-simpel .tt-about.has-image .tt-about__inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}

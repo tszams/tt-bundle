@@ -1,0 +1,103 @@
+/*
+ * Simpel — services-simpel (Staxi-style)
+ * Gecentreerde flat cards. Icon of image bovenaan, tekst midden, full-width CTA onder.
+ * Alleen gebruikt op de homepage van de Simpel preset.
+ */
+.tt-preset-simpel .tt-services-simpel {
+    background: var(--tt-bg);
+    padding: 72px 0;
+}
+.tt-preset-simpel .tt-services-simpel__header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 48px;
+}
+.tt-preset-simpel .tt-services-simpel__title {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    color: var(--tt-fg);
+}
+.tt-preset-simpel .tt-services-simpel__sub {
+    color: var(--tt-muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+}
+.tt-preset-simpel .tt-services-simpel__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+.tt-preset-simpel .tt-services-simpel__card {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    transition: border-color 0.15s;
+}
+.tt-preset-simpel .tt-services-simpel__card:hover {
+    border-color: var(--tt-accent);
+}
+.tt-preset-simpel .tt-services-simpel__icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--tt-fg);
+    margin-bottom: 8px;
+}
+.tt-preset-simpel .tt-services-simpel__icon svg {
+    width: 100%;
+    height: 100%;
+    stroke-width: 1.5;
+}
+/* Image ipv icon — full-width in de card, geen radius (flat), fixed aspect */
+.tt-preset-simpel .tt-services-simpel__image {
+    width: calc(100% + 64px);
+    margin: -40px -32px 8px;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--tt-bg);
+}
+.tt-preset-simpel .tt-services-simpel__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-preset-simpel .tt-services-simpel__name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--tt-fg);
+    margin: 0;
+}
+.tt-preset-simpel .tt-services-simpel__text {
+    color: var(--tt-muted);
+    font-size: 0.98rem;
+    line-height: 1.65;
+    margin: 0;
+    flex: 1;
+}
+.tt-preset-simpel .tt-services-simpel__button {
+    display: inline-block;
+    width: 100%;
+    padding: 14px 22px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg) !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    margin-top: 8px;
+    transition: filter 0.15s;
+}
+.tt-preset-simpel .tt-services-simpel__button:hover {
+    filter: brightness(0.92);
+    opacity: 1;
+}

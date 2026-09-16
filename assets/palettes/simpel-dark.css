@@ -1,0 +1,18 @@
+/*
+ * TaxiTheme — palette: Simpel + Dark+Blauw
+ * Zwart bg, cyaan-blauw accent, witte tekst. Taxi Service 365 vibe.
+ */
+
+.tt-palette-simpel-dark {
+    --tt-bg:         #0a0a0a;
+    --tt-surface:    #1a1a1a;
+    --tt-fg:         #ffffff;
+    --tt-muted:      #a1a1a1;
+    --tt-line:       #2a2a2a;
+    --tt-nav:        #000000;
+    --tt-nav-fg:     #ffffff;
+    --tt-accent:     #00bcd4;
+    --tt-accent-rgb: 0, 188, 212;
+    --tt-accent-fg:  #ffffff;
+    --tt-link:       #00bcd4;
+}

@@ -1,0 +1,56 @@
+/*
+ * Onepage — routes
+ * Glass rijen met accent-pill voor de prijs.
+ */
+.tt-preset-onepage .tt-routes {
+    background: transparent;
+}
+.tt-preset-onepage .tt-routes__grid {
+    display: grid;
+    gap: 10px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+/* 6+ routes: 2-koloms modus mag de volle container-breedte gebruiken */
+.tt-preset-onepage .tt-routes__grid--two-col {
+    max-width: none;
+    gap: 12px 20px;
+}
+.tt-preset-onepage .tt-routes__card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: background 0.2s;
+}
+.tt-preset-onepage .tt-routes__card:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+.tt-preset-onepage .tt-routes__route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+.tt-preset-onepage .tt-routes__from,
+.tt-preset-onepage .tt-routes__to {
+    color: #fff;
+}
+.tt-preset-onepage .tt-routes__route svg {
+    color: rgba(255, 255, 255, 0.4);
+}
+.tt-preset-onepage .tt-routes__price {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    white-space: nowrap;
+}

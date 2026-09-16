@@ -1,0 +1,58 @@
+/*
+ * Simpel — services-detail (Diensten-pagina)
+ * Flat: geen radius, palette-adaptive.
+ */
+.tt-preset-simpel .tt-services-detail {
+    background: var(--tt-bg);
+    padding: 40px 0 80px;
+}
+.tt-preset-simpel .tt-services-detail__row {
+    border-bottom-color: var(--tt-line);
+    padding: 48px 0;
+    gap: 48px;
+}
+.tt-preset-simpel .tt-services-detail__media {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 0;
+}
+.tt-preset-simpel .tt-services-detail__icon-small {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 0;
+}
+.tt-preset-simpel .tt-services-detail__title {
+    color: var(--tt-fg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+.tt-preset-simpel .tt-services-detail__price {
+    background: var(--tt-fg);
+    color: var(--tt-bg);
+    border-radius: 0;
+    padding: 5px 14px;
+}
+.tt-preset-simpel .tt-services-detail__text {
+    color: var(--tt-muted);
+    line-height: 1.75;
+}
+.tt-preset-simpel .tt-services-detail__features li {
+    color: var(--tt-fg);
+}
+.tt-preset-simpel .tt-services-detail__link {
+    color: var(--tt-fg);
+    border-bottom: 1px solid var(--tt-accent);
+    padding-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-simpel .tt-services-detail__row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 0;
+    }
+    .tt-preset-simpel .tt-services-detail__row.is-flipped .tt-services-detail__media,
+    .tt-preset-simpel .tt-services-detail__row.is-flipped .tt-services-detail__body {
+        order: initial;
+    }
+}

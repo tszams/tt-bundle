@@ -1,0 +1,38 @@
+/*
+ * Onepage — trust bar
+ * Subtle strip die past bij de glassmorphism aesthetic. Geen bg-fill,
+ * alleen dunne bottom-border en witte text met accent-icons.
+ */
+.tt-preset-onepage .tt-trust {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 20px 0;
+}
+.tt-preset-onepage .tt-trust__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 36px;
+    flex-wrap: wrap;
+}
+.tt-preset-onepage .tt-trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+.tt-preset-onepage .tt-trust__item svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-onepage .tt-trust__inner {
+        justify-content: flex-start;
+        gap: 12px 20px;
+    }
+}

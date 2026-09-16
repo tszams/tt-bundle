@@ -1,0 +1,100 @@
+/*
+ * Klassiek — features (alternating image/text rows)
+ * Crème bg, warme accent-eyebrow met nummers, ruime spacing tussen rijen.
+ */
+.tt-features {
+    background: var(--tt-bg);
+    padding: 80px 0;
+}
+.tt-features__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+    padding: 40px 0;
+}
+.tt-features__row + .tt-features__row {
+    border-top: 1px solid var(--tt-line);
+}
+.tt-features__row.is-flipped {
+    direction: rtl;
+}
+.tt-features__row.is-flipped > * {
+    direction: ltr;
+}
+.tt-features__image {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+}
+.tt-features__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-features__image.is-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tt-features__placeholder {
+    color: var(--tt-line);
+}
+.tt-features__eyebrow {
+    display: inline-block;
+    color: var(--tt-accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+.tt-features__title {
+    color: var(--tt-fg);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+}
+.tt-features__body {
+    color: var(--tt-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0 0 20px;
+}
+.tt-features__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--tt-fg);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--tt-accent);
+    padding-bottom: 2px;
+    transition: gap 0.15s;
+}
+.tt-features__link:hover {
+    gap: 10px;
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    .tt-features {
+        padding: 60px 0;
+    }
+    .tt-features__row,
+    .tt-features__row.is-flipped {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 0;
+        direction: ltr;
+    }
+    .tt-features__row.is-flipped > * {
+        direction: ltr;
+    }
+}

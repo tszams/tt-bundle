@@ -1,0 +1,24 @@
+/*
+ * Onepage — spotlight (subtle + promo variants)
+ * Glass card met faded decoratie. Promo-variant heeft rounded corners.
+ */
+.tt-preset-onepage .tt-spotlight {
+    background: transparent;
+    padding: 40px 0 20px;
+}
+.tt-preset-onepage .tt-spotlight--subtle .tt-spotlight__card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(6px);
+}
+.tt-preset-onepage .tt-spotlight--subtle .tt-spotlight__title {
+    color: #fff;
+}
+.tt-preset-onepage .tt-spotlight--subtle .tt-spotlight__text {
+    color: rgba(255, 255, 255, 0.7);
+}
+/* Promo variant — accent-band met witte tekst */
+.tt-preset-onepage .tt-spotlight--promo .tt-spotlight__card {
+    border-radius: 24px;
+}

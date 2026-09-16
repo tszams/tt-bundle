@@ -1,0 +1,18 @@
+/*
+ * Onepage — footer
+ * Transparant met subtle border-top, muted witte tekst.
+ */
+.tt-preset-onepage .tt-footer {
+    background: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5);
+}
+.tt-preset-onepage .tt-footer__brand,
+.tt-preset-onepage .tt-footer__heading {
+    color: #fff;
+}
+.tt-preset-onepage .tt-footer a { color: rgba(255, 255, 255, 0.75); }
+.tt-preset-onepage .tt-footer a:hover { color: #fff; }
+.tt-preset-onepage .tt-footer__bottom {
+    border-top-color: rgba(255, 255, 255, 0.05);
+}

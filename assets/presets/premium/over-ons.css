@@ -1,0 +1,33 @@
+/*
+ * Premium — over ons page-specifieke overrides
+ * - Bredere USP-cards container (voller uitlijnend, past bij editorial spacing)
+ * - Spacer onder de header krijgt dezelfde donkere bg als de contact-cta die volgt,
+ *   zodat er geen visuele witte "gat" tussen zit.
+ */
+
+/* USP-cards wat breder maken op over-ons — override .tt-container z'n max-width
+   voor de USP-wrapper. Cards krijgen ook meer padding voor premium feel. */
+.tt-preset-premium .tt-page-header.has-usps > .tt-container:last-child {
+    max-width: 1200px;
+}
+.tt-preset-premium .tt-page-header .tt-over-usps {
+    padding: 40px 20px;
+}
+.tt-preset-premium .tt-over-usp {
+    padding: 16px 32px;
+}
+.tt-preset-premium .tt-over-usp__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+.tt-preset-premium .tt-over-usp__text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Spacer bg = dezelfde subtiele slate als .tt-page-sections-wrap (de "Extra
+   info-blokken" sectie die volgt), zodat er geen visuele color-break tussen zit. */
+.tt-preset-premium .tt-page-header__usps-spacer {
+    background: #f8fafc;
+}

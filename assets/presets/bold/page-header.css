@@ -1,0 +1,57 @@
+/*
+ * Bold — page header (sub-pages: diensten, tarieven, over-ons, contact, faq)
+ * Dramatic dark met accent-gradient glow. Eyebrow als pill, grote titel.
+ */
+.tt-preset-bold .tt-page-header {
+    background: #14161f;
+    color: #fff;
+    padding: 120px 0 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+/* Cards overhangen: overflow niet clippen, compactere padding. */
+.tt-preset-bold .tt-page-header.has-usps {
+    overflow: visible;
+    padding: 100px 0 0;
+}
+.tt-preset-bold .tt-page-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at top right, rgba(var(--tt-accent-rgb), 0.25) 0%, transparent 55%),
+        radial-gradient(ellipse at bottom left, rgba(var(--tt-accent-rgb), 0.1) 0%, transparent 55%);
+    pointer-events: none;
+}
+.tt-preset-bold .tt-page-header > .tt-container {
+    position: relative;
+    z-index: 1;
+}
+.tt-preset-bold .tt-page-header__eyebrow {
+    color: var(--tt-accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 6px 16px;
+    background: rgba(var(--tt-accent-rgb), 0.12);
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.3);
+    border-radius: 999px;
+}
+.tt-preset-bold .tt-page-header__title {
+    color: #fff;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 24px;
+}
+.tt-preset-bold .tt-page-header__intro {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 680px;
+    margin: 0 auto;
+}

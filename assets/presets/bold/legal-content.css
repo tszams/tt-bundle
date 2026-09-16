@@ -1,0 +1,24 @@
+/*
+ * Bold — legal-content (privacy/voorwaarden)
+ * Base gebruikt --tt-fg = dark navy dat onleesbaar wordt op Bold's dark bg.
+ * Hier witte/muted witte tekst gescopt.
+ */
+.tt-preset-bold .tt-legal-content {
+    color: rgba(255, 255, 255, 0.85);
+}
+.tt-preset-bold .tt-legal-content h2,
+.tt-preset-bold .tt-legal-content h3 {
+    color: #ffffff;
+}
+.tt-preset-bold .tt-legal-content p,
+.tt-preset-bold .tt-legal-content ul,
+.tt-preset-bold .tt-legal-content ol {
+    color: rgba(255, 255, 255, 0.7);
+}
+.tt-preset-bold .tt-legal-content strong {
+    color: #ffffff;
+}
+.tt-preset-bold .tt-legal-content a {
+    color: var(--tt-accent);
+    text-decoration-color: rgba(var(--tt-accent-rgb), 0.5);
+}

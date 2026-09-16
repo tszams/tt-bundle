@@ -1,0 +1,20 @@
+/*
+ * Simpel — services (fallback grid)
+ * Flat cards met 1px border. Accent border-color op hover.
+ * Voor de dedicated Staxi-style variant zie services-simpel.css.
+ */
+.tt-preset-simpel .tt-services__card {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 0 !important;
+    transition: border-color 0.15s;
+}
+.tt-preset-simpel .tt-services__card:hover {
+    border-color: var(--tt-accent);
+}
+.tt-preset-simpel .tt-services__icon {
+    border-radius: 0;
+}
+.tt-preset-simpel .tt-services__link {
+    color: var(--tt-accent);
+}

@@ -1,0 +1,135 @@
+TAXITHEME — PROPRIETARY SOFTWARE LICENSE
+
+Copyright (c) 2026 Forward Tech Solutions
+Kamer van Koophandel (KvK) 72966440, The Netherlands
+All rights reserved.
+
+================================================================================
+1. DEFINITIONS
+================================================================================
+
+"Software" means the TaxiTheme WordPress theme, including all source code, CSS,
+JavaScript, PHP files, images, templates, documentation, and any updates or
+modifications thereof, distributed by Forward Tech Solutions.
+
+"Licensor" means Forward Tech Solutions.
+
+"Licensee" means the natural person or legal entity that has obtained a valid
+license from the Licensor to use the Software.
+
+"End User" means the customer or website owner on whose WordPress installation
+the Software is deployed under a valid license.
+
+================================================================================
+2. GRANT OF LICENSE
+================================================================================
+
+Subject to the terms of this License and payment of any applicable fees, the
+Licensor grants the Licensee a non-exclusive, non-transferable, revocable
+license to:
+
+  (a) Install and use the Software on the specific WordPress website(s) covered
+      by the license agreement between Licensor and Licensee;
+  (b) Modify the Software for the Licensee's own internal use on those same
+      website(s), provided that copyright notices remain intact;
+  (c) Receive updates via the Licensor's official distribution channels for
+      the duration of the license period.
+
+================================================================================
+3. RESTRICTIONS
+================================================================================
+
+The Licensee shall NOT, and shall not permit any third party to:
+
+  (a) Redistribute, resell, sublicense, rent, lease, or lend the Software, in
+      whole or in part, in original or modified form, whether for profit or
+      free of charge;
+  (b) Publish, upload, or host the Software on any public code repository,
+      marketplace, plugin/theme directory, or file-sharing service;
+  (c) Remove, obscure, or alter any copyright notice, trademark, or attribution
+      contained in the Software;
+  (d) Reverse engineer any portion of the Software for the purpose of creating
+      a competing product;
+  (e) Use the Software to create derivative works intended for distribution to
+      third parties;
+  (f) Transfer this license or the Software to a different Licensee without
+      prior written consent from the Licensor.
+
+================================================================================
+4. OWNERSHIP
+================================================================================
+
+The Software is licensed, not sold. All right, title, and interest in and to
+the Software, including all intellectual property rights, remain the exclusive
+property of Forward Tech Solutions. This License does not grant the Licensee
+any rights to trademarks, service marks, or trade names of the Licensor.
+
+================================================================================
+5. THIRD-PARTY COMPONENTS
+================================================================================
+
+The Software may include third-party open-source components, each governed by
+its own license. Those licenses apply to those components only and do not
+modify the terms of this License with respect to the Software as a whole.
+
+The Software integrates with external services (including but not limited to
+the TaxiBookingForm widget and the TaxiWebapp booking application). Use of
+those services may be subject to separate terms of service.
+
+================================================================================
+6. TERMINATION
+================================================================================
+
+This License terminates automatically and without notice if the Licensee
+breaches any provision of this License. Upon termination, the Licensee must
+cease all use of the Software and destroy all copies in their possession or
+control. Sections 4 (Ownership), 7 (Disclaimer), 8 (Limitation of Liability),
+and 9 (Governing Law) survive termination.
+
+================================================================================
+7. DISCLAIMER OF WARRANTY
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. THE LICENSOR DOES NOT
+WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE OR UNINTERRUPTED.
+
+================================================================================
+8. LIMITATION OF LIABILITY
+================================================================================
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE
+LICENSOR BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED
+DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER
+INTANGIBLE LOSSES, RESULTING FROM THE USE OF OR INABILITY TO USE THE SOFTWARE.
+
+THE LICENSOR'S TOTAL LIABILITY UNDER THIS LICENSE SHALL NOT EXCEED THE AMOUNT
+PAID BY THE LICENSEE FOR THE SOFTWARE IN THE TWELVE (12) MONTHS PRECEDING THE
+CLAIM.
+
+================================================================================
+9. GOVERNING LAW
+================================================================================
+
+This License shall be governed by and construed in accordance with the laws of
+The Netherlands, without regard to its conflict-of-laws principles. Any dispute
+arising out of or in connection with this License shall be subject to the
+exclusive jurisdiction of the competent courts in The Netherlands.
+
+================================================================================
+10. CONTACT
+================================================================================
+
+For licensing inquiries, permissions, or reporting violations:
+
+  Forward Tech Solutions
+  KvK: 72966440
+  Website: https://forwardtechsolutions.nl
+
+================================================================================
+
+Unauthorized copying, distribution, or modification of this Software, via any
+medium, is strictly prohibited and constitutes a violation of copyright law
+and this License.

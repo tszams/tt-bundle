@@ -1,0 +1,50 @@
+/*
+ * Premium — routes
+ * Subtle list op grijze bg met witte cards.
+ */
+.tt-preset-premium .tt-routes {
+    background: #f8fafc;
+}
+.tt-preset-premium .tt-routes__grid {
+    display: grid;
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+/* 6+ routes: 2-koloms modus mag de volle container-breedte gebruiken */
+.tt-preset-premium .tt-routes__grid--two-col {
+    max-width: none;
+    gap: 20px;
+}
+.tt-preset-premium .tt-routes__card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: border-color 0.2s;
+}
+.tt-preset-premium .tt-routes__card:hover {
+    border-color: #e2e8f0;
+    transform: none;
+    box-shadow: none;
+}
+.tt-preset-premium .tt-routes__route {
+    color: #0f172a;
+    font-weight: 500;
+}
+.tt-preset-premium .tt-routes__from,
+.tt-preset-premium .tt-routes__to {
+    color: #0f172a;
+}
+.tt-preset-premium .tt-routes__route svg {
+    color: #cbd5e1;
+}
+.tt-preset-premium .tt-routes__price {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.05rem;
+}

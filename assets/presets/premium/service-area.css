@@ -1,0 +1,34 @@
+/*
+ * Premium — service area
+ * Witte pill-chips op grijze bg, met accent-checkmark.
+ */
+.tt-preset-premium .tt-service-area {
+    background: #f8fafc;
+}
+.tt-preset-premium .tt-service-area__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.tt-preset-premium .tt-service-area__item {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 999px;
+    padding: 8px 18px;
+    color: #334155;
+    font-weight: 500;
+    font-size: 0.92rem;
+    transition: border-color 0.15s;
+}
+.tt-preset-premium .tt-service-area__item:hover {
+    border-color: #cbd5e1;
+    transform: none;
+}
+.tt-preset-premium .tt-service-area__item svg {
+    width: 12px;
+    height: 12px;
+    color: var(--tt-accent);
+}

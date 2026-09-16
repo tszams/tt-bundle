@@ -1,0 +1,11 @@
+/*
+ * Premium — basis
+ * Wit + zwart + subtle accent. Editorial/Apple-esthetiek. Bredere container voor rustige layout.
+ */
+.tt-preset-premium {
+    background: #ffffff;
+    color: #0f172a;
+}
+.tt-preset-premium .tt-container {
+    max-width: 1200px;
+}

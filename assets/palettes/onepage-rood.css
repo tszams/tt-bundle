@@ -1,0 +1,10 @@
+/*
+ * TaxiTheme — palette: One-page + Dark+Rood
+ * Alleen accent-swap: diep rood ipv geel. Witte tekst op accent voor leesbaarheid.
+ */
+
+.tt-palette-onepage-rood {
+    --tt-accent:     #dc2626;
+    --tt-accent-rgb: 220, 38, 38;
+    --tt-accent-fg:  #ffffff;
+}

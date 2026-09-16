@@ -1,0 +1,62 @@
+/*
+ * Premium — contact CTA
+ * Dark strip onderaan met accent-primary + ghost-CTA.
+ */
+.tt-preset-premium .tt-contact-cta {
+    background: #0f172a;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-contact-cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+.tt-preset-premium .tt-contact-cta h2 {
+    color: #ffffff;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0;
+}
+.tt-preset-premium .tt-contact-cta p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.05rem;
+    margin: 0;
+}
+.tt-preset-premium .tt-contact-cta__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+/* Primary = wit met donkere tekst — hoog contrast op de dark navy section bg.
+   Werkt op ALLE Premium palettes (mono-accent zou anders in de bg verdwijnen). */
+.tt-preset-premium .tt-contact-cta .tt-cta {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    padding: 14px 28px;
+    border-radius: 999px;
+    box-shadow: none;
+    border: 1px solid #ffffff;
+    font-weight: 600;
+    transition: background 0.15s, transform 0.15s;
+}
+.tt-preset-premium .tt-contact-cta .tt-cta:hover {
+    background: #f8fafc !important;
+    transform: translateY(-1px);
+    opacity: 1;
+}
+.tt-preset-premium .tt-contact-cta .tt-cta--ghost {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.tt-preset-premium .tt-contact-cta .tt-cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.35);
+}

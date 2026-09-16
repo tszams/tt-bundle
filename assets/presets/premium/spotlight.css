@@ -1,0 +1,114 @@
+/*
+ * Premium — spotlight (subtle + promo varianten)
+ * Editorial premium card, cream achtergrond, dark CTA-button.
+ */
+.tt-preset-premium .tt-spotlight {
+    background: #ffffff;
+    padding: 80px 0;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__card {
+    background: #f8fafc;
+    border: none;
+    border-radius: 28px;
+    padding: 64px;
+    gap: 40px;
+    align-items: center;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__icon {
+    background: #ffffff;
+    color: #0f172a;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.08);
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__eyebrow {
+    color: var(--tt-accent);
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    margin-bottom: 14px;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__title {
+    color: #0f172a;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 18px;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__text {
+    color: #64748b;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0 0 24px;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__link {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__link:hover {
+    background: #1e293b;
+    opacity: 1;
+}
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__link svg { display: none; }
+.tt-preset-premium .tt-spotlight--subtle .tt-spotlight__decoration {
+    color: #0f172a;
+    opacity: 0.04;
+}
+
+/* Promo variant — luxueus accent-panel met refined discount */
+.tt-preset-premium .tt-spotlight--promo .tt-spotlight__card {
+    border-radius: 28px;
+    padding: 56px 64px;
+    gap: 40px;
+}
+.tt-preset-premium .tt-spotlight--promo .tt-spotlight__icon {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    width: 60px;
+    height: 60px;
+}
+.tt-preset-premium .tt-spotlight--promo .tt-spotlight__title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+.tt-preset-premium .tt-spotlight--promo .tt-spotlight__text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+.tt-preset-premium .tt-spotlight--promo .tt-spotlight__link {
+    background: rgba(0, 0, 0, 0.15);
+    padding: 10px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+.tt-preset-premium .tt-spotlight--promo .tt-spotlight__link:hover {
+    background: rgba(0, 0, 0, 0.25);
+    opacity: 1;
+}
+.tt-preset-premium .tt-spotlight__discount-value {
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+.tt-preset-premium .tt-spotlight__discount-label {
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    opacity: 0.8;
+}
+
+@media (max-width: 800px) {
+    .tt-preset-premium .tt-spotlight--subtle .tt-spotlight__card,
+    .tt-preset-premium .tt-spotlight--promo .tt-spotlight__card {
+        padding: 40px 32px;
+    }
+}

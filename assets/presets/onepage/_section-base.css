@@ -1,0 +1,23 @@
+/*
+ * Onepage — algemene sectie basis
+ * Transparant, gecentreerde section headers met witte h2.
+ */
+.tt-preset-onepage .tt-section {
+    background: transparent;
+    padding: 60px 0;
+}
+.tt-preset-onepage .tt-section__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 40px;
+}
+.tt-preset-onepage .tt-section__header h2 {
+    color: #fff;
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+.tt-preset-onepage .tt-section__header p,
+.tt-preset-onepage .tt-muted {
+    color: rgba(255, 255, 255, 0.6);
+}

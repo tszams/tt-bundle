@@ -1,0 +1,75 @@
+/*
+ * Premium — features
+ * Alternating image/text rows met veel witruimte, rounded images.
+ */
+.tt-preset-premium .tt-features {
+    background: #ffffff;
+    padding: 100px 0;
+}
+.tt-preset-premium .tt-features__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    padding: 60px 0;
+}
+.tt-preset-premium .tt-features__row.is-flipped .tt-features__image {
+    order: 2;
+}
+.tt-preset-premium .tt-features__row.is-flipped .tt-features__text {
+    order: 1;
+}
+.tt-preset-premium .tt-features__image {
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: #f1f5f9;
+}
+.tt-preset-premium .tt-features__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-preset-premium .tt-features__image.is-empty {
+    background:
+        linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%),
+        repeating-linear-gradient(45deg, rgba(15, 23, 42, 0.02) 0 10px, transparent 10px 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tt-preset-premium .tt-features__placeholder {
+    color: #cbd5e1;
+}
+.tt-preset-premium .tt-features__placeholder svg {
+    display: block;
+}
+.tt-preset-premium .tt-features__title {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 20px;
+    color: #0f172a;
+}
+.tt-preset-premium .tt-features__body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #475569;
+    margin: 0;
+}
+@media (max-width: 800px) {
+    .tt-preset-premium .tt-features__row,
+    .tt-preset-premium .tt-features__row.is-flipped {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 0;
+    }
+    .tt-preset-premium .tt-features__row.is-flipped .tt-features__image {
+        order: 0;
+    }
+    .tt-preset-premium .tt-features__row.is-flipped .tt-features__text {
+        order: 0;
+    }
+}

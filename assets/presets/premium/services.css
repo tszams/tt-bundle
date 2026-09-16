@@ -1,0 +1,74 @@
+/*
+ * Premium — services (Transfeero-stijl)
+ * Witte cards met icon absolute rechtsboven. Details link als pill-button, geen pijl.
+ */
+.tt-preset-premium .tt-services {
+    background: #f8fafc;
+}
+.tt-preset-premium .tt-services__grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+.tt-preset-premium .tt-services__card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 20px;
+    padding: 32px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.tt-preset-premium .tt-services__card:hover {
+    border-color: #e2e8f0;
+    box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12);
+    transform: none;
+}
+/* Icon rechtsboven in absolute positioning */
+.tt-preset-premium .tt-services__icon {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 999px;
+    width: 44px;
+    height: 44px;
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    margin: 0;
+}
+.tt-preset-premium .tt-services__title {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding-right: 60px; /* ruimte voor icon */
+    margin-bottom: 10px;
+}
+.tt-preset-premium .tt-services__text {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    padding-right: 60px;
+}
+/* Details link als subtle pill button */
+.tt-preset-premium .tt-services__link {
+    align-self: flex-start;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    gap: 0;
+    transition: border-color 0.15s, background 0.15s;
+}
+.tt-preset-premium .tt-services__link:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    gap: 0;
+}
+/* Pijl weglaten — de "Details" tekst spreekt voor zich */
+.tt-preset-premium .tt-services__link svg {
+    display: none;
+}

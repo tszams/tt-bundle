@@ -1,0 +1,25 @@
+/*
+ * Onepage — basis
+ * Dark body, smallere container, z-index scaffolding zodat secties boven de fixed bg staan.
+ */
+.tt-preset-onepage {
+    background: #0a0b10;
+    color: #fff;
+    overflow-x: hidden;
+}
+.tt-preset-onepage .tt-container {
+    max-width: 1120px;
+}
+
+/* Alle secties boven de fixed background */
+.tt-preset-onepage .tt-header,
+.tt-preset-onepage .tt-onepage-hero,
+.tt-preset-onepage .tt-onepage-booking,
+.tt-preset-onepage .tt-section,
+.tt-preset-onepage .tt-trust,
+.tt-preset-onepage .tt-page-header,
+.tt-preset-onepage .tt-over-usps-wrap,
+.tt-preset-onepage .tt-footer {
+    position: relative;
+    z-index: 10;
+}

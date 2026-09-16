@@ -1,0 +1,127 @@
+/*
+ * Premium — header
+ * Transparent overlay op alle pages: op home boven de dark hero, op sub-pages
+ * boven de dark .tt-page-header. Uitzondering: booking-page (webapp/plain).
+ */
+
+/* Base — brand + nav typografie (kleur wordt in de context-regels gezet) */
+.tt-preset-premium .tt-header__inner {
+    padding: 22px 0;
+}
+.tt-preset-premium .tt-brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+.tt-preset-premium .tt-brand::before {
+    background: var(--tt-accent);
+    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+}
+.tt-preset-premium .tt-nav a {
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+/* ============ Transparent overlay (default op Premium) ============ */
+.tt-preset-premium .tt-header {
+    background: transparent;
+    border-bottom: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    color: #fff;
+    box-shadow: none;
+}
+.tt-preset-premium .tt-brand {
+    color: #fff;
+}
+.tt-preset-premium .tt-nav a {
+    color: rgba(255, 255, 255, 0.85);
+}
+.tt-preset-premium .tt-nav a:hover,
+.tt-preset-premium .tt-nav .current-menu-item a {
+    color: #fff;
+    opacity: 1;
+}
+.tt-preset-premium .tt-header .tt-cta {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff !important;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(6px);
+    box-shadow: none;
+    transition: background 0.15s, border-color 0.15s;
+}
+.tt-preset-premium .tt-header .tt-cta:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.45);
+    transform: none;
+    opacity: 1;
+}
+.tt-preset-premium .tt-hamburger span {
+    background: #fff;
+}
+
+/* Compenseer voor WP admin-bar (32px desktop, 46px mobile) — zichtbaar voor
+   ingelogde admins; frontend visitors zien de bar niet. */
+body.admin-bar.tt-preset-premium .tt-header {
+    top: 32px;
+}
+@media screen and (max-width: 782px) {
+    body.admin-bar.tt-preset-premium .tt-header {
+        top: 46px;
+    }
+}
+
+/* Hero op home: extra top-padding zodat de absolute-header niet over de tekst valt */
+.tt-preset-premium.home .tt-premium-hero {
+    padding-top: 120px;
+}
+@media (max-width: 900px) {
+    .tt-preset-premium.home .tt-premium-hero--form {
+        padding-top: 90px;
+    }
+}
+
+/* ============ Uitzondering: booking-page (webapp of plain content) ============
+   Op deze page is er geen dark hero of page-header, dus transparent header
+   werkt niet. Zet 'm terug op de witte variant. */
+.tt-preset-premium.tt-role-boeken .tt-header {
+    background: #ffffff;
+    color: #0f172a;
+    border-bottom: 1px solid #f1f5f9;
+    position: static;
+    z-index: auto;
+    top: auto;
+    backdrop-filter: none;
+}
+.tt-preset-premium.tt-role-boeken .tt-brand {
+    color: #0f172a;
+}
+.tt-preset-premium.tt-role-boeken .tt-nav a {
+    color: #475569;
+}
+.tt-preset-premium.tt-role-boeken .tt-nav a:hover,
+.tt-preset-premium.tt-role-boeken .tt-nav .current-menu-item a {
+    color: #0f172a;
+}
+.tt-preset-premium.tt-role-boeken .tt-header .tt-cta {
+    background: #0f172a;
+    color: #ffffff !important;
+    border: none;
+    backdrop-filter: none;
+}
+.tt-preset-premium.tt-role-boeken .tt-header .tt-cta:hover {
+    background: #1e293b;
+}
+.tt-preset-premium.tt-role-boeken .tt-hamburger span {
+    background: #0f172a;
+}

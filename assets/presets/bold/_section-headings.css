@@ -1,0 +1,9 @@
+/*
+ * Bold — algemene sectie-titels
+ * Overrides voor .tt-section__header h2 zodat elke sectie in Bold groter/bolder is.
+ */
+.tt-preset-bold .tt-section__header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+}

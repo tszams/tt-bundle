@@ -1,0 +1,10 @@
+/*
+ * TaxiTheme — palette: Premium + Emerald
+ * Diep groen accent — vertrouwenwekkend en modern.
+ */
+
+.tt-palette-premium-emerald {
+    --tt-accent:     #059669;
+    --tt-accent-rgb: 5, 150, 105;
+    --tt-accent-fg:  #ffffff;
+}

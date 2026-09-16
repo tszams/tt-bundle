@@ -1,0 +1,28 @@
+/*
+ * Simpel — contact CTA
+ * Flat accent-band. Primary CTA in nav-kleur pill, ghost outline.
+ */
+.tt-preset-simpel .tt-contact-cta {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    padding: 72px 0;
+}
+.tt-preset-simpel .tt-contact-cta h2 {
+    color: var(--tt-accent-fg);
+    font-weight: 700;
+}
+.tt-preset-simpel .tt-contact-cta p {
+    color: var(--tt-accent-fg);
+    opacity: 0.85;
+}
+.tt-preset-simpel .tt-contact-cta .tt-cta {
+    background: var(--tt-nav) !important;
+    color: var(--tt-nav-fg) !important;
+    border-radius: 999px;
+    box-shadow: none;
+}
+.tt-preset-simpel .tt-contact-cta .tt-cta--ghost {
+    background: transparent !important;
+    color: var(--tt-accent-fg) !important;
+    border: 1.5px solid var(--tt-accent-fg);
+}

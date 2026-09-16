@@ -1,0 +1,151 @@
+/*
+ * Premium — services-detail (op de Diensten sub-page)
+ * Editorial layout: veel witruimte, cinematic image proportions, genummerde titels,
+ * subtile scheidingslijn tussen items. Rustig, tijdloos.
+ */
+.tt-preset-premium .tt-services-detail {
+    background: #ffffff;
+    padding: 120px 0 100px;
+    counter-reset: tt-service;
+}
+.tt-preset-premium .tt-services-detail .tt-container {
+    max-width: 1200px;
+}
+.tt-preset-premium .tt-services-detail__row {
+    counter-increment: tt-service;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+    padding: 100px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.tt-preset-premium .tt-services-detail__row:first-child { padding-top: 0; }
+.tt-preset-premium .tt-services-detail__row:last-child { border-bottom: none; }
+
+/* Cinematic image — groter, geen border, subtile shadow bij hover-parent */
+.tt-preset-premium .tt-services-detail__media {
+    background: #f8fafc;
+    border: none;
+    border-radius: 20px;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    box-shadow: 0 20px 60px -20px rgba(15, 23, 42, 0.12);
+}
+.tt-preset-premium .tt-services-detail__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-preset-premium .tt-services-detail__media.is-icon-only {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+}
+.tt-preset-premium .tt-services-detail__icon-large { color: #0f172a; opacity: 0.15; }
+.tt-preset-premium .tt-services-detail__icon-small {
+    background: transparent;
+    color: var(--tt-accent);
+    padding: 0;
+    box-shadow: none;
+    margin-bottom: 20px;
+    display: none; /* verwijderen in editorial layout — het nummer neemt die rol over */
+}
+
+/* Body: rustige typografie */
+.tt-preset-premium .tt-services-detail__body {
+    padding: 0 20px;
+}
+.tt-preset-premium .tt-services-detail__title {
+    color: #0f172a;
+    font-size: clamp(2rem, 3.4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.tt-preset-premium .tt-services-detail__title::before {
+    content: counter(tt-service, decimal-leading-zero);
+    color: var(--tt-accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+.tt-preset-premium .tt-services-detail__price {
+    display: inline-block;
+    background: transparent;
+    color: var(--tt-accent);
+    border: none;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin: 0 0 20px;
+}
+.tt-preset-premium .tt-services-detail__text {
+    color: #475569;
+    font-size: 1.08rem;
+    line-height: 1.75;
+    margin: 0 0 16px;
+    font-weight: 400;
+}
+.tt-preset-premium .tt-services-detail__features {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tt-preset-premium .tt-services-detail__features li {
+    color: #334155;
+    font-size: 0.98rem;
+    padding-left: 28px;
+    position: relative;
+}
+.tt-preset-premium .tt-services-detail__features li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--tt-accent);
+    font-weight: 600;
+}
+.tt-preset-premium .tt-services-detail__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 28px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid #0f172a;
+    transition: gap 0.15s;
+}
+.tt-preset-premium .tt-services-detail__link:hover {
+    gap: 12px;
+    opacity: 1;
+}
+.tt-preset-premium .tt-services-detail__link svg {
+    stroke-width: 2;
+}
+
+@media (max-width: 900px) {
+    .tt-preset-premium .tt-services-detail { padding: 60px 0; }
+    .tt-preset-premium .tt-services-detail__row {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 0;
+    }
+    .tt-preset-premium .tt-services-detail__body { padding: 0; }
+    .tt-preset-premium .tt-services-detail__row.is-flipped .tt-services-detail__media { order: 0; }
+    .tt-preset-premium .tt-services-detail__row.is-flipped .tt-services-detail__body { order: 0; }
+}

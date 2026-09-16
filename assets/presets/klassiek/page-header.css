@@ -1,0 +1,41 @@
+/*
+ * Klassiek — page header (sub-pages)
+ * FAQ-stijl: transparant op body-bg (crème), gecentreerde grote titel, geen eyebrow.
+ * Voorkomt de "dubbele titel" feel wanneer een sectie eronder ook een h2 heeft —
+ * er is nu duidelijk 1 hoofdtitel + subtiele sectie-headers eronder.
+ */
+.tt-preset-klassiek .tt-page-header {
+    background: transparent;
+    padding: 70px 0 20px;
+    text-align: center;
+}
+.tt-preset-klassiek .tt-page-header__eyebrow {
+    display: none;
+}
+.tt-preset-klassiek .tt-page-header__title {
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 16px;
+    color: var(--tt-fg);
+}
+.tt-preset-klassiek .tt-page-header__intro {
+    color: var(--tt-muted);
+    font-size: 1.1rem;
+    line-height: 1.65;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+/* Page-header CTAs op klassiek's lichte bg — ghost = dark outline (i.p.v.
+   white-on-transparent uit de base, wat op crème onzichtbaar is). */
+.tt-preset-klassiek .tt-page-header .tt-cta--ghost {
+    background: transparent !important;
+    color: var(--tt-fg) !important;
+    border: 1.5px solid var(--tt-line);
+}
+.tt-preset-klassiek .tt-page-header .tt-cta--ghost:hover {
+    background: var(--tt-surface) !important;
+    border-color: var(--tt-fg);
+}

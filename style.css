@@ -1,0 +1,2051 @@
+/*
+Theme Name:  TaxiTheme
+Description: Kant-en-klaar thema voor taxibedrijven, inclusief boekingsformulier via CDN.
+Version:     0.1.0
+Author:      Forward Tech Solutions
+Author URI:  https://forwardtechsolutions.nl
+Text Domain: taxitheme
+License:     Proprietary — commercial license required. Reselling, sublicensing,
+             or redistribution in any form is prohibited without written permission.
+             See LICENSE.txt for full terms.
+
+Copyright (c) 2026 Forward Tech Solutions. All rights reserved.
+*/
+
+:root {
+    --tt-bg:         #fdfcf7;   /* warme crème achtergrond */
+    --tt-surface:    #ffffff;   /* wit voor cards / boxes */
+    --tt-fg:         #14161f;   /* diep navy-zwart */
+    --tt-muted:      #6c6f7a;
+    --tt-line:       #e6e2d5;
+    --tt-nav:        #111827;   /* donker navy voor header */
+    --tt-nav-fg:     #ffffff;
+    --tt-accent:     #f5b800;   /* taxi-geel */
+    --tt-accent-rgb: 245, 184, 0;
+    --tt-accent-fg:  #14161f;
+    --tt-link:       #1e3a8a;   /* diep blauw voor links */
+    --tt-radius:     12px;
+    --tt-radius-sm:  8px;
+    --tt-container:  1180px;
+    --tt-shadow:     0 1px 3px rgba(20, 22, 31, 0.06), 0 1px 2px rgba(20, 22, 31, 0.04);
+    --tt-shadow-lg:  0 10px 30px -8px rgba(20, 22, 31, 0.15);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--tt-bg);
+    color: var(--tt-fg);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--tt-link); text-decoration: none; }
+a:hover { opacity: 0.75; }
+
+h1, h2, h3, h4 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin: 0 0 0.6em;
+    color: var(--tt-fg);
+}
+h1 { font-size: clamp(2.25rem, 4.5vw, 3.5rem); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+h3 { font-size: 1.35rem; }
+
+p { margin: 0 0 1em; }
+.tt-muted { color: var(--tt-muted); }
+
+.tt-container {
+    max-width: var(--tt-container);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header — donker navy */
+.tt-header {
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: var(--tt-shadow);
+}
+.tt-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    gap: 40px;
+}
+.tt-brand {
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+    color: var(--tt-nav-fg);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.tt-brand::before {
+    content: "";
+    width: 32px;
+    height: 32px;
+    background: var(--tt-accent);
+    border-radius: 8px;
+    display: inline-block;
+}
+/* Als er een geüpload logo is: verberg de gele placeholder en toon <img> */
+.tt-brand--logo::before { display: none; }
+.tt-brand__logo {
+    display: block;
+    max-height: 48px;
+    max-width: 200px;
+    width: auto;
+    height: auto;
+}
+@media (max-width: 640px) {
+    .tt-brand__logo { max-height: 40px; max-width: 160px; }
+}
+.tt-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+}
+.tt-nav a {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    transition: color 0.15s;
+}
+.tt-nav a:hover,
+.tt-nav .current-menu-item a {
+    color: var(--tt-nav-fg);
+    opacity: 1;
+}
+
+/* CTA button */
+.tt-cta {
+    display: inline-block;
+    padding: 12px 22px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg) !important;
+    border-radius: var(--tt-radius-sm);
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 14px -4px rgba(245, 184, 0, 0.5);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.tt-cta:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -4px rgba(245, 184, 0, 0.65);
+}
+
+/* Hamburger — verborgen op desktop, zichtbaar op mobile */
+.tt-hamburger {
+    display: none;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+}
+.tt-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--tt-nav-fg);
+    border-radius: 1px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Mobile menu overlay — verborgen tot .is-open */
+.tt-mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    display: flex;
+    justify-content: flex-end;
+}
+.tt-mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+.tt-mobile-menu__inner {
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+    width: min(320px, 85vw);
+    height: 100%;
+    padding: 24px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+}
+.tt-mobile-menu.is-open .tt-mobile-menu__inner {
+    transform: translateX(0);
+}
+.tt-mobile-menu__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--tt-nav-fg);
+    font-size: 2rem;
+    line-height: 1;
+    padding: 4px 10px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+.tt-mobile-menu__close:hover { opacity: 1; }
+
+.tt-mobile-menu__nav {
+    margin-top: 40px;
+}
+.tt-mobile-menu__nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+.tt-mobile-menu__nav li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tt-mobile-menu__nav a {
+    display: block;
+    padding: 16px 0;
+    color: var(--tt-nav-fg);
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    opacity: 0.85;
+}
+.tt-mobile-menu__nav a:hover,
+.tt-mobile-menu__nav .current-menu-item a {
+    opacity: 1;
+    color: var(--tt-accent);
+}
+
+.tt-mobile-menu__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+}
+.tt-mobile-menu__cta {
+    text-align: center;
+    padding: 14px 22px;
+}
+.tt-mobile-menu__phone {
+    display: block;
+    text-align: center;
+    padding: 12px 22px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--tt-nav-fg);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: var(--tt-radius-sm);
+    text-decoration: none;
+}
+.tt-mobile-menu__phone:hover {
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    /* Toon hamburger, verberg desktop nav + CTA */
+    .tt-hamburger { display: inline-flex; }
+    .tt-nav,
+    .tt-header__cta { display: none; }
+    .tt-header__inner { justify-content: space-between; gap: 16px; }
+}
+
+/* Main */
+.tt-main {
+    padding: 72px 0 96px;
+    min-height: 60vh;
+}
+
+/* Footer — 3+ kolommen */
+.tt-footer {
+    background: var(--tt-nav);
+    color: rgba(255, 255, 255, 0.65);
+    padding: 60px 0 24px;
+    font-size: 0.92rem;
+}
+.tt-footer a {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    transition: color 0.15s;
+}
+.tt-footer a:hover { color: #fff; opacity: 1; }
+
+.tt-footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 40px;
+}
+
+.tt-footer__col--brand { max-width: 320px; }
+.tt-footer__brand {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+}
+.tt-footer__logo {
+    display: block;
+    max-height: 56px;
+    max-width: 240px;
+    width: auto;
+    height: auto;
+    margin-bottom: 14px;
+}
+.tt-footer__tagline {
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.tt-footer__heading {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 16px;
+}
+.tt-footer__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.tt-footer__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    line-height: 1.5;
+}
+.tt-footer__list li svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+.tt-footer__list-addr { align-items: flex-start; }
+.tt-footer__list-addr span { color: rgba(255, 255, 255, 0.75); }
+
+.tt-footer__bottom {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+}
+.tt-footer__legal { display: inline-flex; gap: 6px; align-items: center; }
+.tt-footer__legal a { color: rgba(255, 255, 255, 0.7); text-decoration: none; }
+.tt-footer__legal a:hover { color: #fff; opacity: 1; }
+.tt-footer__legal-sep { color: rgba(255, 255, 255, 0.3); }
+
+/* Legal-content: leesbare prose voor privacy/voorwaarden */
+.tt-legal-content {
+    max-width: 780px;
+    margin: 0 auto;
+    color: var(--tt-fg);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+.tt-legal-content h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 40px 0 12px;
+    color: var(--tt-fg);
+}
+.tt-legal-content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 24px 0 8px;
+    color: var(--tt-fg);
+}
+.tt-legal-content p { margin: 0 0 16px; color: var(--tt-muted); }
+.tt-legal-content p:last-child { margin-bottom: 0; }
+.tt-legal-content ul, .tt-legal-content ol { margin: 0 0 16px; padding-left: 22px; color: var(--tt-muted); }
+.tt-legal-content li { margin-bottom: 6px; }
+.tt-legal-content a { color: var(--tt-link); text-decoration: underline; }
+.tt-legal-content a:hover { opacity: 0.75; }
+.tt-legal-content strong { color: var(--tt-fg); font-weight: 700; }
+
+@media (max-width: 900px) {
+    .tt-footer { padding: 48px 0 20px; }
+    .tt-footer__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        padding-bottom: 32px;
+    }
+    .tt-footer__col--brand { grid-column: 1 / -1; max-width: none; }
+    .tt-footer__bottom { flex-direction: column; align-items: flex-start; text-align: left; gap: 6px; }
+}
+@media (max-width: 480px) {
+    .tt-footer__grid { grid-template-columns: 1fr; }
+}
+
+/* Booking form container */
+.taxibookingform {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--tt-shadow-lg);
+    overflow: hidden; /* zorgt dat interne widget-elementen ook binnen de radius blijven */
+}
+
+/* Content prose polish */
+.tt-main article > div > *:first-child { margin-top: 0; }
+.tt-main ul, .tt-main ol { padding-left: 1.25em; }
+.tt-main li { margin-bottom: 0.4em; }
+
+/* ============ Homepage sections ============ */
+
+/* Hero */
+.tt-hero {
+    background: var(--tt-nav);
+    color: #fff;
+    padding: 80px 0 100px;
+    position: relative;
+    overflow: hidden;
+}
+.tt-hero::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 184, 0, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+.tt-hero__inner {
+    position: relative;
+    z-index: 1;
+}
+
+/* Style: split (default) — text left, form right */
+.tt-hero--split .tt-hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+/* Style: stacked — text boven, form eronder.
+   Hero-bg splitst rond ~65% (donker/wit) — rechte hard cutoff. */
+.tt-hero--stacked {
+    padding-bottom: 60px;
+    overflow: visible; /* form + shadow niet clippen */
+    background:
+        linear-gradient(
+            to bottom,
+            var(--tt-nav) 0%,
+            var(--tt-nav) 65%,
+            #ffffff 65%,
+            #ffffff 100%
+        );
+}
+.tt-hero--stacked::after {
+    /* Gele radial glow verbergen bij stacked — past niet met de split-bg */
+    display: none;
+}
+.tt-hero--stacked .tt-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+.tt-hero--stacked .tt-hero__text { max-width: 720px; }
+.tt-hero--stacked .tt-hero__form--wide {
+    width: 100%;
+    max-width: 900px;
+    position: relative;
+    z-index: 5;
+    margin-bottom: 0;
+}
+.tt-hero__form--wide { width: 100%; max-width: 900px; }
+@media (max-width: 700px) {
+    /* Zelfde split-effect als desktop (65%), alleen padding iets kleiner */
+    .tt-hero--stacked {
+        padding-bottom: 40px;
+    }
+}
+
+/* Style: centered — just text with CTAs, no form in hero */
+.tt-hero--centered .tt-hero__inner {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.tt-hero--centered .tt-hero__text { max-width: 720px; }
+
+/* Accent optie voor split — gele angulaire shapes achter het form */
+.tt-hero__form-wrap { position: relative; }
+.tt-hero__form-wrap--accent { z-index: 1; }
+.tt-hero__form-wrap--accent .tt-hero__form { position: relative; z-index: 2; }
+.tt-hero__image-shape--1 {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80%;
+    height: 90%;
+    background: var(--tt-accent);
+    transform: skewY(-6deg);
+    border-radius: 10px;
+    z-index: 0;
+}
+.tt-hero__image-shape--2 {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 55%;
+    height: 55%;
+    background: rgba(245, 184, 0, 0.35);
+    transform: skewY(-6deg);
+    border-radius: 10px;
+    z-index: 0;
+}
+
+/* Shared modifiers */
+.tt-hero__text--center { text-align: center; }
+.tt-hero__actions--center { justify-content: center; }
+.tt-hero__tagline--center { margin-left: auto; margin-right: auto; }
+.tt-hero--stacked .tt-hero__tagline,
+.tt-hero--centered .tt-hero__tagline,
+.tt-hero--minimal .tt-hero__tagline { margin-left: auto; margin-right: auto; }
+.tt-hero__form {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+}
+/* Kop boven het formulier — default verborgen op desktop (form is dan rechts
+   naast de tekst, dus extra label is overbodig). Wordt getoond op mobile bij
+   split en altijd bij stacked (waar het form onder de tekst zit). */
+.tt-hero__form-heading {
+    display: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 0 16px;
+    opacity: 0.85;
+}
+.tt-hero__form-heading--stacked {
+    display: block;
+}
+.tt-hero__form .taxibookingform {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+.tt-hero__text h1 { color: #fff; margin-bottom: 20px; }
+.tt-eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(245, 184, 0, 0.15);
+    color: var(--tt-accent);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+}
+.tt-hero__tagline {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 520px;
+    margin-bottom: 32px;
+}
+.tt-hero__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 500px; /* voorkomt dat 1 knop absurd breed wordt in centered/stacked text */
+    margin-left: auto;
+    margin-right: auto;
+}
+.tt-hero__actions .tt-cta {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.tt-cta--whatsapp {
+    background: #25d366 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px -4px rgba(37, 211, 102, 0.5);
+}
+.tt-cta--whatsapp:hover { box-shadow: 0 6px 20px -4px rgba(37, 211, 102, 0.65); }
+
+.tt-hero__bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+}
+
+/* Style: list — verticale lijst met check-cirkels */
+.tt-hero__bullets--list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tt-hero__bullets--list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 1rem;
+}
+.tt-hero__bullets--list li::before {
+    content: "";
+    display: inline-block;
+    width: 20px; height: 20px;
+    background: var(--tt-accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314161f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-size: 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.tt-hero__text--center .tt-hero__bullets--list { align-items: center; }
+
+/* Tags — horizontale pill badges (losse hero-sectie) */
+.tt-hero__tags {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.tt-hero__tags li {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    font-size: 0.88rem;
+    backdrop-filter: blur(4px);
+}
+.tt-hero__text--center .tt-hero__tags { justify-content: center; }
+
+/* Trust bar — full-width bar onder hero */
+.tt-trust {
+    background: var(--tt-surface);
+    border-bottom: 1px solid var(--tt-line);
+    padding: 20px 0;
+}
+.tt-trust__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+.tt-trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--tt-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.tt-trust__item svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+@media (max-width: 900px) {
+    .tt-trust__inner { justify-content: flex-start; gap: 14px 20px; }
+}
+.tt-cta--ghost {
+    background: transparent !important;
+    color: #fff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    box-shadow: none;
+}
+.tt-cta--ghost:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05) !important;
+    transform: translateY(-1px);
+}
+
+/* Section base */
+.tt-section {
+    padding: 80px 0;
+}
+.tt-section__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 48px;
+}
+.tt-section__header h2 { margin-bottom: 12px; }
+
+/* USPs */
+.tt-usps { background: var(--tt-bg); }
+.tt-usps__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+.tt-usp {
+    background: var(--tt-surface);
+    padding: 32px 28px;
+    border-radius: var(--tt-radius);
+    border: 1px solid var(--tt-line);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.tt-usp:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--tt-shadow-lg);
+}
+.tt-usp__icon {
+    width: 56px;
+    height: 56px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+.tt-usp h3 { margin-bottom: 8px; }
+.tt-usp p { color: var(--tt-muted); margin-bottom: 0; }
+
+/* About / Over ons — verhaal-blok */
+.tt-about { background: var(--tt-surface); }
+.tt-about__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+    max-width: 780px;
+    margin: 0 auto;
+}
+.tt-about.has-image .tt-about__inner {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    max-width: var(--tt-container);
+}
+.tt-about__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.tt-about__eyebrow {
+    color: var(--tt-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.tt-about__title {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    margin: 0 0 20px;
+}
+.tt-about__text {
+    color: var(--tt-muted);
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin: 0 0 18px;
+}
+.tt-about__text:last-of-type { margin-bottom: 24px; }
+.tt-about__cta {
+    margin-top: 8px;
+    align-self: flex-start;
+}
+.tt-about__image {
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--tt-line);
+}
+.tt-about__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+@media (max-width: 800px) {
+    .tt-about.has-image .tt-about__inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+/* FAQ — accordion met native <details>/<summary> */
+.tt-faq { background: var(--tt-bg); }
+.tt-faq__list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.tt-faq__item {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    transition: border-color 0.15s;
+}
+.tt-faq__item:hover { border-color: var(--tt-muted); }
+.tt-faq__item[open] { border-color: var(--tt-accent); }
+.tt-faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--tt-fg);
+    list-style: none;
+}
+.tt-faq__question::-webkit-details-marker { display: none; }
+.tt-faq__q-text { flex: 1; }
+.tt-faq__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    transition: transform 0.2s;
+}
+.tt-faq__icon::before,
+.tt-faq__icon::after {
+    content: "";
+    position: absolute;
+    background: var(--tt-accent);
+    border-radius: 2px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.tt-faq__icon::before { width: 14px; height: 2px; }
+.tt-faq__icon::after  { width: 2px;  height: 14px; transition: transform 0.2s; }
+.tt-faq__item[open] .tt-faq__icon::after { transform: translate(-50%, -50%) scaleY(0); }
+.tt-faq__answer {
+    padding: 0 24px 22px;
+    color: var(--tt-muted);
+    line-height: 1.7;
+}
+.tt-faq__more {
+    text-align: center;
+    margin-top: 32px;
+}
+.tt-faq__more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: gap 0.15s;
+}
+.tt-faq__more-link:hover { gap: 12px; opacity: 1; }
+
+/* Fleet — "Ons wagenpark" mozaïek-grid */
+.tt-fleet { background: var(--tt-bg); }
+.tt-fleet__grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    grid-template-rows: 220px 220px 260px;
+    grid-template-areas:
+        "a a b b"
+        "a a c d"
+        "e e e e";
+    gap: 16px;
+}
+.tt-fleet__card {
+    position: relative;
+    margin: 0;
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    background: var(--tt-line);
+    min-height: 0;
+}
+.tt-fleet__card--a { grid-area: a; }
+.tt-fleet__card--b { grid-area: b; }
+.tt-fleet__card--c { grid-area: c; }
+.tt-fleet__card--d { grid-area: d; }
+.tt-fleet__card--e { grid-area: e; }
+.tt-fleet__card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+.tt-fleet__card:hover img { transform: scale(1.05); }
+.tt-fleet__overlay {
+    position: absolute;
+    inset: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+.tt-fleet__tag {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 6px 12px;
+    background: var(--tt-nav);
+    color: var(--tt-nav-fg);
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+}
+.tt-fleet__card--feature .tt-fleet__overlay {
+    background: linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.6) 100%);
+    padding: 28px 32px;
+}
+.tt-fleet__title {
+    color: #ffffff;
+    font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -0.015em;
+}
+.tt-fleet__subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    margin: 0;
+}
+@media (max-width: 800px) {
+    .tt-fleet__grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: none;
+        gap: 12px;
+    }
+    .tt-fleet__card {
+        grid-area: auto;
+        aspect-ratio: 16 / 10;
+    }
+    .tt-fleet__card--e { aspect-ratio: 21 / 9; }
+}
+
+/* Reviews — klantreviews grid met sterren + Google CTA */
+.tt-reviews { background: var(--tt-bg); }
+.tt-reviews__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.tt-reviews__card {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.tt-reviews__stars {
+    display: inline-flex;
+    gap: 2px;
+}
+.tt-reviews__star svg {
+    fill: none;
+    stroke: var(--tt-line);
+    stroke-width: 2;
+    display: block;
+}
+.tt-reviews__star.is-filled svg {
+    fill: var(--tt-accent);
+    stroke: var(--tt-accent);
+}
+.tt-reviews__text {
+    color: var(--tt-fg);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+}
+.tt-reviews__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--tt-line);
+}
+.tt-reviews__name {
+    color: var(--tt-fg);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.tt-reviews__date {
+    color: var(--tt-muted);
+    font-size: 0.85rem;
+}
+.tt-reviews__cta-wrap {
+    text-align: center;
+    margin-top: 32px;
+}
+.tt-reviews__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: gap 0.15s;
+}
+.tt-reviews__cta:hover { gap: 12px; opacity: 1; }
+
+/* Steps — "Hoe werkt het" (genummerde stappen in card) */
+.tt-steps { background: var(--tt-surface); }
+.tt-steps__card {
+    background: var(--tt-bg);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    padding: 48px;
+}
+.tt-steps__title {
+    font-size: clamp(1.6rem, 2.8vw, 2rem);
+    margin: 0 0 10px;
+}
+.tt-steps__subtitle {
+    color: var(--tt-muted);
+    margin: 0 0 40px;
+    font-size: 1.02rem;
+}
+.tt-steps__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px 40px;
+}
+.tt-steps__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 20px;
+    border-left: 1px solid var(--tt-line);
+}
+.tt-steps__item:first-child { border-left: none; padding-left: 0; }
+.tt-steps__num {
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+.tt-steps__item-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+.tt-steps__item-text {
+    color: var(--tt-muted);
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+@media (max-width: 700px) {
+    .tt-steps__card { padding: 28px 24px; }
+    .tt-steps__grid { grid-template-columns: 1fr; gap: 24px; }
+    .tt-steps__item { padding-left: 0; border-left: none; padding-top: 24px; border-top: 1px solid var(--tt-line); }
+    .tt-steps__item:first-child { padding-top: 0; border-top: none; }
+}
+
+/* Breadcrumb (Over ons + andere sub-pages) */
+.tt-crumbs {
+    background: var(--tt-surface);
+    padding: 20px 0 12px;
+    font-size: 0.88rem;
+    color: var(--tt-muted);
+}
+.tt-crumbs a { color: var(--tt-muted); text-decoration: none; }
+.tt-crumbs a:hover { color: var(--tt-fg); }
+.tt-crumbs__sep { margin: 0 8px; color: var(--tt-line); }
+.tt-crumbs__current { color: var(--tt-fg); font-weight: 600; }
+
+/* Dark ghost CTA variant — voor gebruik op donkere achtergrond */
+.tt-cta--dark {
+    background: #14161f !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.5);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+}
+.tt-cta--dark:hover {
+    background: #1e2131 !important;
+    color: #fff !important;
+    box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.7);
+}
+
+/* USP-kaartjes die overhangend onder de hero komen — hero bg loopt precies door hun midden.
+ * translateY(50%) verplaatst de cards visueel de helft van hun eigen hoogte naar beneden,
+ * ongeacht hoeveel content erin staat. De bovenste helft blijft in de donkere hero, de
+ * onderste helft valt in de lichte sectie eronder. */
+.tt-over-usps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: var(--tt-surface);
+    border-radius: var(--tt-radius);
+    box-shadow: var(--tt-shadow-lg);
+    padding: 32px 8px;
+    margin-top: 60px;
+    transform: translateY(50%);
+    position: relative;
+    z-index: 2;
+}
+.tt-over-usp {
+    padding: 8px 24px;
+    border-right: 1px solid var(--tt-line);
+}
+.tt-over-usp:last-child { border-right: none; }
+.tt-over-usp__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: rgba(var(--tt-accent-rgb), 0.18);
+    color: var(--tt-accent);
+    border-radius: 50%;
+    margin-bottom: 14px;
+}
+.tt-over-usp__title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--tt-fg);
+    margin: 0 0 8px;
+}
+.tt-over-usp__text {
+    font-size: 0.9rem;
+    color: var(--tt-muted);
+    line-height: 1.55;
+    margin: 0;
+}
+@media (max-width: 900px) {
+    .tt-over-usps {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 20px 8px;
+    }
+    .tt-over-usp {
+        padding: 16px 20px;
+        border-right: none;
+        border-bottom: 1px solid var(--tt-line);
+    }
+    .tt-over-usp:nth-child(odd) { border-right: 1px solid var(--tt-line); }
+    .tt-over-usp:nth-last-child(-n+2) { border-bottom: none; }
+}
+@media (max-width: 560px) {
+    .tt-over-usps {
+        grid-template-columns: 1fr;
+    }
+    .tt-over-usp { border-right: none !important; }
+    .tt-over-usp:not(:last-child) { border-bottom: 1px solid var(--tt-line); }
+}
+
+/* Page header — voor sub-pages (diensten, tarieven, over-ons, contact, faq) */
+.tt-page-header {
+    background: var(--tt-surface);
+    padding: 70px 0 40px;
+    text-align: center;
+}
+.tt-page-header__eyebrow {
+    display: inline-block;
+    color: var(--tt-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.tt-page-header__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 20px;
+}
+.tt-page-header__intro {
+    color: var(--tt-muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 640px;
+    margin: 0 auto;
+}
+.tt-page-header__intro p:last-child { margin-bottom: 0; }
+.tt-page-header__actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+}
+.tt-page-header__actions .tt-cta {
+    padding: 12px 26px;
+}
+/* USP-kaartjes overlap-effect: cards zitten binnen .tt-page-header en worden
+   translated 50% naar beneden. De page-header bg loopt precies door hun midden.
+   Belangrijk: page-header mag GEEN overflow: hidden hebben — anders wordt de
+   translated helft geclipped. Preset overrides moeten dit respecteren.
+   Negatieve margin-top compenseert de translate zodat de visuele gap tussen
+   titel en cards klein blijft. */
+.tt-page-header.has-usps {
+    padding-bottom: 0;
+    overflow: visible;
+}
+.tt-page-header.has-usps > .tt-container:first-child {
+    padding-bottom: 0;
+}
+.tt-page-header .tt-over-usps {
+    margin-top: -60px;
+}
+/* Spacer die na de page-header komt om ruimte te maken voor de translated helft
+   van de USP-cards. Grootte schaalt met viewport omdat cards stacken op mobile. */
+.tt-page-header__usps-spacer {
+    height: 140px;
+}
+@media (max-width: 900px) {
+    .tt-page-header__actions { flex-direction: column; align-items: stretch; }
+    .tt-page-header__actions .tt-cta { text-align: center; justify-content: center; }
+    /* Cards stacken 2x2 → ~430px totaal → half ≈ 220px */
+    .tt-page-header__usps-spacer { height: 240px; }
+}
+@media (max-width: 560px) {
+    /* Cards stacken 1-koloms → ~800px totaal → half ≈ 400px */
+    .tt-page-header__usps-spacer { height: 440px; }
+}
+
+/* Diensten-pagina — grotere services grid met wat meer ademruimte */
+.tt-services--page {
+    background: var(--tt-bg);
+    padding: 60px 0 80px;
+}
+.tt-services--page .tt-services__grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+}
+
+/* Services-detail — uitgebreide services voor Diensten-pagina (alternating rows) */
+.tt-services-detail {
+    background: var(--tt-bg);
+    padding: 40px 0 80px;
+}
+.tt-services-detail__row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--tt-line);
+}
+.tt-services-detail__row:last-child { border-bottom: none; }
+.tt-services-detail__row.is-flipped .tt-services-detail__media { order: 2; }
+.tt-services-detail__row.is-flipped .tt-services-detail__body { order: 1; }
+
+/* Media: image OR icon-only fallback */
+.tt-services-detail__media {
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tt-services-detail__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-services-detail__media.is-icon-only {
+    background: linear-gradient(135deg, rgba(var(--tt-accent-rgb), 0.08), rgba(var(--tt-accent-rgb), 0.02));
+    border-color: rgba(var(--tt-accent-rgb), 0.15);
+}
+.tt-services-detail__icon-large {
+    color: var(--tt-accent);
+    opacity: 0.8;
+}
+
+/* Body */
+.tt-services-detail__icon-small {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.tt-services-detail__title {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin: 0 0 8px;
+}
+.tt-services-detail__price {
+    display: inline-block;
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+    padding: 4px 12px;
+    background: rgba(var(--tt-accent-rgb), 0.1);
+    border-radius: 999px;
+}
+.tt-services-detail__text {
+    color: var(--tt-muted);
+    line-height: 1.7;
+    margin: 0 0 14px;
+    font-size: 1rem;
+}
+.tt-services-detail__features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: grid;
+    gap: 10px;
+}
+.tt-services-detail__features li {
+    padding-left: 28px;
+    position: relative;
+    color: var(--tt-fg);
+    font-weight: 500;
+    font-size: 0.98rem;
+}
+.tt-services-detail__features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 20px;
+    height: 20px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+.tt-services-detail__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    transition: gap 0.15s;
+}
+.tt-services-detail__link:hover { gap: 10px; opacity: 1; }
+
+@media (max-width: 800px) {
+    .tt-services-detail__row,
+    .tt-services-detail__row.is-flipped {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 0;
+    }
+    .tt-services-detail__row.is-flipped .tt-services-detail__media,
+    .tt-services-detail__row.is-flipped .tt-services-detail__body { order: 0; }
+}
+
+/* Page-sections — per-page vrije info-blokken (tarieven, diensten, over-ons).
+ * Modern editorial split: titel-kolom links, tekst-kolom rechts. Stackt op mobile.
+ * Transparant zodat het naadloos aansluit op de body-kleur (crème in Klassiek,
+ * dark in Onepage). Preset-specifieke overrides zoals Bold zetten dit alsnog op dark. */
+.tt-page-sections-wrap {
+    background: transparent;
+    padding: 60px 0 80px;
+}
+.tt-page-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.tt-page-section {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 60px;
+    align-items: start;
+}
+.tt-page-section__head {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.tt-page-section__image {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    width: 100%;
+}
+.tt-page-section__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-page-section__body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 8px;
+}
+.tt-page-section__title {
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--tt-fg);
+}
+.tt-page-section__text {
+    color: var(--tt-muted);
+    line-height: 1.75;
+    margin: 0 0 18px;
+    font-size: 1.02rem;
+}
+.tt-page-section__text:last-child { margin-bottom: 0; }
+@media (max-width: 800px) {
+    .tt-page-sections { gap: 48px; }
+    .tt-page-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .tt-page-section__image {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+/* Contact-info kaarten — voor de Contact-pagina */
+.tt-contact-info-wrap { padding: 60px 0 20px; }
+.tt-contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+.tt-contact-info__card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 24px 22px;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    color: var(--tt-fg) !important;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+a.tt-contact-info__card:hover {
+    transform: translateY(-2px);
+    border-color: var(--tt-accent);
+    box-shadow: var(--tt-shadow);
+}
+.tt-contact-info__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    color: var(--tt-accent);
+    border-radius: var(--tt-radius-sm);
+    margin-bottom: 6px;
+}
+.tt-contact-info__label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tt-muted);
+}
+.tt-contact-info__value {
+    font-size: 1.02rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--tt-fg);
+}
+
+/* Tarieven-pagina — routes als hoofdcontent */
+.tt-routes--page {
+    background: var(--tt-bg);
+    padding: 60px 0 40px;
+}
+.tt-routes__note {
+    max-width: 640px;
+    margin: 40px auto 0;
+    text-align: center;
+    color: var(--tt-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Spotlight — één prominente highlight-kaart */
+.tt-spotlight { background: var(--tt-bg); }
+.tt-spotlight__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    padding: 40px;
+    overflow: hidden;
+}
+.tt-spotlight__icon {
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+.tt-spotlight__body {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+}
+.tt-spotlight__eyebrow {
+    display: inline-block;
+    color: var(--tt-accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+}
+.tt-spotlight__title {
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    margin: 0 0 14px;
+}
+.tt-spotlight__text {
+    color: var(--tt-muted);
+    line-height: 1.65;
+    margin: 0 0 18px;
+    font-size: 1rem;
+}
+.tt-spotlight__link {
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.15s;
+}
+.tt-spotlight__link:hover { gap: 10px; opacity: 1; }
+/* Faded decoratie-icon rechts — grote versie van dezelfde icon */
+.tt-spotlight__decoration {
+    position: absolute;
+    top: 50%;
+    right: -30px;
+    transform: translateY(-50%);
+    color: var(--tt-accent);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+}
+.tt-spotlight__decoration svg {
+    width: 220px;
+    height: 220px;
+    stroke-width: 1;
+}
+
+/* Promo variant — accent-band met grote discount display rechts */
+.tt-spotlight--promo .tt-spotlight__card {
+    background: var(--tt-accent);
+    border-color: transparent;
+    color: var(--tt-accent-fg);
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 32px 40px;
+}
+.tt-spotlight--promo .tt-spotlight__icon {
+    background: rgba(0, 0, 0, 0.15);
+    color: var(--tt-accent-fg);
+}
+.tt-spotlight--promo .tt-spotlight__eyebrow { color: var(--tt-accent-fg); opacity: 0.85; }
+.tt-spotlight--promo .tt-spotlight__title   { color: var(--tt-accent-fg); }
+.tt-spotlight--promo .tt-spotlight__text    { color: var(--tt-accent-fg); opacity: 0.85; }
+.tt-spotlight--promo .tt-spotlight__link {
+    color: var(--tt-accent-fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.tt-spotlight__discount {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 12px;
+    line-height: 1;
+    color: var(--tt-accent-fg);
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+}
+.tt-spotlight__discount-value {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+}
+.tt-spotlight__discount-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    opacity: 0.85;
+}
+
+@media (max-width: 700px) {
+    .tt-spotlight__card {
+        padding: 28px;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .tt-spotlight--promo .tt-spotlight__card {
+        grid-template-columns: 1fr;
+    }
+    .tt-spotlight__decoration svg { width: 140px; height: 140px; }
+    .tt-spotlight__discount { padding: 0; }
+    .tt-spotlight__discount-value { font-size: 3.5rem; }
+}
+
+/* Services / diensten */
+.tt-services { background: var(--tt-surface); }
+.tt-services__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+.tt-services__card {
+    background: var(--tt-bg);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.tt-services__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--tt-shadow-lg);
+    border-color: var(--tt-accent);
+}
+.tt-services__icon {
+    width: 44px;
+    height: 44px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.tt-services__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+.tt-services__text {
+    color: var(--tt-muted);
+    margin: 0 0 20px;
+    flex: 1;
+}
+.tt-services__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--tt-accent);
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-top: auto;
+    transition: gap 0.15s;
+}
+.tt-services__link:hover {
+    gap: 10px;
+    opacity: 1;
+}
+
+/* Waarom ons */
+.tt-waarom { background: var(--tt-bg); }
+.tt-waarom__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+}
+.tt-waarom.has-image .tt-waarom__inner {
+    grid-template-columns: 1fr 1.4fr;
+    gap: 60px;
+}
+.tt-waarom__image {
+    border-radius: var(--tt-radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--tt-line);
+}
+.tt-waarom__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-waarom__body h2 { margin-bottom: 12px; }
+.tt-waarom__body .tt-muted { margin-bottom: 24px; }
+.tt-check {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 24px;
+}
+.tt-check li {
+    padding-left: 34px;
+    position: relative;
+    font-weight: 500;
+    font-size: 1.02rem;
+}
+.tt-check li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 24px;
+    height: 24px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+/* Service gebied — grid van plaats-chips */
+.tt-service-area { background: var(--tt-surface); }
+.tt-service-area__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.tt-service-area__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--tt-bg);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius-sm);
+    font-weight: 600;
+    transition: transform 0.15s, border-color 0.15s;
+}
+.tt-service-area__item:hover {
+    transform: translateY(-2px);
+    border-color: var(--tt-accent);
+}
+.tt-service-area__item svg {
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+
+/* Vaste route prijzen — grid van route cards met prijs */
+.tt-routes { background: var(--tt-bg); }
+.tt-routes__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+/* 6+ routes: expliciet 2-koloms zodat de lange lijst netjes in kolommen valt */
+.tt-routes__grid--two-col {
+    grid-template-columns: 1fr 1fr;
+    max-width: none;
+    gap: 20px;
+}
+@media (max-width: 800px) {
+    .tt-routes__grid--two-col { grid-template-columns: 1fr; }
+}
+.tt-routes__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 24px;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: var(--tt-radius);
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.tt-routes__card:hover {
+    transform: translateY(-2px);
+    border-color: var(--tt-accent);
+    box-shadow: var(--tt-shadow-lg);
+}
+.tt-routes__route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-weight: 600;
+    color: var(--tt-fg);
+    flex: 1;
+    line-height: 1.35;
+}
+.tt-routes__route svg { color: var(--tt-muted); flex-shrink: 0; }
+.tt-routes__price {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--tt-fg);
+    background: var(--tt-accent);
+    padding: 6px 14px;
+    border-radius: 8px;
+    white-space: nowrap;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+}
+
+/* Extra content */
+.tt-extra { background: var(--tt-bg); padding: 40px 0; }
+.tt-prose { max-width: 720px; margin: 0 auto; }
+
+/* Contact CTA — geel voor maximale attentie */
+.tt-contact-cta { background: var(--tt-accent); color: var(--tt-accent-fg); }
+.tt-contact-cta h2 { color: var(--tt-accent-fg); margin-bottom: 8px; }
+.tt-contact-cta p { color: rgba(20, 22, 31, 0.72); margin-bottom: 0; }
+.tt-contact-cta .tt-cta {
+    background: var(--tt-fg) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px -4px rgba(20, 22, 31, 0.35);
+}
+.tt-contact-cta .tt-cta:hover {
+    background: var(--tt-fg) !important;
+    box-shadow: 0 6px 20px -4px rgba(20, 22, 31, 0.5);
+}
+.tt-contact-cta .tt-cta--ghost {
+    background: transparent !important;
+    color: var(--tt-fg) !important;
+    border: 1.5px solid rgba(20, 22, 31, 0.3);
+    box-shadow: none;
+}
+.tt-contact-cta .tt-cta--ghost:hover {
+    background: rgba(20, 22, 31, 0.05) !important;
+    border-color: var(--tt-fg);
+}
+.tt-contact-cta__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.tt-contact-cta__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Mobile responsive */
+@media (max-width: 900px) {
+    .tt-hero { padding: 48px 0 0; }
+    .tt-hero--split .tt-hero__inner { grid-template-columns: 1fr; gap: 32px; }
+    .tt-hero__text { padding-bottom: 8px; }
+    .tt-hero__image-shape--1,
+    .tt-hero__image-shape--2 { display: none; }
+
+    /* Full-width CTAs op mobile */
+    .tt-hero__actions { flex-direction: column; align-items: stretch; }
+    .tt-hero__actions .tt-cta {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    /* Op mobile stackt de split-hero → toon dan de "Boek uw taxi hieronder" kop */
+    .tt-hero--split .tt-hero__form-heading {
+        display: block;
+    }
+
+    /* Booking form full-width op mobile — negatieve margins compenseren de
+       container-padding voor edge-to-edge look. */
+    .tt-container { padding: 0 24px; }
+    .tt-hero__form,
+    .tt-hero__form--wide,
+    .tt-hero__form--large {
+        margin: 0 -24px;
+        width: auto;
+        max-width: none;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+    .tt-hero__form .taxibookingform {
+        border-radius: 0 !important;
+    }
+
+    .tt-section { padding: 60px 0; }
+    .tt-usps__grid { grid-template-columns: 1fr; }
+    .tt-waarom__inner,
+    .tt-waarom.has-image .tt-waarom__inner { grid-template-columns: 1fr; gap: 32px; }
+    .tt-check { grid-template-columns: 1fr; }
+    .tt-contact-cta__inner { flex-direction: column; align-items: flex-start; text-align: left; }
+    .tt-nav { display: none; }
+    .tt-header__inner { gap: 16px; }
+}
+
+/* 404 page */
+.tt-404 {
+    padding: 80px 0 120px;
+}
+.tt-404__inner {
+    text-align: center;
+    max-width: 720px;
+}
+.tt-404__code {
+    font-size: clamp(7rem, 22vw, 14rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--tt-accent);
+    opacity: 0.9;
+    margin: 0 0 8px;
+}
+.tt-404__title {
+    font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    color: var(--tt-fg);
+}
+.tt-404__lead {
+    font-size: 1.05rem;
+    color: var(--tt-muted);
+    line-height: 1.6;
+    margin: 0 auto 32px;
+    max-width: 540px;
+}
+.tt-404__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+}
+/* Ghost-CTA styling voor de 404 page (lichte bg) — mag NIET globaal
+   zijn want dat overschrijft de dark-hero ghost hierboven. */
+.tt-404 .tt-cta--ghost {
+    background: transparent;
+    color: var(--tt-fg) !important;
+    border: 1.5px solid var(--tt-line);
+    box-shadow: none;
+}
+.tt-404 .tt-cta--ghost:hover {
+    background: var(--tt-surface);
+    border-color: var(--tt-fg);
+    box-shadow: 0 4px 14px -4px rgba(20, 22, 31, 0.15);
+}
+.tt-404__links {
+    padding-top: 32px;
+    border-top: 1px solid var(--tt-line);
+}
+.tt-404__links-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--tt-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+.tt-404__links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+}
+.tt-404__links-list a {
+    color: var(--tt-fg);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.15s;
+}
+.tt-404__links-list a:hover {
+    border-color: var(--tt-accent);
+}
+
+@media (max-width: 640px) {
+    .tt-404 { padding: 48px 0 80px; }
+    .tt-404__actions { flex-direction: column; }
+    .tt-404__actions .tt-cta { width: 100%; text-align: center; }
+}

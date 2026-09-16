@@ -1,0 +1,42 @@
+/*
+ * Bold — services-detail (op de Diensten sub-page)
+ * Dark alternating rows, glow-icons, features als lichte lijst.
+ */
+.tt-preset-bold .tt-services-detail {
+    background: #14161f;
+    padding: 60px 0 100px;
+}
+.tt-preset-bold .tt-services-detail__row {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    padding: 60px 0;
+}
+.tt-preset-bold .tt-services-detail__media {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    aspect-ratio: 4 / 3;
+}
+.tt-preset-bold .tt-services-detail__media.is-icon-only {
+    background: rgba(var(--tt-accent-rgb), 0.08);
+    border-color: rgba(var(--tt-accent-rgb), 0.25);
+}
+.tt-preset-bold .tt-services-detail__icon-small {
+    border-radius: 14px;
+    box-shadow: 0 8px 20px -6px rgba(var(--tt-accent-rgb), 0.45);
+}
+.tt-preset-bold .tt-services-detail__title {
+    color: #fff;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+}
+.tt-preset-bold .tt-services-detail__price {
+    background: rgba(var(--tt-accent-rgb), 0.15);
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.3);
+}
+.tt-preset-bold .tt-services-detail__text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.05rem;
+}
+.tt-preset-bold .tt-services-detail__features li {
+    color: rgba(255, 255, 255, 0.85);
+}

@@ -1,0 +1,39 @@
+/*
+ * Premium — USPs
+ * Card-less: icoon boven, tekst eronder. Rustig en tijdloos.
+ */
+.tt-preset-premium .tt-usps {
+    background: #ffffff;
+}
+.tt-preset-premium .tt-usps__grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+}
+.tt-preset-premium .tt-usp {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+.tt-preset-premium .tt-usp:hover {
+    transform: none;
+    box-shadow: none;
+}
+.tt-preset-premium .tt-usp__icon {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+}
+.tt-preset-premium .tt-usp h3 {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+}
+.tt-preset-premium .tt-usp p {
+    color: #64748b;
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
