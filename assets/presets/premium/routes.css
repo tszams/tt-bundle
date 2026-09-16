@@ -44,16 +44,16 @@
     color: #cbd5e1;
 }
 /*
- * Reset base badge-styling (accent-bg + fg-color) — dat wordt onleesbaar op
- * mono-palette waar accent zelf donker is. Premium toont prijzen als schone
- * typografie in een pill met subtiele accent-tint.
+ * Reset base badge-styling — de base gebruikt accent voor bg, wat op Premium's
+ * mono-palette donker-op-donker geeft. Premium pill: dark navy bg + witte tekst
+ * voor maximaal contrast en editorial premium look.
  */
 .tt-preset-premium .tt-routes__price {
-    background: rgba(var(--tt-accent-rgb, 15, 23, 42), 0.08);
-    color: var(--tt-accent);
+    background: #0f172a;
+    color: #ffffff;
     font-weight: 700;
     font-size: 1.05rem;
-    padding: 6px 14px;
+    padding: 8px 18px;
     border-radius: 999px;
     letter-spacing: -0.01em;
 }

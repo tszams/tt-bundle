@@ -1,6 +1,8 @@
 /*
  * Premium — footer
  * Wit met subtle border-top, dark links, accent-hover.
+ * Base gebruikt witte tekst (voor donkere footer) — hier alles gescopt overschreven
+ * naar donker/muted zodat alles leesbaar blijft op de witte achtergrond.
  */
 .tt-preset-premium .tt-footer {
     background: #ffffff;
@@ -11,9 +13,28 @@
 .tt-preset-premium .tt-footer a { color: #0f172a; }
 .tt-preset-premium .tt-footer a:hover { color: var(--tt-accent); opacity: 1; }
 .tt-preset-premium .tt-footer__brand { color: #0f172a; }
+.tt-preset-premium .tt-footer__tagline { color: #64748b; }
 .tt-preset-premium .tt-footer__heading { color: #0f172a; }
 .tt-preset-premium .tt-footer__list li svg { color: var(--tt-accent); }
+.tt-preset-premium .tt-footer__list-addr span { color: #64748b; }
 .tt-preset-premium .tt-footer__bottom {
     border-top-color: #f1f5f9;
     color: #94a3b8;
+}
+.tt-preset-premium .tt-footer__legal a { color: #64748b; }
+.tt-preset-premium .tt-footer__legal a:hover { color: var(--tt-accent); }
+.tt-preset-premium .tt-footer__legal-sep { color: #cbd5e1; }
+
+/*
+ * Logo container — de meeste klanten uploaden een licht/wit logo (admin
+ * preview toont een donkere achtergrond). Op Premium's witte footer wordt
+ * dat onzichtbaar. Geef het logo een subtle dark card zodat elke logo-kleur
+ * leesbaar blijft, zonder de rest van de editorial look te breken.
+ */
+.tt-preset-premium .tt-footer__logo {
+    background: #0f172a;
+    padding: 16px 20px;
+    border-radius: 12px;
+    max-height: 88px;
+    box-sizing: content-box;
 }
