@@ -95,6 +95,16 @@
     border-color: rgba(255, 255, 255, 0.4);
     opacity: 1;
 }
+.tt-preset-premium .tt-premium-hero__cta--whatsapp {
+    background: #25d366;
+    color: #ffffff !important;
+    border: 1px solid transparent;
+}
+.tt-preset-premium .tt-premium-hero__cta--whatsapp:hover {
+    background: #1ebe5b;
+    opacity: 1;
+    transform: translateY(-1px);
+}
 
 /* ============ Variant: form ============
    Two-column: tekst links, booking-widget rechts in premium white card. */

@@ -43,8 +43,17 @@
 .tt-preset-premium .tt-routes__route svg {
     color: #cbd5e1;
 }
+/*
+ * Reset base badge-styling (accent-bg + fg-color) — dat wordt onleesbaar op
+ * mono-palette waar accent zelf donker is. Premium toont prijzen als schone
+ * typografie in een pill met subtiele accent-tint.
+ */
 .tt-preset-premium .tt-routes__price {
-    color: #0f172a;
+    background: rgba(var(--tt-accent-rgb, 15, 23, 42), 0.08);
+    color: var(--tt-accent);
     font-weight: 700;
     font-size: 1.05rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    letter-spacing: -0.01em;
 }

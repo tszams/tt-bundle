@@ -27,6 +27,11 @@ $subtitle = $content['hero_subtitle'] ?? '';
 $image_id  = (int) ($content['hero_image_id'] ?? 0);
 $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'full') : '';
 $has_image = (bool) $image_url;
+
+$show_phone    = !empty($content['hero_phone_enabled']) && $phone;
+$wa_number     = !empty($content['hero_whatsapp_number']) ? $content['hero_whatsapp_number'] : $phone;
+$wa_clean      = $wa_number ? preg_replace('/[^0-9]/', '', $wa_number) : '';
+$show_whatsapp = !empty($content['hero_whatsapp_enabled']) && $wa_clean;
 ?>
 <section class="tt-premium-hero tt-premium-hero--form <?php echo $has_image ? 'has-image' : 'no-image'; ?>">
     <?php if ($has_image) : ?>
@@ -43,10 +48,16 @@ $has_image = (bool) $image_url;
             <?php if ($subtitle) : ?>
                 <p class="tt-premium-hero__sub"><?php echo esc_html($subtitle); ?></p>
             <?php endif; ?>
-            <?php if ($phone) : ?>
+            <?php if ($show_phone) : ?>
                 <div class="tt-premium-hero__meta">
                     <?php echo TaxiTheme_Icons::svg('phone', 14); ?>
                     <span>Of bel direct: <a href="tel:<?php echo esc_attr($phone_clean); ?>"><?php echo esc_html($phone); ?></a></span>
+                </div>
+            <?php endif; ?>
+            <?php if ($show_whatsapp) : ?>
+                <div class="tt-premium-hero__meta">
+                    <?php echo TaxiTheme_Icons::svg('whatsapp', 14); ?>
+                    <span>Of via <a href="https://wa.me/<?php echo esc_attr($wa_clean); ?>" target="_blank" rel="noopener">WhatsApp</a></span>
                 </div>
             <?php endif; ?>
         </div>
