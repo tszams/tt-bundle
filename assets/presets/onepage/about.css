@@ -5,6 +5,12 @@
 .tt-preset-onepage .tt-about {
     background: transparent;
 }
+.tt-preset-onepage .tt-about.no-image .tt-about__inner {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(12px);
+}
 .tt-preset-onepage .tt-about__eyebrow {
     color: var(--tt-accent);
 }
@@ -14,7 +20,11 @@
 .tt-preset-onepage .tt-about__text {
     color: rgba(255, 255, 255, 0.75);
 }
+.tt-preset-onepage .tt-about__text:first-child {
+    color: #fff;
+}
 .tt-preset-onepage .tt-about__image {
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
 }

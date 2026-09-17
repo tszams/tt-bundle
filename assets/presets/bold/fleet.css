@@ -3,21 +3,22 @@
  * Dark bg, subtiele glass-tag met accent-border, big feature card.
  */
 .tt-preset-bold .tt-fleet {
-    background: #0b0d14;
+    background: var(--tt-bold-bg);
     padding: 100px 0;
 }
-.tt-preset-bold .tt-fleet .tt-section__header h2 { color: #fff; }
+.tt-preset-bold .tt-fleet .tt-section__header h2 { color: var(--tt-bold-fg); }
 .tt-preset-bold .tt-fleet .tt-section__header p {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--tt-bold-muted);
     font-size: 1.1rem;
 }
 .tt-preset-bold .tt-fleet__card {
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--tt-bold-card);
 }
 .tt-preset-bold .tt-fleet__tag {
     background: rgba(0, 0, 0, 0.65);
-    color: #fff;
+    /* Deze tag staat altijd op een foto-overlay en blijft daarom wit. */
+    color: #ffffff;
     border: 1px solid rgba(var(--tt-accent-rgb), 0.4);
     backdrop-filter: blur(6px);
     font-weight: 700;

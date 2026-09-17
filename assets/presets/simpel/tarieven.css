@@ -1,0 +1,44 @@
+/* Simpel — vlak, helder en zonder decoratieve effecten. */
+.tt-preset-simpel.tt-role-tarieven .tt-tv-destinations,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-vehicles { background: var(--tt-bg); }
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zones { background: var(--tt-surface); }
+.tt-preset-simpel.tt-role-tarieven .tt-tv-destinations__card {
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 0;
+    box-shadow: none;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-destinations__image {
+    background: var(--tt-line);
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-destinations__image,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item__icon,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item__price,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zone,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zone__icon {
+    border-radius: 0;
+    box-shadow: none;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-destinations__list {
+    gap: 0;
+    padding: 24px 30px;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item {
+    padding: 13px 0;
+    border: 0;
+    border-bottom: 1px solid var(--tt-line);
+    background: transparent;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item:hover,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zone:hover {
+    transform: none;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zones__grid { gap: 12px; }
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zone {
+    background: var(--tt-bg);
+    border: 1px solid var(--tt-line);
+    border-left: 5px solid var(--tt-accent);
+    padding: 24px;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-zone::before { display: none; }

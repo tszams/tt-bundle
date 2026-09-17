@@ -13,6 +13,7 @@ $city    = TaxiTheme_Company_Info::get('city');
 
 <section class="tt-page-header tt-premium-page-header">
     <div class="tt-container">
+        <?php get_template_part('templates/shared/breadcrumbs'); ?>
         <span class="tt-page-header__eyebrow">Diensten<?php echo $city ? ' · ' . esc_html($city) : ''; ?></span>
         <h1 class="tt-page-header__title"><?php the_title(); ?></h1>
         <?php if ($intro !== '') : ?>

@@ -1,0 +1,94 @@
+/* Klassiek — instelbare homepage-achtergronden. */
+.tt-preset-klassiek {
+    --tt-scheme-theme-accent: #f5b800;
+    --tt-scheme-theme-accent-fg: #14161f;
+    --tt-scheme-base-bg: #fdfcf7;
+    --tt-scheme-base-surface: #ffffff;
+    --tt-scheme-dark-bg: #14161f;
+}
+.tt-preset-klassiek.tt-palette-klassiek-licht {
+    --tt-scheme-theme-accent: #2563eb;
+    --tt-scheme-theme-accent-fg: #ffffff;
+    --tt-scheme-base-bg: #f8fafc;
+    --tt-scheme-base-surface: #ffffff;
+    --tt-scheme-dark-bg: #0f172a;
+}
+
+.tt-preset-klassiek .tt-section-scheme--base {
+    --tt-scheme-bg: var(--tt-scheme-base-bg);
+    --tt-scheme-card: var(--tt-scheme-base-surface);
+    --tt-scheme-fg: #14161f;
+    --tt-scheme-muted: #6c6f7a;
+    --tt-scheme-line: #e6e2d5;
+}
+.tt-preset-klassiek.tt-palette-klassiek-licht .tt-section-scheme--base {
+    --tt-scheme-fg: #0f172a;
+    --tt-scheme-muted: #64748b;
+    --tt-scheme-line: #e2e8f0;
+}
+.tt-preset-klassiek .tt-section-scheme--surface {
+    --tt-scheme-bg: #ffffff;
+    --tt-scheme-card: #f8fafc;
+    --tt-scheme-fg: #14161f;
+    --tt-scheme-muted: #6c6f7a;
+    --tt-scheme-line: #e5e7eb;
+}
+.tt-preset-klassiek .tt-section-scheme--dark {
+    --tt-scheme-bg: var(--tt-scheme-dark-bg);
+    --tt-scheme-card: color-mix(in srgb, var(--tt-scheme-dark-bg) 88%, #ffffff);
+    --tt-scheme-fg: #ffffff;
+    --tt-scheme-muted: rgba(255, 255, 255, 0.70);
+    --tt-scheme-line: rgba(255, 255, 255, 0.13);
+}
+.tt-preset-klassiek .tt-section-scheme--accent {
+    --tt-scheme-bg: var(--tt-scheme-theme-accent);
+    --tt-scheme-card: color-mix(in srgb, var(--tt-scheme-theme-accent) 88%, var(--tt-scheme-theme-accent-fg));
+    --tt-scheme-fg: var(--tt-scheme-theme-accent-fg);
+    --tt-scheme-muted: color-mix(in srgb, var(--tt-scheme-theme-accent-fg) 72%, transparent);
+    --tt-scheme-line: color-mix(in srgb, var(--tt-scheme-theme-accent-fg) 20%, transparent);
+    --tt-accent: var(--tt-scheme-theme-accent-fg);
+    --tt-accent-fg: var(--tt-scheme-theme-accent);
+}
+
+.tt-preset-klassiek .tt-section-scheme--base,
+.tt-preset-klassiek .tt-section-scheme--surface,
+.tt-preset-klassiek .tt-section-scheme--dark,
+.tt-preset-klassiek .tt-section-scheme--accent {
+    --tt-bg: var(--tt-scheme-bg);
+    --tt-surface: var(--tt-scheme-card);
+    --tt-fg: var(--tt-scheme-fg);
+    --tt-muted: var(--tt-scheme-muted);
+    --tt-line: var(--tt-scheme-line);
+    --tt-link: var(--tt-accent);
+    color: var(--tt-scheme-fg);
+}
+.tt-preset-klassiek .tt-home-component[class*="tt-section-scheme--"] > .tt-section,
+.tt-preset-klassiek .tt-home-component[class*="tt-section-scheme--"] > .tt-trust {
+    background: var(--tt-scheme-bg);
+}
+.tt-preset-klassiek .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-section__header h2, .tt-about__title, .tt-features__title,
+    .tt-services__title, .tt-spotlight--subtle .tt-spotlight__title, .tt-steps__title,
+    .tt-steps__item-title, .tt-waarom__body h2, .tt-routes__from,
+    .tt-routes__to, .tt-faq__question, .tt-reviews__name, .tt-usp h3,
+    .tt-prose h1, .tt-prose h2, .tt-prose h3, .tt-prose h4
+) { color: var(--tt-scheme-fg); }
+.tt-preset-klassiek .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-section__header p, .tt-about__text, .tt-features__body,
+    .tt-services__text, .tt-spotlight--subtle .tt-spotlight__text, .tt-steps__subtitle,
+    .tt-steps__item-text, .tt-routes__note, .tt-faq__answer,
+    .tt-reviews__text, .tt-reviews__date, .tt-usp p, .tt-trust__item,
+    .tt-muted
+) { color: var(--tt-scheme-muted); }
+.tt-preset-klassiek .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-usp, .tt-services__card, .tt-features__image,
+    .tt-about.no-image .tt-about__inner, .tt-steps__card,
+    .tt-spotlight--subtle .tt-spotlight__card, .tt-faq__item,
+    .tt-reviews__card, .tt-routes__card, .tt-service-area__item
+) {
+    background: var(--tt-scheme-card);
+    border-color: var(--tt-scheme-line);
+}
+.tt-preset-klassiek .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-reviews__meta, .tt-steps__item, .tt-features__row + .tt-features__row
+) { border-color: var(--tt-scheme-line); }

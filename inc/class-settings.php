@@ -1552,7 +1552,7 @@ class TaxiTheme_Settings {
         <div class="tt-set__card">
             <div class="tt-set__card-head">
                 <h3>SEO</h3>
-                <p>TaxiTheme voegt automatisch meta descriptions, Open Graph tags (WhatsApp/social previews) en Schema.org data toe. Als je een SEO-plugin (Yoast, Rank Math) gebruikt, houdt TaxiTheme zich in en laat die plugin de meta tags regelen.</p>
+                <p>TaxiTheme voegt automatisch meta descriptions, Open Graph tags (WhatsApp/social previews), Schema.org data en BreadcrumbList voor Google rich results toe. Als je een SEO-plugin (Yoast, Rank Math) gebruikt, houdt TaxiTheme zich in en laat die plugin de meta tags regelen.</p>
             </div>
             <form method="post">
                 <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_FIELD); ?>
@@ -1560,9 +1560,9 @@ class TaxiTheme_Settings {
                 <label class="tt-set__toggle">
                     <input type="checkbox" name="breadcrumbs_enabled" value="1" <?php checked(class_exists('TaxiTheme_SEO') && TaxiTheme_SEO::breadcrumbs_enabled()); ?>>
                     <span class="tt-set__toggle-track"><span class="tt-set__toggle-thumb"></span></span>
-                    <span style="margin-left:12px;font-weight:600;">Broodkruimels tonen op sub-pagina's</span>
+                    <span style="margin-left:12px;font-weight:600;">Zichtbare broodkruimels tonen</span>
                 </label>
-                <p style="margin:8px 0 0;color:#6b7280;font-size:0.85rem;">Bijvoorbeeld: <em>Home › Over ons</em> — helpt bezoekers en Google om je site-structuur te begrijpen.</p>
+                <p style="margin:8px 0 0;color:#6b7280;font-size:0.85rem;">Bijvoorbeeld: <em>Home › Over ons</em> — bovenaan sub-pagina's. Standaard uit, want TaxiTheme heeft een simpele structuur en het menu is meestal voldoende.<br><strong>Let op:</strong> de BreadcrumbList voor Google (rich results) staat altijd aan — die zit alleen in de HTML-broncode.</p>
                 <div style="margin-top:20px;">
                     <button type="submit" class="tt-set__btn tt-set__btn--primary">Opslaan</button>
                 </div>

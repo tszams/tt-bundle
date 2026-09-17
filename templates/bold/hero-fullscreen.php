@@ -26,6 +26,9 @@ $subtitle = $content['hero_subtitle'] ?? '';
 
 $wa_number = !empty($content['hero_whatsapp_number']) ? $content['hero_whatsapp_number'] : $phone;
 $wa_clean  = $wa_number ? preg_replace('/[^0-9]/', '', $wa_number) : '';
+
+$show_phone    = !empty($content['hero_phone_enabled']) && $phone;
+$show_whatsapp = !empty($content['hero_whatsapp_enabled']) && $wa_clean;
 ?>
 <section class="tt-hero-fs">
     <div class="tt-hero-fs__bg" aria-hidden="true"></div>
@@ -42,13 +45,13 @@ $wa_clean  = $wa_number ? preg_replace('/[^0-9]/', '', $wa_number) : '';
                 Boek direct
                 <?php echo TaxiTheme_Icons::svg('arrow-right', 20); ?>
             </a>
-            <?php if ($phone) : ?>
+            <?php if ($show_phone) : ?>
                 <a href="tel:<?php echo esc_attr($phone_clean); ?>" class="tt-hero-fs__cta tt-hero-fs__cta--ghost">
                     <?php echo TaxiTheme_Icons::svg('phone', 18); ?>
                     <?php echo esc_html($phone); ?>
                 </a>
             <?php endif; ?>
-            <?php if ($wa_clean) : ?>
+            <?php if ($show_whatsapp) : ?>
                 <a href="https://wa.me/<?php echo esc_attr($wa_clean); ?>" target="_blank" rel="noopener" class="tt-hero-fs__cta tt-hero-fs__cta--wa">
                     <?php echo TaxiTheme_Icons::svg('whatsapp', 18); ?>
                     WhatsApp

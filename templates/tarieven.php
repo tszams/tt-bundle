@@ -136,7 +136,7 @@ if (!empty($destinations['title']) && !empty($dest_items)) :
                     <p class="tt-muted"><?php echo nl2br(esc_html($destinations['description'])); ?></p>
                 <?php endif; ?>
             </div>
-            <article class="tt-tv-destinations__card">
+            <article class="tt-tv-destinations__card <?php echo $dest_img ? 'has-image' : 'no-image'; ?>">
                 <?php if ($dest_img) : ?>
                     <div class="tt-tv-destinations__image">
                         <img src="<?php echo esc_url($dest_img); ?>" alt="<?php echo esc_attr($destinations['title']); ?>" loading="lazy">
@@ -185,7 +185,10 @@ if (!empty($zones['title']) && !empty($zone_groups)) : ?>
                             <?php if ($g['icon']) : ?>
                                 <span class="tt-tv-zone__icon"><?php echo TaxiTheme_Icons::svg($g['icon'], 22); ?></span>
                             <?php endif; ?>
-                            <h3 class="tt-tv-zone__title"><?php echo esc_html($g['title']); ?></h3>
+                            <div class="tt-tv-zone__heading">
+                                <h3 class="tt-tv-zone__title"><?php echo esc_html($g['title']); ?></h3>
+                                <span class="tt-tv-zone__count"><?php echo count($group_rows); ?> <?php echo count($group_rows) === 1 ? 'bestemming' : 'bestemmingen'; ?></span>
+                            </div>
                         </div>
                         <ul class="tt-tv-zone__list">
                             <?php foreach ($group_rows as $r) : ?>

@@ -16,6 +16,7 @@ $intro   = TaxiTheme_Page_Meta::get_intro($page_id);
 ?>
 <section class="tt-page-header">
     <div class="tt-container">
+        <?php get_template_part('templates/shared/breadcrumbs'); ?>
         <span class="tt-page-header__eyebrow">Tarieven<?php echo $city ? ' · ' . esc_html($city) : ''; ?></span>
         <h1 class="tt-page-header__title"><?php the_title(); ?></h1>
         <?php if ($intro !== '') : ?>
@@ -60,6 +61,141 @@ if (!empty($routes)) : ?>
                             </div>
                             <div class="tt-routes-cards__to"><?php echo esc_html($r['to']); ?></div>
                         </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<?php
+// Vervoerstypes — gedeelde inhoud, visueel onderdeel van de Bold tarievenflow.
+$vehicles = TaxiTheme_Page_Meta::get_visible_tarieven_vehicles($page_id);
+if (!empty($vehicles)) : ?>
+    <section class="tt-section tt-tv-vehicles">
+        <div class="tt-container">
+            <div class="tt-tv-vehicles__grid">
+                <?php foreach ($vehicles as $veh) :
+                    $img_url = $veh['image_id'] ? wp_get_attachment_image_url($veh['image_id'], 'large') : '';
+                ?>
+                    <article class="tt-tv-vehicle">
+                        <?php if ($img_url) : ?>
+                            <div class="tt-tv-vehicle__image">
+                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($veh['title']); ?>" loading="lazy">
+                            </div>
+                        <?php endif; ?>
+                        <div class="tt-tv-vehicle__body">
+                            <h3 class="tt-tv-vehicle__title"><?php echo esc_html($veh['title']); ?></h3>
+                            <?php if ($veh['description']) : ?>
+                                <p class="tt-tv-vehicle__desc"><?php echo nl2br(esc_html($veh['description'])); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="tt-tv-vehicle__rates">
+                            <?php $rate_rows = [
+                                ['icon' => 'euro',  'label' => 'Starttarief',      'value' => $veh['starttarief']],
+                                ['icon' => 'route', 'label' => 'Kilometertarief', 'value' => $veh['kilometertarief']],
+                                ['icon' => 'clock', 'label' => 'Tijdstarief',      'value' => $veh['tijdstarief']],
+                            ];
+                            foreach ($rate_rows as $rate) :
+                                if ($rate['value'] === '') continue;
+                            ?>
+                                <div class="tt-tv-rate">
+                                    <span class="tt-tv-rate__icon"><?php echo TaxiTheme_Icons::svg($rate['icon'], 18); ?></span>
+                                    <div class="tt-tv-rate__body">
+                                        <span class="tt-tv-rate__label"><?php echo esc_html($rate['label']); ?></span>
+                                        <span class="tt-tv-rate__value"><?php echo esc_html($rate['value']); ?></span>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<?php
+// Bestemmingen — dezelfde inhoud als de universele tarievenpagina, Bold styling via CSS.
+$destinations = TaxiTheme_Page_Meta::get_tarieven_destinations($page_id);
+$dest_items = array_values(array_filter($destinations['items'], function ($it) {
+    return !empty($it['label']);
+}));
+if (!empty($destinations['title']) && !empty($dest_items)) :
+    $dest_img = $destinations['image_id'] ? wp_get_attachment_image_url($destinations['image_id'], 'large') : '';
+?>
+    <section class="tt-section tt-tv-destinations">
+        <div class="tt-container">
+            <div class="tt-section__header tt-tv-destinations__head">
+                <h2><?php echo esc_html($destinations['title']); ?></h2>
+                <?php if ($destinations['description']) : ?>
+                    <p class="tt-muted"><?php echo nl2br(esc_html($destinations['description'])); ?></p>
+                <?php endif; ?>
+            </div>
+            <article class="tt-tv-destinations__card <?php echo $dest_img ? 'has-image' : 'no-image'; ?>">
+                <?php if ($dest_img) : ?>
+                    <div class="tt-tv-destinations__image">
+                        <img src="<?php echo esc_url($dest_img); ?>" alt="<?php echo esc_attr($destinations['title']); ?>" loading="lazy">
+                    </div>
+                <?php endif; ?>
+                <ul class="tt-tv-destinations__list">
+                    <?php foreach ($dest_items as $it) : ?>
+                        <li class="tt-tv-dest-item">
+                            <span class="tt-tv-dest-item__icon"><?php echo TaxiTheme_Icons::svg('plane', 18); ?></span>
+                            <div class="tt-tv-dest-item__body">
+                                <span class="tt-tv-dest-item__label"><?php echo esc_html($it['label']); ?></span>
+                                <?php if ($it['price']) : ?>
+                                    <span class="tt-tv-dest-item__price"><?php echo esc_html($it['price']); ?></span>
+                                <?php endif; ?>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </article>
+        </div>
+    </section>
+<?php endif; ?>
+
+<?php
+// Regionale zones — gegroepeerde lokale bestemmingen en richtprijzen.
+$zones = TaxiTheme_Page_Meta::get_tarieven_zones($page_id);
+$zone_groups = array_values(array_filter($zones['groups'], function ($g) {
+    if (empty($g['title'])) return false;
+    return count(array_filter($g['rows'], fn($r) => !empty($r['label']))) > 0;
+}));
+if (!empty($zones['title']) && !empty($zone_groups)) : ?>
+    <section class="tt-section tt-tv-zones">
+        <div class="tt-container">
+            <div class="tt-section__header">
+                <h2><?php echo esc_html($zones['title']); ?></h2>
+                <?php if ($zones['subtitle']) : ?>
+                    <p class="tt-muted"><?php echo esc_html($zones['subtitle']); ?></p>
+                <?php endif; ?>
+            </div>
+            <div class="tt-tv-zones__grid">
+                <?php foreach ($zone_groups as $g) :
+                    $group_rows = array_values(array_filter($g['rows'], fn($r) => !empty($r['label'])));
+                ?>
+                    <div class="tt-tv-zone">
+                        <div class="tt-tv-zone__head">
+                            <?php if ($g['icon']) : ?>
+                                <span class="tt-tv-zone__icon"><?php echo TaxiTheme_Icons::svg($g['icon'], 22); ?></span>
+                            <?php endif; ?>
+                            <div class="tt-tv-zone__heading">
+                                <h3 class="tt-tv-zone__title"><?php echo esc_html($g['title']); ?></h3>
+                                <span class="tt-tv-zone__count"><?php echo count($group_rows); ?> <?php echo count($group_rows) === 1 ? 'bestemming' : 'bestemmingen'; ?></span>
+                            </div>
+                        </div>
+                        <ul class="tt-tv-zone__list">
+                            <?php foreach ($group_rows as $r) : ?>
+                                <li class="tt-tv-zone__row">
+                                    <span class="tt-tv-zone__label"><?php echo esc_html($r['label']); ?></span>
+                                    <?php if ($r['price']) : ?>
+                                        <span class="tt-tv-zone__price"><?php echo esc_html($r['price']); ?></span>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
                 <?php endforeach; ?>
             </div>

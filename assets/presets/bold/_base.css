@@ -3,5 +3,127 @@
  * Body-bg dark zodat de transparant-header-strip aan de top naadloos overloopt in de hero.
  */
 .tt-preset-bold {
-    background: #0b0d14;
+    /* Semantische componentkleuren. Deze kunnen later per sectie worden
+       overschreven zonder iedere Bold-component apart te herschrijven. */
+    --tt-bold-bg:             #0b0d14;
+    --tt-bold-bg-alt:         #14161f;
+    --tt-bold-bg-soft:        #0f1119;
+    --tt-bold-surface:        #151822;
+    --tt-bold-surface-alt:    #171a24;
+    --tt-bold-fg:             #ffffff;
+    --tt-bold-muted:          rgba(255, 255, 255, 0.65);
+    --tt-bold-muted-readable: rgba(255, 255, 255, 0.70);
+    --tt-bold-muted-strong:   rgba(255, 255, 255, 0.75);
+    --tt-bold-text-soft:      rgba(255, 255, 255, 0.85);
+    --tt-bold-faint:          rgba(255, 255, 255, 0.15);
+    --tt-bold-line:           rgba(255, 255, 255, 0.08);
+    --tt-bold-line-soft:      rgba(255, 255, 255, 0.06);
+    --tt-bold-line-strong:    rgba(255, 255, 255, 0.10);
+    --tt-bold-card:           rgba(255, 255, 255, 0.03);
+    --tt-bold-card-raised:    rgba(255, 255, 255, 0.04);
+    --tt-bold-card-hover:     rgba(255, 255, 255, 0.05);
+    --tt-bold-card-active:    rgba(255, 255, 255, 0.06);
+    /* Bewaar de palettekleuren als zelfstandige waarden. Een var()-verwijzing
+       naar --tt-accent zou in een accentsectie een circulaire verwijzing maken,
+       omdat daar --tt-accent juist naar de contrastkleur wordt omgezet. */
+    --tt-bold-theme-accent:    #f5b800;
+    --tt-bold-theme-accent-fg: #14161f;
+
+    background: var(--tt-bold-bg);
+}
+
+.tt-preset-bold.tt-palette-bold-rood {
+    --tt-bold-theme-accent:    #dc2626;
+    --tt-bold-theme-accent-fg: #ffffff;
+}
+.tt-preset-bold.tt-palette-bold-blauw {
+    --tt-bold-theme-accent:    #2563eb;
+    --tt-bold-theme-accent-fg: #ffffff;
+}
+
+/* Homepage achtergrondkeuzes. De wrapper verandert zowel de Bold-tokens als
+   de algemene thematokens, zodat ook gedeelde componenten correct meekleuren. */
+.tt-preset-bold .tt-section-scheme--base {
+    --tt-bold-bg:          #0b0d14;
+    --tt-bold-bg-alt:      #0b0d14;
+    --tt-bold-bg-soft:     #0b0d14;
+    --tt-bold-surface:     #151822;
+    --tt-bold-surface-alt: #171a24;
+}
+.tt-preset-bold .tt-section-scheme--alternate {
+    --tt-bold-bg:          #14161f;
+    --tt-bold-bg-alt:      #14161f;
+    --tt-bold-bg-soft:     #14161f;
+    --tt-bold-surface:     #151822;
+    --tt-bold-surface-alt: #171a24;
+}
+.tt-preset-bold .tt-section-scheme--light {
+    --tt-bold-bg:          #fdfcf7;
+    --tt-bold-bg-alt:      #fdfcf7;
+    --tt-bold-bg-soft:     #fdfcf7;
+    --tt-bold-surface:     #ffffff;
+    --tt-bold-surface-alt: #f8f7f2;
+    --tt-bold-card:        #ffffff;
+    --tt-bold-card-raised: #ffffff;
+    --tt-bold-card-hover:  #fffdf5;
+    --tt-bold-card-active: #fff9df;
+}
+.tt-preset-bold .tt-section-scheme--white {
+    --tt-bold-bg:          #ffffff;
+    --tt-bold-bg-alt:      #ffffff;
+    --tt-bold-bg-soft:     #ffffff;
+    --tt-bold-surface:     #f8fafc;
+    --tt-bold-surface-alt: #f1f5f9;
+    --tt-bold-card:        #f8fafc;
+    --tt-bold-card-raised: #f8fafc;
+    --tt-bold-card-hover:  #f1f5f9;
+    --tt-bold-card-active: #e9eef5;
+}
+.tt-preset-bold .tt-section-scheme--light,
+.tt-preset-bold .tt-section-scheme--white {
+    --tt-bold-fg:             #14161f;
+    --tt-bold-muted:          #6c6f7a;
+    --tt-bold-muted-readable: #5f6470;
+    --tt-bold-muted-strong:   #4f5561;
+    --tt-bold-text-soft:      #303541;
+    --tt-bold-faint:          rgba(20, 22, 31, 0.18);
+    --tt-bold-line:           rgba(20, 22, 31, 0.10);
+    --tt-bold-line-soft:      rgba(20, 22, 31, 0.07);
+    --tt-bold-line-strong:    rgba(20, 22, 31, 0.15);
+}
+.tt-preset-bold .tt-section-scheme--accent {
+    --tt-bold-bg:             var(--tt-bold-theme-accent);
+    --tt-bold-bg-alt:         var(--tt-bold-theme-accent);
+    --tt-bold-bg-soft:        var(--tt-bold-theme-accent);
+    --tt-bold-surface:        color-mix(in srgb, var(--tt-bold-theme-accent) 88%, var(--tt-bold-theme-accent-fg));
+    --tt-bold-surface-alt:    color-mix(in srgb, var(--tt-bold-theme-accent) 82%, var(--tt-bold-theme-accent-fg));
+    --tt-bold-fg:             var(--tt-bold-theme-accent-fg);
+    --tt-bold-muted:          color-mix(in srgb, var(--tt-bold-theme-accent-fg) 68%, transparent);
+    --tt-bold-muted-readable: color-mix(in srgb, var(--tt-bold-theme-accent-fg) 74%, transparent);
+    --tt-bold-muted-strong:   color-mix(in srgb, var(--tt-bold-theme-accent-fg) 80%, transparent);
+    --tt-bold-text-soft:      color-mix(in srgb, var(--tt-bold-theme-accent-fg) 88%, transparent);
+    --tt-bold-faint:          color-mix(in srgb, var(--tt-bold-theme-accent-fg) 18%, transparent);
+    --tt-bold-line:           color-mix(in srgb, var(--tt-bold-theme-accent-fg) 16%, transparent);
+    --tt-bold-line-soft:      color-mix(in srgb, var(--tt-bold-theme-accent-fg) 11%, transparent);
+    --tt-bold-line-strong:    color-mix(in srgb, var(--tt-bold-theme-accent-fg) 22%, transparent);
+    --tt-bold-card:           color-mix(in srgb, var(--tt-bold-theme-accent-fg) 8%, transparent);
+    --tt-bold-card-raised:    color-mix(in srgb, var(--tt-bold-theme-accent-fg) 11%, transparent);
+    --tt-bold-card-hover:     color-mix(in srgb, var(--tt-bold-theme-accent-fg) 14%, transparent);
+    --tt-bold-card-active:    color-mix(in srgb, var(--tt-bold-theme-accent-fg) 17%, transparent);
+    --tt-accent:              var(--tt-bold-theme-accent-fg);
+    --tt-accent-fg:           var(--tt-bold-theme-accent);
+}
+.tt-preset-bold .tt-section-scheme--base,
+.tt-preset-bold .tt-section-scheme--alternate,
+.tt-preset-bold .tt-section-scheme--light,
+.tt-preset-bold .tt-section-scheme--white,
+.tt-preset-bold .tt-section-scheme--accent {
+    --tt-bg:      var(--tt-bold-bg);
+    --tt-surface: var(--tt-bold-surface);
+    --tt-fg:      var(--tt-bold-fg);
+    --tt-muted:   var(--tt-bold-muted);
+    --tt-line:    var(--tt-bold-line);
+    --tt-link:    var(--tt-accent);
+
+    color: var(--tt-bold-fg);
 }

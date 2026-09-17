@@ -3,39 +3,39 @@
  * Glass cards op dark bg met accent-sterren.
  */
 .tt-preset-bold .tt-reviews {
-    background: #0b0d14;
+    background: var(--tt-bold-bg);
     padding: 100px 0;
 }
-.tt-preset-bold .tt-reviews .tt-section__header h2 { color: #fff; }
+.tt-preset-bold .tt-reviews .tt-section__header h2 { color: var(--tt-bold-fg); }
 .tt-preset-bold .tt-reviews .tt-section__header p {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--tt-bold-muted);
     font-size: 1.1rem;
 }
 .tt-preset-bold .tt-reviews__card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--tt-bold-card);
+    border: 1px solid var(--tt-bold-line);
     padding: 28px 24px;
     transition: border-color 0.15s, background 0.15s;
 }
 .tt-preset-bold .tt-reviews__card:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--tt-bold-card-hover);
     border-color: rgba(var(--tt-accent-rgb), 0.4);
 }
 .tt-preset-bold .tt-reviews__star svg {
-    stroke: rgba(255, 255, 255, 0.15);
+    stroke: var(--tt-bold-faint);
 }
 .tt-preset-bold .tt-reviews__star.is-filled svg {
     fill: var(--tt-accent);
     stroke: var(--tt-accent);
 }
 .tt-preset-bold .tt-reviews__text {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--tt-bold-text-soft);
     font-size: 1rem;
     font-style: italic;
 }
 .tt-preset-bold .tt-reviews__meta {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--tt-bold-line);
 }
-.tt-preset-bold .tt-reviews__name { color: #fff; font-weight: 800; }
-.tt-preset-bold .tt-reviews__date { color: rgba(255, 255, 255, 0.5); }
+.tt-preset-bold .tt-reviews__name { color: var(--tt-bold-fg); font-weight: 800; }
+.tt-preset-bold .tt-reviews__date { color: var(--tt-bold-muted); }
 .tt-preset-bold .tt-reviews__cta { color: var(--tt-accent); }

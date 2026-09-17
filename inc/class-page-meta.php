@@ -20,7 +20,153 @@ class TaxiTheme_Page_Meta {
     const META_CTA1_URL     = '_taxitheme_cta1_url';
     const META_CTA2_LABEL   = '_taxitheme_cta2_label';
     const META_CTA2_URL     = '_taxitheme_cta2_url';
+    const META_COMPONENT_ORDER   = '_taxitheme_component_order';
+    const META_COMPONENT_ENABLED = '_taxitheme_component_enabled';
     const SECTIONS_MAX  = 3;
+
+    /** Korte, stabiele namen voor de onderdelen in de pagina-editor. */
+    const COMPONENTS = [
+        'tarieven'    => ['intro' => 'Intro', 'vehicles' => 'Vervoerstypes', 'destinations' => 'Bestemmingen', 'zones' => 'Regio’s', 'cta' => 'CTA-banner'],
+        'diensten'    => ['intro' => 'Intro', 'services' => 'Dienstdetails', 'cta' => 'CTA-banner'],
+        'over-ons'    => ['intro' => 'Intro', 'usps' => 'USP-kaartjes', 'cta' => 'CTA-banner'],
+        'faq'         => ['intro' => 'Intro', 'faq' => 'Veelgestelde vragen', 'cta' => 'CTA-banner'],
+        'contact'     => ['intro' => 'Intro', 'cta' => 'CTA-banner'],
+        'privacy'     => ['title' => 'Paginatitel', 'content' => 'Inhoud'],
+        'voorwaarden' => ['title' => 'Paginatitel', 'content' => 'Inhoud'],
+    ];
+
+    public static function init() {
+        add_action('wp_head', [__CLASS__, 'render_component_visibility_css'], 99);
+        add_action('wp_footer', [__CLASS__, 'render_component_order_script'], 99);
+    }
+
+    public static function get_component_definitions($role) {
+        return self::COMPONENTS[$role] ?? [];
+    }
+
+    public static function get_component_config($post_id, $role = '') {
+        if ($role === '') {
+            $role = get_post_meta($post_id, TaxiTheme_Installer::META_ROLE, true);
+        }
+        $definitions = self::get_component_definitions($role);
+        $keys = array_keys($definitions);
+
+        $stored_order = get_post_meta($post_id, self::META_COMPONENT_ORDER, true);
+        $order = is_array($stored_order)
+            ? array_values(array_unique(array_intersect(array_map('sanitize_key', $stored_order), $keys)))
+            : [];
+        foreach ($keys as $key) {
+            if (!in_array($key, $order, true)) $order[] = $key;
+        }
+
+        $stored_enabled = get_post_meta($post_id, self::META_COMPONENT_ENABLED, true);
+        $enabled = [];
+        foreach ($keys as $key) {
+            $enabled[$key] = !is_array($stored_enabled) || !array_key_exists($key, $stored_enabled)
+                ? true
+                : !empty($stored_enabled[$key]);
+        }
+
+        return ['definitions' => $definitions, 'order' => $order, 'enabled' => $enabled];
+    }
+
+    public static function save_component_config($post_id, array $input) {
+        $role = get_post_meta($post_id, TaxiTheme_Installer::META_ROLE, true);
+        $definitions = self::get_component_definitions($role);
+        if (empty($definitions) || empty($input['component_config_present'])) return;
+
+        $keys = array_keys($definitions);
+        $incoming_order = isset($input['component_order']) && is_array($input['component_order'])
+            ? array_map('sanitize_key', $input['component_order'])
+            : [];
+        $order = array_values(array_unique(array_intersect($incoming_order, $keys)));
+        foreach ($keys as $key) {
+            if (!in_array($key, $order, true)) $order[] = $key;
+        }
+
+        $incoming_enabled = isset($input['component_enabled']) && is_array($input['component_enabled'])
+            ? $input['component_enabled']
+            : [];
+        $enabled = [];
+        foreach ($keys as $key) $enabled[$key] = !empty($incoming_enabled[$key]) ? 1 : 0;
+
+        update_post_meta($post_id, self::META_COMPONENT_ORDER, $order);
+        update_post_meta($post_id, self::META_COMPONENT_ENABLED, $enabled);
+    }
+
+    private static function frontend_component_context() {
+        if (is_admin() || !is_page()) return null;
+        $post_id = get_queried_object_id();
+        $role = get_post_meta($post_id, TaxiTheme_Installer::META_ROLE, true);
+        if (!isset(self::COMPONENTS[$role])) return null;
+
+        $selectors = [
+            'intro'        => '.tt-page-header__intro',
+            'title'        => '.tt-page-header',
+            'content'      => '.tt-legal-content',
+            'vehicles'     => '.tt-tv-vehicles',
+            'destinations' => '.tt-tv-destinations',
+            'zones'        => '.tt-tv-zones',
+            'services'     => '.tt-services-detail',
+            'usps'         => '.tt-over-usps, .tt-page-header__usps-spacer',
+            'faq'          => '.tt-faq',
+            'cta'          => '.tt-contact-cta',
+        ];
+        return [$role, self::get_component_config($post_id, $role), $selectors];
+    }
+
+    public static function render_component_visibility_css() {
+        $context = self::frontend_component_context();
+        if (!$context) return;
+        [, $config, $selectors] = $context;
+        $hidden = [];
+        foreach ($config['enabled'] as $key => $enabled) {
+            if (!$enabled && isset($selectors[$key])) $hidden[] = $selectors[$key];
+        }
+        if ($hidden) echo '<style id="taxitheme-component-visibility">' . implode(',', array_map('esc_html', $hidden)) . '{display:none!important}</style>';
+    }
+
+    public static function render_component_order_script() {
+        $context = self::frontend_component_context();
+        if (!$context) return;
+        [, $config, $selectors] = $context;
+        $ordered_selectors = [];
+        foreach ($config['order'] as $key) {
+            if (!empty($config['enabled'][$key]) && isset($selectors[$key])) $ordered_selectors[] = $selectors[$key];
+        }
+        if (count($ordered_selectors) < 2) return;
+        ?>
+        <script id="taxitheme-component-order">
+        (function () {
+            var selectors = <?php echo wp_json_encode($ordered_selectors); ?>;
+            var groups = new Map();
+            selectors.forEach(function (selector) {
+                var node = document.querySelector(selector);
+                if (!node) return;
+                if (selector === '.tt-legal-content') node = node.closest('section') || node;
+                var parent = node.parentNode;
+                if (!parent) return;
+                if (!groups.has(parent)) groups.set(parent, []);
+                groups.get(parent).push(node);
+            });
+            groups.forEach(function (nodes, parent) {
+                if (nodes.length < 2) return;
+                var firstNode = nodes.reduce(function (first, node) {
+                    return first.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_PRECEDING ? node : first;
+                }, nodes[0]);
+                var marker = document.createComment('taxitheme-component-order');
+                parent.insertBefore(marker, firstNode);
+                var cursor = marker;
+                nodes.forEach(function (node) {
+                    parent.insertBefore(node, cursor.nextSibling);
+                    cursor = node;
+                });
+                marker.remove();
+            });
+        })();
+        </script>
+        <?php
+    }
 
     // Over ons-specifieke uitbreiding:
     // Donkere hero (eyebrow + 2 CTA's) + 4 USP-kaartjes + donkere bottom CTA sectie
@@ -87,6 +233,8 @@ class TaxiTheme_Page_Meta {
     }
 
     public static function save($post_id, array $input) {
+        self::save_component_config($post_id, $input);
+
         if (array_key_exists('intro', $input)) {
             $intro = sanitize_textarea_field($input['intro']);
             if ($intro === '') {

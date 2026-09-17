@@ -127,7 +127,7 @@
    Two-column split op de bold dark bg — tekst links, booking-widget rechts. */
 .tt-preset-bold .tt-hero-fs--form {
     min-height: 0;
-    padding: 80px 0 100px;
+    padding: 128px 0 100px;
     align-items: stretch;
 }
 .tt-preset-bold .tt-hero-fs__inner--form {
@@ -168,7 +168,7 @@
     /* Form-variant op mobile: geen bottom padding, zodat het edge-to-edge
        formulier flush aansluit op de volgende sectie zonder donkere strook. */
     .tt-preset-bold .tt-hero-fs--form {
-        padding: 60px 0 0;
+        padding: calc(112px + env(safe-area-inset-top)) 0 0;
     }
     .tt-preset-bold .tt-hero-fs__inner--form {
         grid-template-columns: 1fr;
@@ -181,9 +181,12 @@
     .tt-preset-bold .tt-hero-fs__form {
         margin-left: -24px;
         margin-right: -24px;
+        padding: 12px 10px 16px;
+        background: var(--tt-accent);
+        border-radius: 26px 26px 0 0 !important;
+        box-shadow: 0 -14px 40px -24px rgba(var(--tt-accent-rgb), 0.75);
     }
-    .tt-preset-bold .tt-hero-fs__form,
     .tt-preset-bold .tt-hero-fs__form .taxibookingform {
-        border-radius: 0 !important;
+        border-radius: 18px !important;
     }
 }

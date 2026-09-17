@@ -1,0 +1,101 @@
+/* Simpel — instelbare homepage-achtergronden, zonder extra decoratie. */
+.tt-preset-simpel {
+    --tt-scheme-theme-accent: #00bcd4;
+    --tt-scheme-theme-accent-fg: #ffffff;
+    --tt-scheme-base-bg: #0a0a0a;
+    --tt-scheme-surface-bg: #1a1a1a;
+    --tt-scheme-base-fg: #ffffff;
+    --tt-scheme-base-muted: #a1a1a1;
+    --tt-scheme-base-line: #2a2a2a;
+    --tt-scheme-contrast-bg: #ffffff;
+    --tt-scheme-contrast-fg: #1a1a1a;
+}
+.tt-preset-simpel.tt-palette-simpel-licht {
+    --tt-scheme-theme-accent: #00a3e0;
+    --tt-scheme-theme-accent-fg: #ffffff;
+    --tt-scheme-base-bg: #ffffff;
+    --tt-scheme-surface-bg: #f5f5f5;
+    --tt-scheme-base-fg: #1a1a1a;
+    --tt-scheme-base-muted: #6b7280;
+    --tt-scheme-base-line: #e5e7eb;
+    --tt-scheme-contrast-bg: #1a1a1a;
+    --tt-scheme-contrast-fg: #ffffff;
+}
+.tt-preset-simpel .tt-section-scheme--base {
+    --tt-scheme-bg: var(--tt-scheme-base-bg);
+    --tt-scheme-card: var(--tt-scheme-surface-bg);
+    --tt-scheme-fg: var(--tt-scheme-base-fg);
+    --tt-scheme-muted: var(--tt-scheme-base-muted);
+    --tt-scheme-line: var(--tt-scheme-base-line);
+}
+.tt-preset-simpel .tt-section-scheme--surface {
+    --tt-scheme-bg: var(--tt-scheme-surface-bg);
+    --tt-scheme-card: var(--tt-scheme-base-bg);
+    --tt-scheme-fg: var(--tt-scheme-base-fg);
+    --tt-scheme-muted: var(--tt-scheme-base-muted);
+    --tt-scheme-line: var(--tt-scheme-base-line);
+}
+.tt-preset-simpel .tt-section-scheme--contrast {
+    --tt-scheme-bg: var(--tt-scheme-contrast-bg);
+    --tt-scheme-card: color-mix(in srgb, var(--tt-scheme-contrast-bg) 94%, var(--tt-scheme-contrast-fg));
+    --tt-scheme-fg: var(--tt-scheme-contrast-fg);
+    --tt-scheme-muted: color-mix(in srgb, var(--tt-scheme-contrast-fg) 65%, transparent);
+    --tt-scheme-line: color-mix(in srgb, var(--tt-scheme-contrast-fg) 16%, transparent);
+}
+.tt-preset-simpel .tt-section-scheme--accent {
+    --tt-scheme-bg: var(--tt-scheme-theme-accent);
+    --tt-scheme-card: color-mix(in srgb, var(--tt-scheme-theme-accent) 88%, var(--tt-scheme-theme-accent-fg));
+    --tt-scheme-fg: var(--tt-scheme-theme-accent-fg);
+    --tt-scheme-muted: color-mix(in srgb, var(--tt-scheme-theme-accent-fg) 72%, transparent);
+    --tt-scheme-line: color-mix(in srgb, var(--tt-scheme-theme-accent-fg) 20%, transparent);
+    --tt-accent: var(--tt-scheme-theme-accent-fg);
+    --tt-accent-fg: var(--tt-scheme-theme-accent);
+}
+.tt-preset-simpel .tt-section-scheme--base,
+.tt-preset-simpel .tt-section-scheme--surface,
+.tt-preset-simpel .tt-section-scheme--contrast,
+.tt-preset-simpel .tt-section-scheme--accent {
+    --tt-bg: var(--tt-scheme-bg);
+    --tt-surface: var(--tt-scheme-card);
+    --tt-fg: var(--tt-scheme-fg);
+    --tt-muted: var(--tt-scheme-muted);
+    --tt-line: var(--tt-scheme-line);
+    --tt-link: var(--tt-accent);
+    color: var(--tt-scheme-fg);
+}
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] > .tt-section,
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] > .tt-trust {
+    background: var(--tt-scheme-bg);
+}
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-section__header h2, .tt-about__title, .tt-features__title,
+    .tt-services__title, .tt-spotlight--subtle .tt-spotlight__title, .tt-steps__title,
+    .tt-steps__item-title, .tt-waarom__body h2, .tt-routes__from,
+    .tt-routes__to, .tt-faq__question, .tt-reviews__name, .tt-usp h3,
+    .tt-prose h1, .tt-prose h2, .tt-prose h3, .tt-prose h4
+) { color: var(--tt-scheme-fg); }
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-section__header p, .tt-about__text, .tt-features__body,
+    .tt-services__text, .tt-spotlight--subtle .tt-spotlight__text, .tt-steps__subtitle,
+    .tt-steps__item-text, .tt-routes__note, .tt-faq__answer,
+    .tt-reviews__text, .tt-reviews__date, .tt-usp p, .tt-trust__item,
+    .tt-service-area__item, .tt-check li, .tt-muted
+) { color: var(--tt-scheme-muted); }
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-usp, .tt-services__card, .tt-features__image,
+    .tt-about.no-image .tt-about__inner, .tt-steps__card,
+    .tt-spotlight--subtle .tt-spotlight__card, .tt-faq__item,
+    .tt-reviews__card, .tt-routes__card, .tt-service-area__item
+) {
+    background: var(--tt-scheme-card);
+    border-color: var(--tt-scheme-line);
+}
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-reviews__meta, .tt-steps__item, .tt-trust,
+    .tt-features__row + .tt-features__row
+) { border-color: var(--tt-scheme-line); }
+
+/* Foto-overlays blijven voor leesbaarheid wit. */
+.tt-preset-simpel .tt-home-component[class*="tt-section-scheme--"] :is(
+    .tt-fleet__title, .tt-fleet__subtitle
+) { color: #ffffff; }

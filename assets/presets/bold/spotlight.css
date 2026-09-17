@@ -2,10 +2,10 @@
  * Bold — spotlight
  * Subtiele dark card met accent-glow rond icon.
  */
-.tt-preset-bold .tt-spotlight { background: #14161f; padding: 60px 0; }
+.tt-preset-bold .tt-spotlight { background: var(--tt-bold-bg-alt); padding: 60px 0; }
 .tt-preset-bold .tt-spotlight--subtle .tt-spotlight__card {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
+    background: var(--tt-bold-card-raised);
+    border-color: var(--tt-bold-line);
     border-radius: 20px;
     padding: 48px;
 }
@@ -13,10 +13,10 @@
     box-shadow: 0 8px 20px -6px rgba(var(--tt-accent-rgb), 0.5);
 }
 .tt-preset-bold .tt-spotlight--subtle .tt-spotlight__title {
-    color: #fff;
+    color: var(--tt-bold-fg);
     font-weight: 800;
 }
 .tt-preset-bold .tt-spotlight--subtle .tt-spotlight__text {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--tt-bold-muted-strong);
     font-size: 1.05rem;
 }

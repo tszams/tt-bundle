@@ -13,6 +13,7 @@ $city    = TaxiTheme_Company_Info::get('city');
 
 <section class="tt-page-header">
     <div class="tt-container">
+        <?php get_template_part('templates/shared/breadcrumbs'); ?>
         <span class="tt-page-header__eyebrow">Diensten<?php echo $city ? ' · ' . esc_html($city) : ''; ?></span>
         <h1 class="tt-page-header__title"><?php the_title(); ?></h1>
         <?php if ($intro !== '') : ?>
@@ -29,7 +30,7 @@ $city    = TaxiTheme_Company_Info::get('city');
 </section>
 
 <?php
-// Uitgebreide services-detail (alternerende image/tekst rows met features + price)
+// Uitgebreide dienstenlijst met veel ruimte voor tekst, kenmerken en een prijs-label.
 get_template_part('templates/shared/services-detail');
 
 $sections = TaxiTheme_Page_Meta::get_visible_sections($page_id);

@@ -221,6 +221,68 @@ class TaxiTheme_Page_Editor {
                     g.id = 'tt-ed-section-' + key;
                 });
 
+                // Achtergrondkeuze per component. De inputs worden hier
+                // opgebouwd zodat alle bestaande panels automatisch meedoen.
+                var backgroundConfigNode = document.getElementById('tt-ed-background-config');
+                if (backgroundConfigNode) {
+                    var backgroundConfig = null;
+                    try { backgroundConfig = JSON.parse(backgroundConfigNode.getAttribute('data-config') || '{}'); }
+                    catch (error) { backgroundConfig = null; }
+
+                    if (backgroundConfig && backgroundConfig.enabled && Array.isArray(backgroundConfig.options)) {
+                        document.querySelectorAll('.tt-ed__group[data-section-key]').forEach(function (group) {
+                            var key = group.getAttribute('data-section-key');
+                            var head = group.querySelector(':scope > .tt-ed__group-head');
+                            if (!key || !head) return;
+
+                            var selected = backgroundConfig.values && backgroundConfig.values[key]
+                                ? backgroundConfig.values[key]
+                                : 'auto';
+                            var setting = document.createElement('div');
+                            setting.className = 'tt-ed__background-setting';
+
+                            var intro = document.createElement('div');
+                            intro.className = 'tt-ed__background-intro';
+                            intro.innerHTML = '<strong>Achtergrond</strong><span>Tekst en randen passen automatisch mee aan.</span>';
+                            setting.appendChild(intro);
+
+                            var choices = document.createElement('div');
+                            choices.className = 'tt-ed__background-choices';
+                            backgroundConfig.options.forEach(function (option, index) {
+                                var label = document.createElement('label');
+                                label.className = 'tt-ed__background-choice';
+
+                                var radio = document.createElement('input');
+                                radio.type = 'radio';
+                                radio.name = 'home[section_backgrounds][' + backgroundConfig.preset + '][' + key + ']';
+                                radio.value = option.value;
+                                radio.checked = selected === option.value;
+                                radio.id = 'tt-ed-bg-' + key + '-' + index;
+
+                                var swatch = document.createElement('span');
+                                swatch.className = 'tt-ed__background-swatch';
+                                swatch.style.background = option.preview;
+
+                                var text = document.createElement('span');
+                                text.className = 'tt-ed__background-label';
+                                text.textContent = option.label;
+
+                                label.appendChild(radio);
+                                label.appendChild(swatch);
+                                label.appendChild(text);
+                                choices.appendChild(label);
+                            });
+                            setting.appendChild(choices);
+                            head.insertAdjacentElement('afterend', setting);
+
+                            var fallback = backgroundConfigNode.querySelector(
+                                '.tt-ed__background-fallback[data-preset="' + backgroundConfig.preset + '"][data-section-key="' + key + '"]'
+                            );
+                            if (fallback) fallback.remove();
+                        });
+                    }
+                }
+
                 // 2. Sync sidebar switch met panel checkbox (bidirectioneel)
                 function findPanelToggle(row) {
                     var name = row.getAttribute('data-toggle-name');
@@ -321,6 +383,12 @@ class TaxiTheme_Page_Editor {
                 var postInput = form.querySelector('input[name="post"]');
                 var storageKey = 'taxitheme-editor-' + (postInput ? postInput.value : 'page') + '-active-view';
                 var isHomeEditor = !!form.querySelector('.tt-ed__layout');
+                var componentConfig = null;
+                if (!isHomeEditor && form.getAttribute('data-component-config')) {
+                    try { componentConfig = JSON.parse(form.getAttribute('data-component-config')); }
+                    catch (error) { componentConfig = null; }
+                }
+                var definitionKeys = componentConfig ? Object.keys(componentConfig.definitions || {}) : [];
 
                 function slugify(value) {
                     return value.toLowerCase()
@@ -343,44 +411,173 @@ class TaxiTheme_Page_Editor {
                     if (!head) return;
 
                     var heading = head.querySelector('h3');
-                    var label = heading ? heading.textContent.trim() : 'Onderdeel ' + (index + 1);
+                    var fallbackLabel = heading ? heading.textContent.trim() : 'Onderdeel ' + (index + 1);
                     var existingId = group.id || '';
-                    var editorId = group.getAttribute('data-section-key') || slugify(label) + '-' + index;
+                    var configuredKey = definitionKeys[index] || '';
+                    var editorId = group.getAttribute('data-section-key') || configuredKey || slugify(fallbackLabel) + '-' + index;
+                    var navLabel = componentConfig && componentConfig.definitions[editorId]
+                        ? componentConfig.definitions[editorId]
+                        : fallbackLabel;
 
                     group.setAttribute('data-editor-id', editorId);
+                    group.setAttribute('data-nav-label', navLabel);
                     if (!existingId) group.id = 'tt-ed-group-' + editorId;
                     group.classList.add('tt-ed__component-view');
                 });
 
-                // Subpagina's krijgen een compacte inhoudsnavigatie. De homepage
-                // heeft hiervoor al de uitgebreidere sectie-sidebar.
-                if (!isHomeEditor) {
-                    var nav = document.createElement('nav');
-                    nav.className = 'tt-ed__quick-nav';
-                    nav.setAttribute('aria-label', 'Onderdelen van deze pagina');
-
-                    var navTitle = document.createElement('div');
-                    navTitle.className = 'tt-ed__quick-nav-title';
-                    navTitle.innerHTML = '<strong>Onderdelen</strong><span>Er wordt één onderdeel tegelijk getoond.</span>';
-                    nav.appendChild(navTitle);
-
-                    var links = document.createElement('div');
-                    links.className = 'tt-ed__quick-nav-links';
-                    groups.forEach(function (group) {
-                        var heading = group.querySelector(':scope > .tt-ed__group-head h3');
-                        if (!heading) return;
-                        var link = document.createElement('a');
-                        link.href = '#' + group.id;
-                        link.textContent = heading.textContent.trim();
-                        links.appendChild(link);
+                if (componentConfig && Array.isArray(componentConfig.order)) {
+                    groups.sort(function (a, b) {
+                        var aIndex = componentConfig.order.indexOf(a.getAttribute('data-editor-id'));
+                        var bIndex = componentConfig.order.indexOf(b.getAttribute('data-editor-id'));
+                        return (aIndex < 0 ? 999 : aIndex) - (bIndex < 0 ? 999 : bIndex);
                     });
-                    nav.appendChild(links);
-
-                    var firstGroup = form.querySelector('.tt-ed__group');
-                    if (firstGroup) form.insertBefore(nav, firstGroup);
                 }
 
-                function selectView(group, shouldScroll) {
+                // Subpagina's krijgen dezelfde linkerzijbalk als de homepage.
+                if (!isHomeEditor) {
+                    var layout = document.createElement('div');
+                    layout.className = 'tt-ed__layout tt-ed__layout--subpage';
+
+                    var sidebar = document.createElement('aside');
+                    sidebar.className = 'tt-ed__sidebar tt-ed__sidebar--subpage';
+                    sidebar.setAttribute('aria-label', 'Onderdelen van deze pagina');
+
+                    var sidebarHead = document.createElement('div');
+                    sidebarHead.className = 'tt-ed__sidebar-head';
+                    sidebarHead.innerHTML = '<strong>Paginaonderdelen</strong>' +
+                        '<button type="button" class="tt-ed__sidebar-toggle" title="Navigatie inklappen" aria-label="Navigatie inklappen" aria-expanded="true">−</button>';
+                    sidebar.appendChild(sidebarHead);
+
+                    var sectionLabel = document.createElement('div');
+                    sectionLabel.className = 'tt-ed__sidebar-section-label';
+                    sectionLabel.textContent = 'Inhoud';
+                    sidebar.appendChild(sectionLabel);
+
+                    var configPresent = document.createElement('input');
+                    configPresent.type = 'hidden';
+                    configPresent.name = 'page[component_config_present]';
+                    configPresent.value = '1';
+                    sidebar.appendChild(configPresent);
+
+                    var links = document.createElement('ol');
+                    links.className = 'tt-ed__sidebar-list';
+                    groups.forEach(function (group) {
+                        var key = group.getAttribute('data-editor-id');
+                        var label = group.getAttribute('data-nav-label');
+                        var enabled = !componentConfig || !componentConfig.enabled || componentConfig.enabled[key] !== false;
+
+                        var row = document.createElement('li');
+                        row.className = 'tt-ed__sidebar-row' + (enabled ? ' is-enabled' : '');
+                        row.setAttribute('data-component-key', key);
+
+                        var link = document.createElement('a');
+                        link.href = '#' + group.id;
+                        link.className = 'tt-ed__sidebar-jump';
+                        link.textContent = label;
+                        row.appendChild(link);
+
+                        var up = document.createElement('button');
+                        up.type = 'button';
+                        up.className = 'tt-ed__sidebar-btn';
+                        up.setAttribute('data-dir', 'up');
+                        up.setAttribute('aria-label', label + ' omhoog verplaatsen');
+                        up.textContent = '↑';
+                        row.appendChild(up);
+
+                        var down = document.createElement('button');
+                        down.type = 'button';
+                        down.className = 'tt-ed__sidebar-btn';
+                        down.setAttribute('data-dir', 'down');
+                        down.setAttribute('aria-label', label + ' omlaag verplaatsen');
+                        down.textContent = '↓';
+                        row.appendChild(down);
+
+                        var toggle = document.createElement('button');
+                        toggle.type = 'button';
+                        toggle.className = 'tt-ed__sidebar-switch' + (enabled ? ' is-on' : '');
+                        toggle.setAttribute('aria-label', label + ' tonen of verbergen');
+                        toggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+                        toggle.innerHTML = '<span class="tt-ed__sidebar-switch-track"><span class="tt-ed__sidebar-switch-thumb"></span></span>';
+                        row.appendChild(toggle);
+
+                        var enabledInput = document.createElement('input');
+                        enabledInput.type = 'checkbox';
+                        enabledInput.className = 'tt-ed__sidebar-native-toggle';
+                        enabledInput.name = 'page[component_enabled][' + key + ']';
+                        enabledInput.value = '1';
+                        enabledInput.checked = enabled;
+                        row.appendChild(enabledInput);
+
+                        var orderInput = document.createElement('input');
+                        orderInput.type = 'hidden';
+                        orderInput.name = 'page[component_order][]';
+                        orderInput.value = key;
+                        row.appendChild(orderInput);
+
+                        links.appendChild(row);
+                    });
+                    sidebar.appendChild(links);
+
+                    var help = document.createElement('p');
+                    help.className = 'tt-ed__sidebar-help';
+                    help.textContent = 'Klik om te bewerken. Gebruik de pijlen voor de volgorde en de schakelaar voor tonen of verbergen.';
+                    sidebar.appendChild(help);
+
+                    var main = document.createElement('div');
+                    main.className = 'tt-ed__main';
+
+                    var firstGroup = form.querySelector('.tt-ed__group');
+                    if (firstGroup) {
+                        form.insertBefore(layout, firstGroup);
+                        layout.appendChild(sidebar);
+                        layout.appendChild(main);
+                        groups.forEach(function (group) { main.appendChild(group); });
+                    }
+
+                    var sidebarToggle = sidebar.querySelector('.tt-ed__sidebar-toggle');
+                    sidebarToggle.addEventListener('click', function () {
+                        var collapsed = sidebar.classList.toggle('is-collapsed');
+                        sidebarToggle.textContent = collapsed ? '+' : '−';
+                        sidebarToggle.title = collapsed ? 'Navigatie uitklappen' : 'Navigatie inklappen';
+                        sidebarToggle.setAttribute('aria-label', sidebarToggle.title);
+                        sidebarToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+                    });
+
+                    links.addEventListener('click', function (event) {
+                        var moveButton = event.target.closest('.tt-ed__sidebar-btn');
+                        if (moveButton) {
+                            event.preventDefault();
+                            var row = moveButton.closest('.tt-ed__sidebar-row');
+                            var key = row.getAttribute('data-component-key');
+                            var group = form.querySelector('.tt-ed__component-view[data-editor-id="' + key + '"]');
+                            var direction = moveButton.getAttribute('data-dir');
+                            if (direction === 'up' && row.previousElementSibling) {
+                                links.insertBefore(row, row.previousElementSibling);
+                                if (group && group.previousElementSibling) group.parentNode.insertBefore(group, group.previousElementSibling);
+                            } else if (direction === 'down' && row.nextElementSibling) {
+                                links.insertBefore(row.nextElementSibling, row);
+                                if (group && group.nextElementSibling) group.parentNode.insertBefore(group.nextElementSibling, group);
+                            }
+                            var orderInput = row.querySelector('input[type="hidden"]');
+                            if (orderInput) orderInput.dispatchEvent(new Event('change', { bubbles: true }));
+                            return;
+                        }
+
+                        var toggleButton = event.target.closest('.tt-ed__sidebar-switch');
+                        if (toggleButton) {
+                            event.preventDefault();
+                            var toggleRow = toggleButton.closest('.tt-ed__sidebar-row');
+                            var checkbox = toggleRow.querySelector('.tt-ed__sidebar-native-toggle');
+                            checkbox.checked = !checkbox.checked;
+                            toggleButton.classList.toggle('is-on', checkbox.checked);
+                            toggleButton.setAttribute('aria-pressed', checkbox.checked ? 'true' : 'false');
+                            toggleRow.classList.toggle('is-enabled', checkbox.checked);
+                            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+                }
+
+                function selectView(group) {
                     if (!group || groups.indexOf(group) === -1) return;
 
                     groups.forEach(function (item) {
@@ -389,7 +586,7 @@ class TaxiTheme_Page_Editor {
                         item.setAttribute('aria-hidden', active ? 'false' : 'true');
                     });
 
-                    form.querySelectorAll('.tt-ed__sidebar-jump, .tt-ed__quick-nav-links a').forEach(function (link) {
+                    form.querySelectorAll('.tt-ed__sidebar-jump').forEach(function (link) {
                         var active = link.getAttribute('href') === '#' + group.id;
                         link.classList.toggle('is-active', active);
                         if (active) {
@@ -414,25 +611,17 @@ class TaxiTheme_Page_Editor {
                         });
                     });
 
-                    if (shouldScroll) {
-                        window.requestAnimationFrame(function () {
-                            var target = isHomeEditor ? form.querySelector('.tt-ed__main') : form.querySelector('.tt-ed__quick-nav');
-                            if (!target) target = group;
-                            var top = target.getBoundingClientRect().top + window.scrollY - 46;
-                            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-                        });
-                    }
                 }
 
                 form.addEventListener('click', function (event) {
-                    var link = event.target.closest('.tt-ed__sidebar-jump, .tt-ed__quick-nav-links a');
+                    var link = event.target.closest('.tt-ed__sidebar-jump');
                     if (!link || !form.contains(link)) return;
                     var href = link.getAttribute('href');
                     if (!href || href.charAt(0) !== '#') return;
                     var group = document.getElementById(href.substring(1));
                     if (!group) return;
                     event.preventDefault();
-                    selectView(group, true);
+                    selectView(group);
                 });
 
                 form.classList.add('tt-ed__form--component-mode');
@@ -447,7 +636,7 @@ class TaxiTheme_Page_Editor {
                     if (storedId) initialGroup = document.getElementById(storedId);
                 }
                 if (groups.indexOf(initialGroup) === -1) initialGroup = null;
-                selectView(initialGroup || groups[0], false);
+                selectView(initialGroup || groups[0]);
             })();
         })();
         </script>
@@ -471,8 +660,9 @@ class TaxiTheme_Page_Editor {
     private static function render_legal_page_editor($post_id, $role) {
         $post = get_post($post_id);
         if (!$post) return;
+        $component_config = TaxiTheme_Page_Meta::get_component_config($post_id, $role);
         ?>
-        <form method="post">
+        <form method="post" data-component-config="<?php echo esc_attr(wp_json_encode($component_config)); ?>">
             <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_FIELD); ?>
             <input type="hidden" name="post" value="<?php echo (int) $post_id; ?>">
             <input type="hidden" name="taxitheme_legal_edit" value="1">
@@ -620,6 +810,7 @@ class TaxiTheme_Page_Editor {
                         wp_update_post($updates);
                     }
                 }
+                TaxiTheme_Page_Meta::save_component_config($post_id, $_POST['page'] ?? []);
                 self::$saved = true;
                 return;
             }
@@ -633,10 +824,15 @@ class TaxiTheme_Page_Editor {
 
             // Diensten-page: merge de per-service detail-velden (image, long_text, features, price)
             // in bestaande services_items zonder icon/title/text/link te overschrijven.
+            // Loopt door 6 slots — als slot bestaat mergen, anders nieuwe entry met defaults.
             if ($role === 'diensten' && isset($_POST['page_extra']['services_items'])) {
-                $home        = TaxiTheme_Home_Content::all();
-                $incoming    = $_POST['page_extra']['services_items'];
-                foreach ($home['services_items'] as $i => $svc) {
+                $home     = TaxiTheme_Home_Content::all();
+                $incoming = $_POST['page_extra']['services_items'];
+                $empty_svc = ['icon' => 'car', 'title' => '', 'text' => '', 'link_url' => '', 'link_label' => '', 'home_image_id' => 0, 'image_id' => 0, 'long_text' => '', 'features' => '', 'price' => ''];
+                for ($i = 0; $i < 6; $i++) {
+                    if (!isset($home['services_items'][$i])) {
+                        $home['services_items'][$i] = $empty_svc;
+                    }
                     if (!isset($incoming[$i])) continue;
                     $home['services_items'][$i]['image_id']  = (int) ($incoming[$i]['image_id'] ?? 0);
                     $home['services_items'][$i]['long_text'] = wp_unslash($incoming[$i]['long_text'] ?? '');
@@ -731,8 +927,9 @@ class TaxiTheme_Page_Editor {
         $over_ons_extras = $role === 'over-ons' ? TaxiTheme_Page_Meta::get_over_ons_extras($post_id) : [];
         $over_ons_usps   = $role === 'over-ons' ? TaxiTheme_Page_Meta::get_over_ons_usps($post_id) : [];
         $icon_options = ['check', 'check-circle', 'shield', 'clock', 'phone', 'car', 'users', 'map-pin', 'calendar', 'star', 'info', 'euro', 'sparkles'];
+        $component_config = TaxiTheme_Page_Meta::get_component_config($post_id, $role);
         ?>
-        <form method="post">
+        <form method="post" data-component-config="<?php echo esc_attr(wp_json_encode($component_config)); ?>">
             <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_FIELD); ?>
             <input type="hidden" name="post" value="<?php echo (int) $post_id; ?>">
 
@@ -1037,11 +1234,14 @@ class TaxiTheme_Page_Editor {
                     <div class="tt-ed__group-head">
                         <div class="tt-ed__group-head-text">
                             <h3><?php echo TaxiTheme_Icons::svg('briefcase', 20); ?> Dienstdetails</h3>
-                            <p>Uitgebreide informatie per dienst voor de Diensten-pagina. De titel, korte tekst en het icoon beheer je in de homepage-editor.</p>
+                            <p>Vertel hier uitgebreid over iedere dienst. Gebruik lege regels om de tekst in duidelijke alinea's te verdelen. De titel, korte tekst en het icoon beheer je in de homepage-editor.</p>
                         </div>
                     </div>
                     <div class="tt-ed__usps">
-                        <?php foreach ($home_data['services_items'] as $i => $svc) :
+                        <?php
+                        // Altijd 6 slots — pad met lege entries
+                        $diensten_items = array_pad($home_data['services_items'], 6, ['icon' => 'car', 'title' => '', 'text' => '', 'link_url' => '', 'link_label' => '', 'home_image_id' => 0, 'image_id' => 0, 'long_text' => '', 'features' => '', 'price' => '']);
+                        foreach ($diensten_items as $i => $svc) :
                             $svc_label = !empty($svc['title']) ? $svc['title'] : 'Dienst ' . ($i + 1);
                         ?>
                             <div class="tt-ed__usp-row">
@@ -1052,8 +1252,8 @@ class TaxiTheme_Page_Editor {
                                         <?php self::render_image_field('page_extra[services_items][' . $i . '][image_id]', $svc['image_id'] ?? 0); ?>
                                     </div>
                                     <div class="tt-ed__field tt-ed__field--full">
-                                        <label>Uitgebreide beschrijving <span class="tt-ed__hint">(lege regel = paragraaf)</span></label>
-                                        <textarea name="page_extra[services_items][<?php echo $i; ?>][long_text]" rows="4"><?php echo esc_textarea($svc['long_text'] ?? ''); ?></textarea>
+                                        <label>Uitgebreide beschrijving <span class="tt-ed__hint">(meerdere alinea's mogelijk)</span></label>
+                                        <textarea name="page_extra[services_items][<?php echo $i; ?>][long_text]" rows="9" placeholder="Beschrijf de dienst uitgebreid.&#10;&#10;Begin een nieuwe alinea met een lege regel."><?php echo esc_textarea($svc['long_text'] ?? ''); ?></textarea>
                                     </div>
                                     <div class="tt-ed__field tt-ed__field--full">
                                         <label>Kenmerken <span class="tt-ed__hint">(één per regel — worden checkbullets)</span></label>
@@ -1189,7 +1389,77 @@ class TaxiTheme_Page_Editor {
                 'fleet'        => 'fleet_enabled',
                 'reviews'      => 'reviews_enabled',
             ];
+
+            // Gecontroleerde achtergrondkeuzes per preset. De previews komen
+            // zoveel mogelijk uit het actieve kleurenpalet.
+            $palette_slug     = '';
+            $palette_swatches = [];
+            if (class_exists('TaxiTheme_Theme_Variant')) {
+                $palette_slug = TaxiTheme_Theme_Variant::current();
+                $palettes     = TaxiTheme_Theme_Variant::all();
+                $palette_swatches = $palettes[$palette_slug]['swatch'] ?? [];
+            }
+
+            $background_options = [
+                'klassiek' => [
+                    ['value' => 'auto',    'label' => 'Automatisch', 'preview' => 'linear-gradient(135deg, #fdfcf7 0 50%, #ffffff 50% 100%)'],
+                    ['value' => 'base',    'label' => $palette_slug === 'klassiek-licht' ? 'Licht' : 'Crème', 'preview' => $palette_swatches[2] ?? '#fdfcf7'],
+                    ['value' => 'surface', 'label' => 'Wit',         'preview' => '#ffffff'],
+                    ['value' => 'dark',    'label' => 'Donker',      'preview' => $palette_slug === 'klassiek-licht' ? '#0f172a' : '#14161f'],
+                    ['value' => 'accent',  'label' => 'Accent',      'preview' => $palette_swatches[1] ?? '#f5b800'],
+                ],
+                'bold' => [
+                    ['value' => 'auto',      'label' => 'Automatisch', 'preview' => 'linear-gradient(135deg, #0b0d14 0 50%, #14161f 50% 100%)'],
+                    ['value' => 'base',      'label' => 'Zwart',       'preview' => '#0b0d14'],
+                    ['value' => 'alternate', 'label' => 'Donkergrijs', 'preview' => '#14161f'],
+                    ['value' => 'light',     'label' => 'Crème',       'preview' => '#fdfcf7'],
+                    ['value' => 'white',     'label' => 'Wit',         'preview' => '#ffffff'],
+                    ['value' => 'accent',    'label' => 'Accent',      'preview' => $palette_swatches[1] ?? '#f5b800'],
+                ],
+                'onepage' => [
+                    ['value' => 'auto',    'label' => 'Automatisch', 'preview' => 'linear-gradient(135deg, #0a0b10 0 50%, #1a1a24 50% 100%)'],
+                    ['value' => 'base',    'label' => 'Zwart',       'preview' => $palette_swatches[0] ?? '#0a0b10'],
+                    ['value' => 'surface', 'label' => 'Donker vlak', 'preview' => $palette_swatches[2] ?? '#1a1a24'],
+                    ['value' => 'accent',  'label' => 'Accent',      'preview' => $palette_swatches[1] ?? '#f5b800'],
+                ],
+                'premium' => [
+                    ['value' => 'auto',    'label' => 'Automatisch', 'preview' => 'linear-gradient(135deg, #ffffff 0 50%, #f8fafc 50% 100%)'],
+                    ['value' => 'base',    'label' => 'Wit',         'preview' => '#ffffff'],
+                    ['value' => 'surface', 'label' => 'Lichtgrijs',  'preview' => '#f8fafc'],
+                    ['value' => 'dark',    'label' => 'Navy',        'preview' => '#0f172a'],
+                    ['value' => 'accent',  'label' => 'Accent',      'preview' => $palette_swatches[1] ?? '#f59e0b'],
+                ],
+                'simpel' => [
+                    ['value' => 'auto',     'label' => 'Automatisch', 'preview' => 'linear-gradient(135deg, ' . ($palette_swatches[0] ?? '#0a0a0a') . ' 0 50%, ' . ($palette_swatches[2] ?? '#ffffff') . ' 50% 100%)'],
+                    ['value' => 'base',     'label' => $palette_slug === 'simpel-licht' ? 'Wit' : 'Zwart', 'preview' => $palette_swatches[0] ?? '#0a0a0a'],
+                    ['value' => 'surface',  'label' => $palette_slug === 'simpel-licht' ? 'Lichtgrijs' : 'Donkergrijs', 'preview' => $palette_slug === 'simpel-licht' ? '#f5f5f5' : '#1a1a1a'],
+                    ['value' => 'contrast', 'label' => 'Contrast',    'preview' => $palette_swatches[2] ?? '#ffffff'],
+                    ['value' => 'accent',   'label' => 'Accent',      'preview' => $palette_swatches[1] ?? '#00bcd4'],
+                ],
+            ];
+            $current_backgrounds = $data['section_backgrounds'][$preset] ?? [];
+            $background_config = [
+                'enabled' => isset($background_options[$preset]),
+                'preset'  => $preset,
+                'values'  => $current_backgrounds,
+                'options' => $background_options[$preset] ?? [],
+            ];
             ?>
+
+            <div id="tt-ed-background-config" data-config="<?php echo esc_attr(wp_json_encode($background_config)); ?>" hidden>
+                <?php foreach (array_keys($background_options) as $background_preset) : ?>
+                    <?php foreach (array_keys(TaxiTheme_Home_Content::REORDERABLE_SECTIONS) as $background_key) : ?>
+                        <input
+                            type="hidden"
+                            class="tt-ed__background-fallback"
+                            data-preset="<?php echo esc_attr($background_preset); ?>"
+                            data-section-key="<?php echo esc_attr($background_key); ?>"
+                            name="home[section_backgrounds][<?php echo esc_attr($background_preset); ?>][<?php echo esc_attr($background_key); ?>]"
+                            value="<?php echo esc_attr($data['section_backgrounds'][$background_preset][$background_key] ?? 'auto'); ?>"
+                        >
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
 
             <div class="tt-ed__layout">
                 <!-- Left sidebar: sectie-lijst met toggle proxy + up/down + jump link -->
@@ -1783,7 +2053,7 @@ class TaxiTheme_Page_Editor {
                 <div class="tt-ed__group-head">
                     <?php self::render_section_order_controls('services'); ?>
                     <div class="tt-ed__group-head-text">
-                        <h3><?php echo TaxiTheme_Icons::svg('briefcase', 20); ?> Diensten (3 blokken)</h3>
+                        <h3><?php echo TaxiTheme_Icons::svg('briefcase', 20); ?> Diensten (tot 6 blokken)</h3>
                         <p>Type ritten die je aanbiedt — met optionele link naar een landingspagina.</p>
                     </div>
                     <label class="tt-ed__toggle">
@@ -1805,7 +2075,9 @@ class TaxiTheme_Page_Editor {
                 <div class="tt-ed__usps">
                     <?php
                     $svc_icon_choices = TaxiTheme_Icons::usp_choices();
-                    foreach ($data['services_items'] as $i => $svc) : ?>
+                    // Altijd 6 slots tonen — pad met lege entries als defaults minder hebben
+                    $svc_items = array_pad($data['services_items'], 6, ['icon' => 'car', 'title' => '', 'text' => '', 'link_url' => '', 'link_label' => '', 'home_image_id' => 0, 'image_id' => 0, 'long_text' => '', 'features' => '', 'price' => '']);
+                    foreach ($svc_items as $i => $svc) : ?>
                         <div class="tt-ed__usp-row">
                             <div class="tt-ed__usp-num">Dienst <?php echo $i + 1; ?></div>
                             <div class="tt-ed__usp-grid">
@@ -2258,10 +2530,9 @@ class TaxiTheme_Page_Editor {
 
             .tt-ed {
                 font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-                padding: 32px 48px 60px;
+                padding: 32px 24px 60px;
                 color: #14161f;
-                max-width: 1600px;
-                margin: 0 auto;
+                width: 100%;
             }
             .tt-ed * { box-sizing: border-box; }
 
@@ -2372,41 +2643,82 @@ class TaxiTheme_Page_Editor {
                 margin: 0;
             }
 
-            /* Compacte inhoudsnavigatie voor subpagina's. */
-            .tt-ed__quick-nav {
-                display: grid;
-                grid-template-columns: minmax(180px, 0.7fr) minmax(300px, 2fr);
-                gap: 18px;
+            /* Semantische achtergrondkeuze per homepagecomponent */
+            .tt-ed__background-setting {
+                display: flex;
                 align-items: center;
-                padding: 18px 20px;
-                margin: 0 0 18px;
-                background: #14161f;
-                color: #fff;
-                border-radius: 12px;
-                box-shadow: 0 8px 24px -12px rgba(20, 22, 31, 0.4);
+                justify-content: space-between;
+                gap: 18px;
+                margin: -8px 0 24px;
+                padding: 14px 16px;
+                background: #f8fafc;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
             }
-            .tt-ed__quick-nav-title { display: flex; flex-direction: column; gap: 3px; }
-            .tt-ed__quick-nav-title strong { font-size: 0.92rem; }
-            .tt-ed__quick-nav-title span { color: #aeb3bf; font-size: 0.76rem; }
-            .tt-ed__quick-nav-links { display: flex; flex-wrap: wrap; gap: 7px; }
-            .tt-ed__quick-nav-links a {
+            .tt-ed__background-intro {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                min-width: 150px;
+            }
+            .tt-ed__background-intro strong {
+                color: #111827;
+                font-size: 0.88rem;
+            }
+            .tt-ed__background-intro span {
+                color: #6b7280;
+                font-size: 0.75rem;
+            }
+            .tt-ed__background-choices {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 7px;
+            }
+            .tt-ed__background-choice {
+                position: relative;
                 display: inline-flex;
-                padding: 6px 10px;
-                border: 1px solid rgba(255, 255, 255, 0.18);
-                border-radius: 999px;
-                color: #fff;
-                font-size: 0.76rem;
-                font-weight: 600;
-                line-height: 1.2;
-                text-decoration: none;
+                align-items: center;
+                gap: 7px;
+                min-height: 36px;
+                padding: 6px 10px 6px 7px;
+                background: #fff;
+                border: 1.5px solid #dbe1e8;
+                border-radius: 8px;
+                color: #374151;
+                cursor: pointer;
+                font-size: 0.78rem;
+                font-weight: 650;
+                transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
             }
-            .tt-ed__quick-nav-links a:hover,
-            .tt-ed__quick-nav-links a:focus-visible,
-            .tt-ed__quick-nav-links a.is-active {
-                color: #14161f;
-                background: #f5b800;
+            .tt-ed__background-choice:hover {
+                border-color: #9ca3af;
+            }
+            .tt-ed__background-choice:has(input:checked) {
+                background: #fffbeb;
                 border-color: #f5b800;
-                outline: none;
+                box-shadow: 0 0 0 2px rgba(245, 184, 0, 0.14);
+            }
+            .tt-ed__background-choice input {
+                position: absolute;
+                opacity: 0;
+                pointer-events: none;
+            }
+            .tt-ed__background-swatch {
+                width: 21px;
+                height: 21px;
+                flex: 0 0 auto;
+                border: 1px solid rgba(15, 23, 42, 0.18);
+                border-radius: 6px;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            }
+            .tt-ed__background-label { white-space: nowrap; }
+            @media (max-width: 820px) {
+                .tt-ed__background-setting {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+                .tt-ed__background-choices { justify-content: flex-start; }
             }
 
             /* Form fields */
@@ -3284,8 +3596,8 @@ class TaxiTheme_Page_Editor {
             /* ============ Home-editor layout met left sidebar ============ */
             .tt-ed__layout {
                 display: grid;
-                grid-template-columns: 240px 1fr;
-                gap: 20px;
+                grid-template-columns: 280px minmax(0, 1fr);
+                gap: 24px;
                 align-items: start;
             }
             .tt-ed__sidebar {
@@ -3413,6 +3725,13 @@ class TaxiTheme_Page_Editor {
                 padding: 0;
                 cursor: pointer;
             }
+            .tt-ed__sidebar-native-toggle {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+                pointer-events: none;
+            }
             .tt-ed__sidebar-switch-track {
                 display: inline-block;
                 width: 26px;
@@ -3473,7 +3792,6 @@ class TaxiTheme_Page_Editor {
                     position: static;
                     max-height: none;
                 }
-                .tt-ed__quick-nav { grid-template-columns: 1fr; }
             }
 
             /* Actions card */

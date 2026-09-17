@@ -1,12 +1,18 @@
 /*
  * Bold — header
- * Transparant op hero, solid + blur bij scroll. Nav uppercase caps met accent-underline op active.
+ * Transparant boven de hero, solid + blur zodra de bezoeker scrollt.
+ * Logo, navigatie en knop blijven altijd zichtbaar.
  */
 .tt-preset-bold .tt-header {
     background: transparent;
     border-bottom: 1px solid transparent;
     box-shadow: none;
     transition: background 0.25s ease, border-color 0.25s ease, backdrop-filter 0.25s ease;
+}
+.tt-preset-bold.home .tt-header {
+    position: fixed;
+    inset: 0 0 auto;
+    width: 100%;
 }
 .tt-preset-bold.is-scrolled .tt-header {
     background: rgba(11, 13, 20, 0.92);
@@ -75,4 +81,23 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 30px -6px rgba(var(--tt-accent-rgb), 0.7);
     opacity: 1;
+}
+
+/* De transparante header ligt boven de hero in plaats van in een eigen donkere strook. */
+.tt-preset-bold.home .tt-hero-fs:not(.tt-hero-fs--form) {
+    min-height: 100vh;
+}
+
+body.admin-bar.tt-preset-bold.home .tt-header {
+    top: 32px;
+}
+@media screen and (max-width: 782px) {
+    body.admin-bar.tt-preset-bold.home .tt-header {
+        top: 46px;
+    }
+}
+@media (max-width: 600px) {
+    .tt-preset-bold.home .tt-hero-fs:not(.tt-hero-fs--form) {
+        min-height: auto;
+    }
 }

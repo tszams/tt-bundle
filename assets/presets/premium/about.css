@@ -18,7 +18,7 @@
     gap: 80px;
     max-width: 1200px;
 }
-.tt-preset-premium .tt-about__body {
+.tt-preset-premium .tt-about.has-image .tt-about__body {
     max-width: 560px;
 }
 .tt-preset-premium .tt-about__eyebrow {
@@ -47,6 +47,10 @@
     line-height: 1.75;
     margin: 0 0 20px;
     font-weight: 400;
+}
+.tt-preset-premium .tt-about__text:first-child {
+    color: #0f172a;
+    font-weight: 500;
 }
 .tt-preset-premium .tt-about__text:last-of-type {
     margin-bottom: 36px;
@@ -77,13 +81,13 @@
     max-width: 420px;
     justify-self: end;
     border-radius: 24px;
-    overflow: hidden;
     background: #f1f5f9;
     box-shadow:
         0 30px 60px -30px rgba(15, 23, 42, 0.25),
         0 0 0 1px rgba(15, 23, 42, 0.04);
 }
 .tt-preset-premium .tt-about__image img {
+    border-radius: 24px;
     transition: transform 0.6s ease;
 }
 .tt-preset-premium .tt-about__image:hover img {
@@ -103,5 +107,8 @@
         border-radius: 18px;
         max-width: none;
         justify-self: stretch;
+    }
+    .tt-preset-premium .tt-about__image img {
+        border-radius: 18px;
     }
 }

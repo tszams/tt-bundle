@@ -14,11 +14,18 @@
 .tt-preset-premium .tt-services-detail__row {
     counter-increment: tt-service;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+    gap: 80px;
     align-items: start;
     padding: 100px 0;
     border-bottom: 1px solid #f1f5f9;
+}
+.tt-preset-premium .tt-services-detail__row.no-image {
+    grid-template-columns: 1fr;
+}
+.tt-preset-premium .tt-services-detail__row.no-image .tt-services-detail__body {
+    padding-left: 0;
+    border-left: 0;
 }
 .tt-preset-premium .tt-services-detail__row:first-child { padding-top: 0; }
 .tt-preset-premium .tt-services-detail__row:last-child { border-bottom: none; }
@@ -57,7 +64,7 @@
 
 /* Body: rustige typografie */
 .tt-preset-premium .tt-services-detail__body {
-    padding: 0 20px;
+    padding: 0;
 }
 .tt-preset-premium .tt-services-detail__title {
     color: #0f172a;

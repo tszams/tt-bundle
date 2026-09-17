@@ -26,6 +26,7 @@ require_once get_template_directory() . '/inc/class-updater.php';
 TaxiTheme_Schema::init();
 TaxiTheme_SEO::init();
 TaxiTheme_Updater::init();
+TaxiTheme_Page_Meta::init();
 
 /**
  * Menu filter — verberg pages die op "onzichtbaar" staan of getrashed zijn.

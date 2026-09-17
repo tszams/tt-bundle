@@ -1,0 +1,29 @@
+/* Klassiek — warme, vertrouwde tariefkaarten met subtiele goudaccenten. */
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-destinations {
+    background: #f7f3e8;
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-destinations__card {
+    border-color: #e2d8bd;
+    border-radius: 18px;
+    box-shadow: 0 22px 55px -42px rgba(76, 58, 20, 0.45);
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-dest-item {
+    background: #fffdf8;
+    border-color: #e9e0ca;
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-dest-item__icon,
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-zone__icon {
+    background: #fff4ce;
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-zones {
+    background: #fffdf8;
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-zone {
+    background: #f8f3e7;
+    border-color: #e2d8bd;
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-zone::before {
+    left: 24px;
+    right: 24px;
+    height: 3px;
+}

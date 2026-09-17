@@ -110,4 +110,6 @@ if (!empty($sections)) : ?>
     </section>
 <?php endif; ?>
 
+<?php get_template_part('templates/shared/contact-cta'); ?>
+
 <?php get_footer(); ?>

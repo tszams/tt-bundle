@@ -4,25 +4,38 @@
  */
 .tt-preset-simpel .tt-about {
     background: var(--tt-bg);
-    padding: 72px 0;
+    padding: clamp(64px, 8vw, 104px) 0;
 }
 .tt-preset-simpel .tt-about__inner {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    align-items: center;
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: 1120px;
 }
 .tt-preset-simpel .tt-about.has-image .tt-about__inner {
-    grid-template-columns: 1fr 1.2fr;
-    gap: 60px;
+    grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(48px, 7vw, 84px);
+}
+.tt-preset-simpel .tt-about.no-image .tt-about__inner {
+    border: 0;
+    border-top: 1px solid var(--tt-line);
+    border-bottom: 1px solid var(--tt-line);
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
 }
 .tt-preset-simpel .tt-about__image {
+    order: -1;
     aspect-ratio: 4 / 3;
-    overflow: hidden;
+    border-radius: 0;
     background: var(--tt-surface);
     border: 1px solid var(--tt-line);
+    box-shadow: none;
+}
+.tt-preset-simpel .tt-about__image::before {
+    inset: 12px -12px -12px 12px;
+    border-radius: 0;
+    opacity: 0.16;
+}
+.tt-preset-simpel .tt-about__image::after {
+    display: none;
 }
 .tt-preset-simpel .tt-about__image img {
     width: 100%;
@@ -32,27 +45,20 @@
 }
 .tt-preset-simpel .tt-about__title {
     color: var(--tt-fg);
-    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-size: clamp(2rem, 4vw, 3.15rem);
     font-weight: 700;
-    letter-spacing: -0.025em;
-    margin: 0 0 12px;
+    letter-spacing: -0.04em;
 }
-.tt-preset-simpel .tt-about__subtitle {
-    color: var(--tt-muted);
-    font-size: 1.05rem;
-    margin: 0 0 20px;
+.tt-preset-simpel .tt-about__eyebrow {
+    color: var(--tt-accent);
 }
 .tt-preset-simpel .tt-about__text {
-    color: var(--tt-fg);
+    color: var(--tt-muted);
     font-size: 1rem;
-    line-height: 1.7;
-    margin: 0 0 24px;
-}
-.tt-preset-simpel .tt-about__text p + p {
-    margin-top: 1em;
+    line-height: 1.75;
 }
 .tt-preset-simpel .tt-about__cta {
-    display: inline-block;
+    display: inline-flex;
     padding: 12px 24px;
     background: var(--tt-fg);
     color: var(--tt-bg) !important;
@@ -68,8 +74,18 @@
 }
 
 @media (max-width: 900px) {
+    .tt-preset-simpel .tt-about {
+        padding: 56px 0;
+    }
     .tt-preset-simpel .tt-about.has-image .tt-about__inner {
         grid-template-columns: 1fr;
         gap: 32px;
+    }
+    .tt-preset-simpel .tt-about.no-image .tt-about__inner {
+        padding: 28px 0;
+    }
+    .tt-preset-simpel .tt-about__image {
+        order: 0;
+        width: calc(100% - 10px);
     }
 }

@@ -245,8 +245,15 @@ class TaxiTheme_SEO {
     //  Breadcrumbs
     // ================================================================
 
+    /**
+     * Alleen voor de ZICHTBARE breadcrumbs op de pagina.
+     * De JSON-LD schema (voor Google rich results) staat altijd aan —
+     * dat kost niks en levert een gratis SEO-voordeel op.
+     * Default UIT: TaxiTheme heeft een flat structuur (Home → sub-page),
+     * dus zichtbare breadcrumbs voegen weinig UX-waarde toe.
+     */
     public static function breadcrumbs_enabled() {
-        return (bool) get_option(self::OPT_BREADCRUMBS_ENABLED, 1);
+        return (bool) get_option(self::OPT_BREADCRUMBS_ENABLED, 0);
     }
 
     public static function set_breadcrumbs_enabled($enabled) {
@@ -336,10 +343,11 @@ class TaxiTheme_SEO {
     /**
      * BreadcrumbList voor Schema.org JSON-LD.
      * Aangeroepen vanuit class-schema.php.
-     * Return null als geen breadcrumbs of home page.
+     * Return null als home page (breadcrumbs op home hebben geen zin).
+     * Staat ALTIJD aan — onafhankelijk van de zichtbare toggle. Kost niks
+     * en genereert de mooie "site.nl › Pagina" regel in Google resultaten.
      */
     public static function breadcrumb_schema() {
-        if (!self::breadcrumbs_enabled()) return null;
         if (is_front_page()) return null;
 
         $trail = self::get_trail();

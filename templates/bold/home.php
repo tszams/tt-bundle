@@ -6,8 +6,9 @@
 get_header();
 
 get_template_part('templates/bold/hero');
-get_template_part('templates/bold/routes-cards');
 
+// Reorderable secties — inclusief routes (Bold gebruikt eigen routes-cards
+// template via preset-override in TaxiTheme_Home_Renderer).
 TaxiTheme_Home_Renderer::render_sections();
 
 get_template_part('templates/shared/contact-cta');

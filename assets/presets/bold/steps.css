@@ -3,17 +3,17 @@
  * Grote genummerde stappen (01/02/03) in een dark card met accent-gloed nummers.
  */
 .tt-preset-bold .tt-steps {
-    background: #14161f;
+    background: var(--tt-bold-bg-alt);
     padding: 100px 0;
 }
 .tt-preset-bold .tt-steps__card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--tt-bold-card);
+    border: 1px solid var(--tt-bold-line);
     border-radius: 20px;
     padding: 60px 48px;
 }
 .tt-preset-bold .tt-steps__title {
-    color: #fff;
+    color: var(--tt-bold-fg);
     font-size: clamp(1.8rem, 3.5vw, 2.4rem);
     font-weight: 900;
     letter-spacing: -0.025em;
@@ -21,7 +21,7 @@
     margin: 0 0 12px;
 }
 .tt-preset-bold .tt-steps__subtitle {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--tt-bold-muted);
     font-size: 1.05rem;
     text-align: center;
     max-width: 560px;
@@ -35,7 +35,7 @@
 .tt-preset-bold .tt-steps__item {
     padding-left: 28px;
     text-align: left;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid var(--tt-bold-line-strong);
 }
 .tt-preset-bold .tt-steps__item:first-child {
     padding-left: 0;
@@ -52,14 +52,14 @@
     text-shadow: 0 0 32px rgba(var(--tt-accent-rgb), 0.35);
 }
 .tt-preset-bold .tt-steps__item-title {
-    color: #fff;
+    color: var(--tt-bold-fg);
     font-size: 1.2rem;
     font-weight: 800;
     letter-spacing: -0.01em;
     margin: 0 0 10px;
 }
 .tt-preset-bold .tt-steps__item-text {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--tt-bold-muted);
     font-size: 0.95rem;
     line-height: 1.6;
     margin: 0;
@@ -77,8 +77,19 @@
     }
 }
 @media (max-width: 700px) {
+    .tt-preset-bold .tt-steps__grid {
+        gap: 0;
+    }
     /* Base zet border-top: var(--tt-line) op mobile — overschrijf naar dark theme */
     .tt-preset-bold .tt-steps__item {
-        border-top-color: rgba(255, 255, 255, 0.1);
+        padding: 28px 0;
+        border-left: none;
+        border-top-style: solid;
+        border-top-width: 1px;
+        border-top-color: var(--tt-bold-line-strong);
+    }
+    .tt-preset-bold .tt-steps__item:first-child {
+        padding-top: 0;
+        border-top: none;
     }
 }

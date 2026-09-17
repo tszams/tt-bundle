@@ -19,7 +19,7 @@
     font-size: 1.15rem;
 }
 .tt-preset-bold .tt-contact-cta .tt-cta {
-    background: #14161f !important;
+    background: var(--tt-bold-bg-alt) !important;
     color: var(--tt-accent) !important;
     padding: 18px 34px;
     font-size: 1.05rem;

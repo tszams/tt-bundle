@@ -1,0 +1,56 @@
+/*
+ * Bold — about (homepage)
+ * Donker editorial blok met stevige typografie en een helder accentkader.
+ */
+.tt-preset-bold .tt-about {
+    padding: clamp(72px, 9vw, 120px) 0;
+    background:
+        radial-gradient(circle at 88% 18%, rgba(var(--tt-accent-rgb), 0.18), transparent 30rem),
+        var(--tt-bold-bg-soft);
+}
+.tt-preset-bold .tt-about::before {
+    border-color: rgba(var(--tt-accent-rgb), 0.4);
+    box-shadow: 0 0 0 34px rgba(var(--tt-accent-rgb), 0.08);
+}
+.tt-preset-bold .tt-about.no-image .tt-about__inner {
+    background: var(--tt-bold-surface);
+    border-color: var(--tt-bold-line-strong);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.3);
+}
+.tt-preset-bold .tt-about__eyebrow {
+    color: var(--tt-accent);
+}
+.tt-preset-bold .tt-about__title {
+    color: var(--tt-bold-fg);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+}
+.tt-preset-bold .tt-about__text {
+    color: var(--tt-bold-muted);
+}
+.tt-preset-bold .tt-about__text:first-child {
+    color: var(--tt-bold-fg);
+}
+.tt-preset-bold .tt-about__image {
+    border: 1px solid var(--tt-bold-line-strong);
+    background: var(--tt-bold-surface-alt);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42);
+}
+.tt-preset-bold .tt-about__image::before {
+    border-radius: 0;
+}
+.tt-preset-bold .tt-about__image::after {
+    background: var(--tt-accent);
+    border: 0;
+    opacity: 0.9;
+}
+
+@media (max-width: 800px) {
+    .tt-preset-bold .tt-about {
+        padding: 64px 0;
+    }
+    .tt-preset-bold .tt-about__title {
+        font-size: clamp(2.15rem, 10vw, 3rem);
+    }
+}

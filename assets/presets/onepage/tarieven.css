@@ -1,0 +1,36 @@
+/* One-page — donkere glass-panels op de vaste gradientachtergrond. */
+.tt-preset-onepage.tt-role-tarieven .tt-tv-destinations,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zones {
+    background: rgba(10, 11, 16, 0.82);
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-destinations__head h2,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zones .tt-section__header h2 {
+    color: #fff;
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-destinations__head p,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zones .tt-section__header p {
+    color: rgba(255, 255, 255, 0.58);
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-destinations__card,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zone {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(255, 255, 255, 0.11);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 28px 70px -45px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(18px);
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-dest-item {
+    background: rgba(255, 255, 255, 0.045);
+    border-color: rgba(255, 255, 255, 0.09);
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-dest-item__label,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-dest-item__price,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zone__title,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zone__label,
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zone__price {
+    color: #fff;
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-dest-item__price {
+    background: color-mix(in srgb, var(--tt-accent) 24%, transparent);
+}
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zone__count { color: rgba(255, 255, 255, 0.48); }
+.tt-preset-onepage.tt-role-tarieven .tt-tv-zone__row { border-color: rgba(255, 255, 255, 0.1); }

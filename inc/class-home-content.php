@@ -33,6 +33,10 @@ class TaxiTheme_Home_Content {
             // Standaard sectie-volgorde (tussen hero en contact-cta). Klant kan
             // dit per-preset overriden via de home-editor met up/down knoppen.
             'section_order'         => array_keys(self::REORDERABLE_SECTIONS),
+            'section_backgrounds'   => array_fill_keys(
+                ['klassiek', 'bold', 'onepage', 'premium', 'simpel'],
+                array_fill_keys(array_keys(self::REORDERABLE_SECTIONS), 'auto')
+            ),
 
             'hero_style'            => 'split',
             'hero_accent_enabled'   => 0,
@@ -267,6 +271,29 @@ class TaxiTheme_Home_Content {
         }
         $out['section_order'] = $order_clean;
 
+        // Achtergrondstijl per homepagecomponent en preset. Alleen semantische
+        // keys opslaan, zodat kleuren later veilig via preset-CSS kunnen wisselen.
+        $background_choices = [
+            'klassiek' => ['auto', 'base', 'surface', 'dark', 'accent'],
+            'bold'     => ['auto', 'base', 'alternate', 'light', 'white', 'accent'],
+            'onepage'  => ['auto', 'base', 'surface', 'accent'],
+            'premium'  => ['auto', 'base', 'surface', 'dark', 'accent'],
+            'simpel'   => ['auto', 'base', 'surface', 'contrast', 'accent'],
+        ];
+        $out['section_backgrounds'] = [];
+        foreach ($background_choices as $preset_key => $allowed_choices) {
+            $background_input = isset($input['section_backgrounds'][$preset_key]) && is_array($input['section_backgrounds'][$preset_key])
+                ? $input['section_backgrounds'][$preset_key]
+                : [];
+            $out['section_backgrounds'][$preset_key] = [];
+            foreach ($valid_keys as $key) {
+                $choice = sanitize_key($background_input[$key] ?? 'auto');
+                $out['section_backgrounds'][$preset_key][$key] = in_array($choice, $allowed_choices, true)
+                    ? $choice
+                    : 'auto';
+            }
+        }
+
         $hero_style = sanitize_text_field($input['hero_style'] ?? '');
         $out['hero_style']            = in_array($hero_style, self::HERO_STYLES, true) ? $hero_style : 'split';
         $out['hero_accent_enabled']   = !empty($input['hero_accent_enabled']) ? 1 : 0;
@@ -393,11 +420,12 @@ class TaxiTheme_Home_Content {
         $out['services_link_enabled']  = !empty($input['services_link_enabled']) ? 1 : 0;
         $out['services_items']    = [];
         $svc_in = $input['services_items'] ?? [];
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             $s = $svc_in[$i] ?? [];
             $icon = sanitize_text_field($s['icon'] ?? '');
             if (!in_array($icon, $valid_icons, true)) {
-                $icon = $defaults['services_items'][$i]['icon'];
+                // Voor slots > default array-lengte: fallback op eerste default icon
+                $icon = $defaults['services_items'][$i]['icon'] ?? ($defaults['services_items'][0]['icon'] ?? 'car');
             }
             $out['services_items'][$i] = [
                 'icon'          => $icon,

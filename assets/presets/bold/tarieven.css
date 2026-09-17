@@ -1,0 +1,58 @@
+/* Bold — donkere panelen, harde lijnen en uitgesproken geel. */
+.tt-preset-bold.tt-role-tarieven .tt-tv-destinations,
+.tt-preset-bold.tt-role-tarieven .tt-tv-zones,
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicles {
+    background: #0b0d14;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle {
+    background: #121620;
+    border: 1px solid #2b3241;
+    border-radius: 6px;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle__title,
+.tt-preset-bold.tt-role-tarieven .tt-tv-rate__value { color: #fff; }
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle__desc,
+.tt-preset-bold.tt-role-tarieven .tt-tv-rate__label { color: rgba(255, 255, 255, 0.58); }
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle__rates { border-color: #2b3241; }
+.tt-preset-bold.tt-role-tarieven .tt-tv-destinations__head h2,
+.tt-preset-bold.tt-role-tarieven .tt-tv-zones .tt-section__header h2 {
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    text-transform: uppercase;
+    letter-spacing: -0.045em;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-destinations__head p,
+.tt-preset-bold.tt-role-tarieven .tt-tv-zones .tt-section__header p {
+    color: rgba(255, 255, 255, 0.62);
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-destinations__card {
+    background: #121620;
+    border: 2px solid #f5b800;
+    border-radius: 8px;
+    box-shadow: 14px 14px 0 rgba(245, 184, 0, 0.16);
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-dest-item {
+    background: #191e2a;
+    border-color: #2b3241;
+    border-radius: 6px;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-dest-item__label,
+.tt-preset-bold.tt-role-tarieven .tt-tv-dest-item__price,
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone__title,
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone__label,
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone__price {
+    color: #fff;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-dest-item__price {
+    background: #f5b800;
+    color: #111318;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone {
+    background: #121620;
+    border: 1px solid #2b3241;
+    border-radius: 6px;
+    box-shadow: none;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone::before { height: 6px; }
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone__count { color: rgba(255, 255, 255, 0.48); }
+.tt-preset-bold.tt-role-tarieven .tt-tv-zone__row { border-color: #2b3241; }

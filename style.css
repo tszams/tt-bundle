@@ -818,64 +818,182 @@ p { margin: 0 0 1em; }
 .tt-usp p { color: var(--tt-muted); margin-bottom: 0; }
 
 /* About / Over ons — verhaal-blok */
-.tt-about { background: var(--tt-surface); }
+.tt-about {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 92% 12%, rgba(var(--tt-accent-rgb), 0.12), transparent 25rem),
+        linear-gradient(180deg, var(--tt-surface) 0%, var(--tt-bg) 100%);
+}
+.tt-about::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    left: -95px;
+    bottom: -95px;
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.22);
+    border-radius: 50%;
+    box-shadow: 0 0 0 34px rgba(var(--tt-accent-rgb), 0.05);
+    pointer-events: none;
+}
 .tt-about__inner {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    align-items: center;
-    max-width: 780px;
+    position: relative;
+    z-index: 1;
+    max-width: 1080px;
     margin: 0 auto;
 }
 .tt-about.has-image .tt-about__inner {
-    grid-template-columns: 1.2fr 1fr;
-    gap: 60px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    gap: clamp(48px, 7vw, 88px);
+    align-items: center;
     max-width: var(--tt-container);
 }
-.tt-about__body {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.tt-about__body { min-width: 0; }
+.tt-about.no-image .tt-about__inner {
+    padding: clamp(36px, 5vw, 64px);
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: calc(var(--tt-radius) * 1.5);
+    box-shadow: var(--tt-shadow-lg);
 }
+.tt-about.no-image .tt-about__body {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(40px, 7vw, 88px);
+    align-items: start;
+}
+.tt-about__heading { position: relative; }
 .tt-about__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--tt-accent);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.2;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
+}
+.tt-about__eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 3px;
+    background: currentColor;
+    border-radius: 999px;
 }
 .tt-about__title {
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    margin: 0 0 20px;
+    max-width: 14ch;
+    font-size: clamp(2.15rem, 4vw, 3.35rem);
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+    margin: 0 0 28px;
 }
+.tt-about.no-image .tt-about__title { margin-bottom: 0; }
+.tt-about__copy { max-width: 640px; }
 .tt-about__text {
     color: var(--tt-muted);
     font-size: 1.02rem;
-    line-height: 1.75;
-    margin: 0 0 18px;
+    line-height: 1.8;
+    margin: 0 0 16px;
 }
-.tt-about__text:last-of-type { margin-bottom: 24px; }
+.tt-about__text:first-child {
+    color: var(--tt-fg);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.tt-about__text:last-of-type { margin-bottom: 30px; }
 .tt-about__cta {
-    margin-top: 8px;
-    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 4px;
 }
+.tt-about__cta-arrow {
+    font-size: 1.15em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+.tt-about__cta:hover .tt-about__cta-arrow { transform: translateX(4px); }
 .tt-about__image {
-    border-radius: var(--tt-radius);
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: calc(var(--tt-radius) * 1.5);
     background: var(--tt-line);
+    box-shadow: var(--tt-shadow-lg);
+}
+.tt-about__image::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 22px -22px -22px 22px;
+    border-radius: inherit;
+    background: var(--tt-accent);
+    opacity: 0.85;
+}
+.tt-about__image::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    width: 74px;
+    height: 74px;
+    top: -18px;
+    right: -18px;
+    border-radius: 50%;
+    background: rgba(var(--tt-accent-rgb), 0.2);
+    border: 1px solid rgba(var(--tt-accent-rgb), 0.38);
+    backdrop-filter: blur(5px);
+    pointer-events: none;
 }
 .tt-about__image img {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: inherit;
 }
 @media (max-width: 800px) {
-    .tt-about.has-image .tt-about__inner {
+    .tt-about::before { display: none; }
+    .tt-about.has-image .tt-about__inner,
+    .tt-about.no-image .tt-about__body {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 30px;
+    }
+    .tt-about.no-image .tt-about__inner {
+        padding: 30px 24px;
+        border-radius: var(--tt-radius);
+    }
+    .tt-about__title {
+        max-width: 18ch;
+        font-size: clamp(2rem, 9vw, 2.65rem);
+        margin-bottom: 20px;
+    }
+    .tt-about.no-image .tt-about__title { margin-bottom: 0; }
+    .tt-about__text,
+    .tt-about__text:first-child {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    .tt-about__text:last-of-type { margin-bottom: 24px; }
+    .tt-about__cta { width: 100%; }
+    .tt-about__image {
+        aspect-ratio: 4 / 3;
+        width: calc(100% - 14px);
+    }
+    .tt-about__image::before { inset: 14px -14px -14px 14px; }
+    .tt-about__image::after {
+        width: 52px;
+        height: 52px;
+        top: -12px;
+        right: -12px;
     }
 }
 
@@ -1328,50 +1446,74 @@ p { margin: 0 0 1em; }
     gap: 28px;
 }
 
-/* Services-detail — uitgebreide services voor Diensten-pagina (alternating rows) */
+/* Services-detail — ruime verticale lijst voor lange dienstbeschrijvingen. */
 .tt-services-detail {
     background: var(--tt-bg);
-    padding: 40px 0 80px;
+    padding: 24px 0 96px;
+}
+.tt-services-detail__container {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+.tt-services-detail__list {
+    display: flex;
+    flex-direction: column;
 }
 .tt-services-detail__row {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 60px;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(44px, 6vw, 76px);
     align-items: start;
-    padding: 40px 0;
+    padding: 64px 0;
     border-bottom: 1px solid var(--tt-line);
 }
-.tt-services-detail__row:last-child { border-bottom: none; }
-.tt-services-detail__row.is-flipped .tt-services-detail__media { order: 2; }
-.tt-services-detail__row.is-flipped .tt-services-detail__body { order: 1; }
+.tt-services-detail__row:first-child { padding-top: 28px; }
+.tt-services-detail__row:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+.tt-services-detail__row.no-image {
+    grid-template-columns: 1fr;
+}
+.tt-services-detail__row.no-image .tt-services-detail__body {
+    max-width: 900px;
+    padding-left: 30px;
+    border-left: 4px solid var(--tt-accent);
+}
 
-/* Media: image OR icon-only fallback */
+/* Optionele afbeelding */
 .tt-services-detail__media {
-    border-radius: var(--tt-radius);
-    overflow: hidden;
+    margin: 0;
     aspect-ratio: 4 / 3;
     background: var(--tt-surface);
+    overflow: hidden;
     border: 1px solid var(--tt-line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: calc(var(--tt-radius) * 1.25);
+    box-shadow: var(--tt-shadow);
 }
 .tt-services-detail__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.45s ease;
 }
-.tt-services-detail__media.is-icon-only {
-    background: linear-gradient(135deg, rgba(var(--tt-accent-rgb), 0.08), rgba(var(--tt-accent-rgb), 0.02));
-    border-color: rgba(var(--tt-accent-rgb), 0.15);
-}
-.tt-services-detail__icon-large {
-    color: var(--tt-accent);
-    opacity: 0.8;
-}
+.tt-services-detail__row:hover .tt-services-detail__media img { transform: scale(1.025); }
 
 /* Body */
+.tt-services-detail__body {
+    min-width: 0;
+    padding: 8px 0;
+}
+.tt-services-detail__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+.tt-services-detail__heading {
+    min-width: 0;
+}
 .tt-services-detail__icon-small {
     display: inline-flex;
     width: 44px;
@@ -1381,35 +1523,46 @@ p { margin: 0 0 1em; }
     border-radius: 12px;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
+    flex: 0 0 auto;
+    margin-top: 2px;
 }
 .tt-services-detail__title {
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    margin: 0 0 8px;
+    font-size: clamp(1.65rem, 3vw, 2.35rem);
+    margin: 0;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
 }
 .tt-services-detail__price {
     display: inline-block;
     color: var(--tt-accent);
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.9rem;
     letter-spacing: 0.02em;
-    margin-bottom: 16px;
+    margin-top: 10px;
     padding: 4px 12px;
     background: rgba(var(--tt-accent-rgb), 0.1);
     border-radius: 999px;
 }
+.tt-services-detail__content {
+    max-width: 72ch;
+}
 .tt-services-detail__text {
     color: var(--tt-muted);
-    line-height: 1.7;
-    margin: 0 0 14px;
-    font-size: 1rem;
+    line-height: 1.82;
+    margin: 0 0 18px;
+    font-size: 1.04rem;
+}
+.tt-services-detail__text:first-child {
+    color: var(--tt-fg);
+    font-size: 1.08rem;
 }
 .tt-services-detail__features {
     list-style: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 28px 0;
     display: grid;
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 24px;
 }
 .tt-services-detail__features li {
     padding-left: 28px;
@@ -1441,20 +1594,44 @@ p { margin: 0 0 1em; }
     color: var(--tt-accent);
     font-weight: 700;
     font-size: 0.95rem;
-    margin-top: 8px;
+    margin-top: 10px;
     transition: gap 0.15s;
 }
 .tt-services-detail__link:hover { gap: 10px; opacity: 1; }
 
-@media (max-width: 800px) {
-    .tt-services-detail__row,
-    .tt-services-detail__row.is-flipped {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 32px 0;
+@media (max-width: 900px) {
+    .tt-services-detail {
+        padding: 16px 0 64px;
     }
-    .tt-services-detail__row.is-flipped .tt-services-detail__media,
-    .tt-services-detail__row.is-flipped .tt-services-detail__body { order: 0; }
+    .tt-services-detail__row {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 44px 0;
+    }
+    .tt-services-detail__row:first-child { padding-top: 24px; }
+    .tt-services-detail__row.no-image .tt-services-detail__body {
+        padding: 0 0 0 18px;
+    }
+    .tt-services-detail__media {
+        aspect-ratio: 16 / 10;
+    }
+    .tt-services-detail__body { padding: 0; }
+    .tt-services-detail__head {
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+    .tt-services-detail__title {
+        font-size: clamp(1.55rem, 7vw, 2rem);
+    }
+    .tt-services-detail__text,
+    .tt-services-detail__text:first-child {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+    .tt-services-detail__features {
+        grid-template-columns: 1fr;
+        margin: 24px 0;
+    }
 }
 
 /* Page-sections — per-page vrije info-blokken (tarieven, diensten, over-ons).
@@ -2031,24 +2208,37 @@ a.tt-contact-info__card:hover {
     margin-top: 2px;
 }
 
-/* Bestemmingen: kop + kaart met foto links + verticale lijst */
-.tt-tv-destinations { padding: 60px 0; background: var(--tt-bg); }
-.tt-tv-destinations__head { text-align: left; }
+/* Bestemmingen: visuele routekaart met foto en compacte prijslijst */
+.tt-tv-destinations {
+    padding: clamp(64px, 8vw, 104px) 0;
+    background:
+        radial-gradient(circle at 8% 15%, rgba(var(--tt-accent-rgb, 245, 184, 0), 0.09), transparent 30%),
+        var(--tt-bg);
+}
+.tt-tv-destinations__head {
+    max-width: 760px;
+    margin: 0 auto 32px;
+    text-align: center;
+}
 .tt-tv-destinations__card {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 40px;
-    align-items: start;
-    padding: 32px;
+    grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.25fr);
+    gap: 0;
+    align-items: stretch;
+    overflow: hidden;
     background: var(--tt-surface);
     border: 1px solid var(--tt-line);
-    border-radius: 16px;
-    max-width: 1100px;
+    border-radius: 22px;
+    max-width: 1160px;
     margin: 0 auto;
+    box-shadow: 0 24px 60px -38px rgba(15, 23, 42, 0.35);
+}
+.tt-tv-destinations__card.no-image {
+    grid-template-columns: 1fr;
+    max-width: 920px;
 }
 .tt-tv-destinations__image {
-    aspect-ratio: 4 / 3;
-    border-radius: 12px;
+    min-height: 100%;
     overflow: hidden;
     background: #f1f5f9;
 }
@@ -2057,77 +2247,121 @@ a.tt-contact-info__card:hover {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.5s ease;
 }
+.tt-tv-destinations__card:hover .tt-tv-destinations__image img { transform: scale(1.035); }
 .tt-tv-destinations__list {
     list-style: none;
-    padding: 0;
+    padding: 30px;
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px 24px;
+    gap: 10px;
+    align-content: center;
 }
 .tt-tv-dest-item {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 12px;
     align-items: center;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid color-mix(in srgb, var(--tt-line) 78%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tt-bg) 70%, var(--tt-surface));
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.tt-tv-dest-item:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--tt-accent) 55%, var(--tt-line));
+    background: var(--tt-surface);
 }
 .tt-tv-dest-item__icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--tt-accent) 12%, transparent);
     color: var(--tt-accent);
     flex-shrink: 0;
 }
-.tt-tv-dest-item__body { display: flex; flex-direction: column; }
+.tt-tv-dest-item__body { display: flex; flex-direction: column; min-width: 0; }
 .tt-tv-dest-item__label {
     font-weight: 600;
     color: var(--tt-fg);
     font-size: 0.98rem;
 }
 .tt-tv-dest-item__price {
-    color: var(--tt-muted);
-    font-size: 0.88rem;
-    margin-top: 2px;
+    align-self: flex-start;
+    color: var(--tt-fg);
+    font-size: 0.78rem;
+    font-weight: 750;
+    margin-top: 5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--tt-accent) 17%, transparent);
 }
 
-/* Regionale zones: grid van groepen met icoon + bullet-lijst */
-.tt-tv-zones { padding: 60px 0; }
+/* Regionale zones: duidelijke gebiedskaarten met scanbare prijsregels */
+.tt-tv-zones {
+    padding: clamp(64px, 8vw, 104px) 0;
+    background: var(--tt-surface);
+}
+.tt-tv-zones .tt-section__header {
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 .tt-tv-zones__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 18px;
     max-width: 1200px;
     margin: 0 auto;
 }
-@media (max-width: 1080px) {
-    .tt-tv-zones__grid { grid-template-columns: repeat(2, 1fr); }
-}
 .tt-tv-zone {
-    padding: 24px;
-    background: var(--tt-surface);
+    position: relative;
+    overflow: hidden;
+    padding: 26px;
+    background: var(--tt-bg);
     border: 1px solid var(--tt-line);
-    border-radius: 14px;
+    border-radius: 18px;
+    box-shadow: 0 18px 45px -38px rgba(15, 23, 42, 0.5);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tt-tv-zone::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: var(--tt-accent);
+}
+.tt-tv-zone:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--tt-accent) 45%, var(--tt-line));
+    box-shadow: 0 26px 55px -38px rgba(15, 23, 42, 0.55);
 }
 .tt-tv-zone__head {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
 }
 .tt-tv-zone__icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: rgba(var(--tt-accent-rgb, 15, 23, 42), 0.08);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tt-accent) 13%, transparent);
     color: var(--tt-accent);
     flex-shrink: 0;
 }
+.tt-tv-zone__heading { min-width: 0; }
 .tt-tv-zone__title {
     font-size: 1.02rem;
     font-weight: 700;
@@ -2135,26 +2369,37 @@ a.tt-contact-info__card:hover {
     margin: 0;
     letter-spacing: -0.01em;
 }
+.tt-tv-zone__count {
+    display: block;
+    margin-top: 3px;
+    color: var(--tt-muted);
+    font-size: 0.72rem;
+    font-weight: 650;
+}
 .tt-tv-zone__list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
 }
 .tt-tv-zone__row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 12px;
-    padding: 6px 0;
-    border-bottom: 1px dashed var(--tt-line);
+    padding: 10px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--tt-line) 75%, transparent);
     font-size: 0.92rem;
 }
 .tt-tv-zone__row:last-child { border-bottom: none; }
 .tt-tv-zone__label { color: var(--tt-fg); }
-.tt-tv-zone__price { color: var(--tt-muted); font-weight: 600; white-space: nowrap; }
+.tt-tv-zone__price {
+    color: var(--tt-fg);
+    font-weight: 750;
+    white-space: nowrap;
+}
 
 /* Mobile: alle blokken stacken naar 1-kolom */
 @media (max-width: 780px) {
@@ -2168,8 +2413,12 @@ a.tt-contact-info__card:hover {
         gap: 24px;
         padding: 20px;
     }
+    .tt-tv-destinations__card.has-image { padding: 0; }
+    .tt-tv-destinations__image { min-height: 0; aspect-ratio: 16 / 10; }
+    .tt-tv-destinations__card.has-image .tt-tv-destinations__list { padding: 20px; }
     .tt-tv-destinations__list { grid-template-columns: 1fr; }
     .tt-tv-zones__grid { grid-template-columns: 1fr; }
+    .tt-tv-zone { padding: 22px; }
 }
 
 /* Extra content */
