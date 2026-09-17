@@ -147,6 +147,13 @@ class TaxiTheme_Settings {
             }
         }
 
+        if ($action === 'save_seo') {
+            if (class_exists('TaxiTheme_SEO')) {
+                TaxiTheme_SEO::set_breadcrumbs_enabled(!empty($_POST['breadcrumbs_enabled']));
+            }
+            self::$saved = true;
+        }
+
         if ($action === 'toggle_pause') {
             if (TaxiTheme_Installer::is_paused()) {
                 TaxiTheme_Installer::unpause();
@@ -1539,6 +1546,27 @@ class TaxiTheme_Settings {
                     <a href="<?php echo esc_url(admin_url('themes.php')); ?>" class="tt-set__btn tt-set__btn--primary" style="margin-left:8px;">Ga naar Themes om te updaten →</a>
                 <?php endif; ?>
             </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="tt-set__card">
+            <div class="tt-set__card-head">
+                <h3>SEO</h3>
+                <p>TaxiTheme voegt automatisch meta descriptions, Open Graph tags (WhatsApp/social previews) en Schema.org data toe. Als je een SEO-plugin (Yoast, Rank Math) gebruikt, houdt TaxiTheme zich in en laat die plugin de meta tags regelen.</p>
+            </div>
+            <form method="post">
+                <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_FIELD); ?>
+                <input type="hidden" name="taxitheme_action" value="save_seo">
+                <label class="tt-set__toggle">
+                    <input type="checkbox" name="breadcrumbs_enabled" value="1" <?php checked(class_exists('TaxiTheme_SEO') && TaxiTheme_SEO::breadcrumbs_enabled()); ?>>
+                    <span class="tt-set__toggle-track"><span class="tt-set__toggle-thumb"></span></span>
+                    <span style="margin-left:12px;font-weight:600;">Broodkruimels tonen op sub-pagina's</span>
+                </label>
+                <p style="margin:8px 0 0;color:#6b7280;font-size:0.85rem;">Bijvoorbeeld: <em>Home › Over ons</em> — helpt bezoekers en Google om je site-structuur te begrijpen.</p>
+                <div style="margin-top:20px;">
+                    <button type="submit" class="tt-set__btn tt-set__btn--primary">Opslaan</button>
+                </div>
+            </form>
         </div>
 
         <!-- Uitschakelen (reversible) -->

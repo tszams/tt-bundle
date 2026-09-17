@@ -20,6 +20,7 @@ $show_usps = ($extras['usps_enabled'] ?? '') !== '0' && !empty($usps);
 <!-- Page-header (preset-styled) — alleen titel + optionele intro. -->
 <section class="tt-page-header <?php echo $show_usps ? 'has-usps' : ''; ?>">
     <div class="tt-container">
+        <?php get_template_part('templates/shared/breadcrumbs'); ?>
         <h1 class="tt-page-header__title"><?php the_title(); ?></h1>
         <?php if ($intro !== '') : ?>
             <div class="tt-page-header__intro">

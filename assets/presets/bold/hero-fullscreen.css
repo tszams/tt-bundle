@@ -165,8 +165,10 @@
     padding: 0;
 }
 @media (max-width: 900px) {
+    /* Form-variant op mobile: geen bottom padding, zodat het edge-to-edge
+       formulier flush aansluit op de volgende sectie zonder donkere strook. */
     .tt-preset-bold .tt-hero-fs--form {
-        padding: 60px 0 80px;
+        padding: 60px 0 0;
     }
     .tt-preset-bold .tt-hero-fs__inner--form {
         grid-template-columns: 1fr;

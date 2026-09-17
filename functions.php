@@ -19,10 +19,12 @@ require_once get_template_directory() . '/inc/class-page-editor.php';
 require_once get_template_directory() . '/inc/class-page-meta.php';
 require_once get_template_directory() . '/inc/class-wizard.php';
 require_once get_template_directory() . '/inc/class-schema.php';
+require_once get_template_directory() . '/inc/class-seo.php';
 require_once get_template_directory() . '/inc/class-booking.php';
 require_once get_template_directory() . '/inc/class-updater.php';
 
 TaxiTheme_Schema::init();
+TaxiTheme_SEO::init();
 TaxiTheme_Updater::init();
 
 /**
@@ -80,6 +82,17 @@ add_action('after_setup_theme', function () {
 });
 
 add_action('wp_enqueue_scripts', function () {
+    /*
+     * Skip alle theme-assets op de webapp-boeken pagina (bare template).
+     * De webapp heeft z'n eigen styling + safe-area handling; onze CSS
+     * (container padding, header/footer regels, body font) interfereert
+     * en breekt bv. safe-area op iPhones.
+     */
+    if (is_page() && class_exists('TaxiTheme_Booking') && TaxiTheme_Booking::webapp_page_enabled()) {
+        $role = get_post_meta(get_queried_object_id(), TaxiTheme_Installer::META_ROLE, true);
+        if ($role === 'boeken') return;
+    }
+
     wp_enqueue_style(
         'taxitheme-font',
         'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap',

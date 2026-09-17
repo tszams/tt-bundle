@@ -32,6 +32,11 @@ class TaxiTheme_Schema {
         $faq = self::faq_page();
         if ($faq) $graph[] = $faq;
 
+        if (class_exists('TaxiTheme_SEO')) {
+            $breadcrumb = TaxiTheme_SEO::breadcrumb_schema();
+            if ($breadcrumb) $graph[] = $breadcrumb;
+        }
+
         if (empty($graph)) return;
 
         $ld = [

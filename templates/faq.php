@@ -13,6 +13,7 @@ $intro   = TaxiTheme_Page_Meta::get_intro($page_id);
 ?>
 <section class="tt-page-header">
     <div class="tt-container">
+        <?php get_template_part('templates/shared/breadcrumbs'); ?>
         <span class="tt-page-header__eyebrow">FAQ<?php echo $city ? ' · ' . esc_html($city) : ''; ?></span>
         <h1 class="tt-page-header__title"><?php the_title(); ?></h1>
         <?php if ($intro !== '') : ?>

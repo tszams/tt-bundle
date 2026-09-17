@@ -31,6 +31,7 @@ if ($has_address) {
 
 <section class="tt-page-header">
     <div class="tt-container">
+        <?php get_template_part('templates/shared/breadcrumbs'); ?>
         <span class="tt-page-header__eyebrow">Contact<?php echo $city ? ' · ' . esc_html($city) : ''; ?></span>
         <h1 class="tt-page-header__title"><?php the_title(); ?></h1>
         <?php if ($intro !== '') : ?>

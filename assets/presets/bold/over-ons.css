@@ -1,0 +1,11 @@
+/*
+ * Bold — Over ons
+ *
+ * De USPs "hangen" over met margin-top:-60px, en de spacer eronder vult de
+ * ruimte tot de volgende section. Zonder eigen bg toont de spacer de body
+ * kleur, wat een lelijke kleurbreuk geeft tussen header-gradient en section.
+ * Match de spacer aan de section-wrap bg (#14161f) zodat het naadloos overloopt.
+ */
+.tt-preset-bold .tt-page-header__usps-spacer {
+    background: #14161f;
+}

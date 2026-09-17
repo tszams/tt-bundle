@@ -28,6 +28,25 @@
     position: relative;
     z-index: 1;
 }
+/* Breadcrumbs: light contrast op donkere Bold page-header */
+.tt-preset-bold .tt-page-header .tt-breadcrumbs {
+    text-align: left;
+}
+.tt-preset-bold .tt-page-header .tt-breadcrumbs__list {
+    justify-content: center;
+}
+.tt-preset-bold .tt-page-header .tt-breadcrumbs__link {
+    color: rgba(255, 255, 255, 0.6);
+}
+.tt-preset-bold .tt-page-header .tt-breadcrumbs__link:hover {
+    color: #fff;
+}
+.tt-preset-bold .tt-page-header .tt-breadcrumbs__sep {
+    color: rgba(255, 255, 255, 0.35);
+}
+.tt-preset-bold .tt-page-header .tt-breadcrumbs__current {
+    color: rgba(255, 255, 255, 0.9);
+}
 .tt-preset-bold .tt-page-header__eyebrow {
     color: var(--tt-accent);
     font-size: 0.9rem;

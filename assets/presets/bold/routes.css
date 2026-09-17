@@ -1,0 +1,9 @@
+/*
+ * Bold — routes
+ * Base gebruikt --tt-fg (donker) op --tt-accent (blauw/rood) → onleesbaar.
+ * --tt-accent-fg is de palette-eigen contrast-kleur, dus altijd leesbaar
+ * ongeacht welke Bold-palette actief is (blauw of rood).
+ */
+.tt-preset-bold .tt-routes__price {
+    color: var(--tt-accent-fg);
+}

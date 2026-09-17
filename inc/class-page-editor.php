@@ -97,6 +97,7 @@ class TaxiTheme_Page_Editor {
                         var att = frame.state().get('selection').first().toJSON();
                         var url = (att.sizes && att.sizes.medium && att.sizes.medium.url) || att.url;
                         input.value = att.id;
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
                         preview.innerHTML = '<img src="' + url + '" alt="">';
                         field.classList.add('has-image');
                         if (clearBtn) clearBtn.style.display = '';
@@ -108,7 +109,9 @@ class TaxiTheme_Page_Editor {
                 if (removeBtn) {
                     e.preventDefault();
                     var f = removeBtn.closest('.tt-ed__image-field');
-                    f.querySelector('input[type=hidden]').value = '';
+                    var hiddenInput = f.querySelector('input[type=hidden]');
+                    hiddenInput.value = '';
+                    hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
                     f.querySelector('.tt-ed__image-preview').innerHTML =
                         '<div class="tt-ed__image-placeholder">Nog geen afbeelding</div>';
                     f.classList.remove('has-image');
@@ -168,6 +171,15 @@ class TaxiTheme_Page_Editor {
                 form.addEventListener('input', markDirty);
                 form.addEventListener('change', markDirty);
 
+                // De visuele WordPress-editor wijzigt zijn verborgen textarea niet
+                // bij iedere toetsaanslag. Luister daarom ook direct naar TinyMCE.
+                if (window.jQuery) {
+                    window.jQuery(document).on('tinymce-editor-init.taxitheme', function (event, editor) {
+                        if (!editor || !editor.getElement || !form.contains(editor.getElement())) return;
+                        editor.on('change input undo redo', markDirty);
+                    });
+                }
+
                 // Sidebar reorder / toggle klikken tellen ook als wijziging
                 var sidebar = document.getElementById('tt-ed-sidebar');
                 if (sidebar) {
@@ -224,6 +236,7 @@ class TaxiTheme_Page_Editor {
 
                     // Sync initial state (panel is de bron van waarheid)
                     toggleBtn.classList.toggle('is-on', panelInput.checked);
+                    toggleBtn.setAttribute('aria-pressed', panelInput.checked ? 'true' : 'false');
                     row.classList.toggle('is-enabled', panelInput.checked);
 
                     toggleBtn.addEventListener('click', function (e) {
@@ -231,12 +244,14 @@ class TaxiTheme_Page_Editor {
                         panelInput.checked = !panelInput.checked;
                         panelInput.dispatchEvent(new Event('change', { bubbles: true }));
                         toggleBtn.classList.toggle('is-on', panelInput.checked);
+                        toggleBtn.setAttribute('aria-pressed', panelInput.checked ? 'true' : 'false');
                         row.classList.toggle('is-enabled', panelInput.checked);
                     });
 
                     // Als panel input verandert (bv door user direct), sync sidebar
                     panelInput.addEventListener('change', function () {
                         toggleBtn.classList.toggle('is-on', panelInput.checked);
+                        toggleBtn.setAttribute('aria-pressed', panelInput.checked ? 'true' : 'false');
                         row.classList.toggle('is-enabled', panelInput.checked);
                     });
                 });
@@ -286,22 +301,153 @@ class TaxiTheme_Page_Editor {
                         var collapsed = sidebar.classList.toggle('is-collapsed');
                         collapseBtn.textContent = collapsed ? '+' : '−';
                         collapseBtn.title = collapsed ? 'Uitklappen' : 'Inklappen';
+                        collapseBtn.setAttribute('aria-label', collapsed ? 'Navigatie uitklappen' : 'Navigatie inklappen');
+                        collapseBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
                     });
                 }
 
-                // 5. Smooth scroll voor jump-links (offset voor sticky WP admin bar)
-                sidebar.addEventListener('click', function (e) {
-                    var link = e.target.closest('.tt-ed__sidebar-jump');
-                    if (!link) return;
+            })();
+
+            // ============ Componentweergave ============
+            // De editor toont steeds één hoofdonderdeel. De sidebar (homepage) of
+            // compacte navigatie (subpagina's) wisselt tussen de onderdelen.
+            (function () {
+                var form = document.querySelector('.tt-ed form');
+                if (!form) return;
+
+                var groups = Array.prototype.slice.call(form.querySelectorAll('.tt-ed__group'));
+                if (!groups.length) return;
+
+                var postInput = form.querySelector('input[name="post"]');
+                var storageKey = 'taxitheme-editor-' + (postInput ? postInput.value : 'page') + '-active-view';
+                var isHomeEditor = !!form.querySelector('.tt-ed__layout');
+
+                function slugify(value) {
+                    return value.toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '') || 'onderdeel';
+                }
+
+                function readActiveView() {
+                    try { return window.localStorage.getItem(storageKey); }
+                    catch (error) { return null; }
+                }
+
+                function saveActiveView(id) {
+                    try { window.localStorage.setItem(storageKey, id); }
+                    catch (error) { /* localStorage kan door browserbeleid geblokkeerd zijn. */ }
+                }
+
+                groups.forEach(function (group, index) {
+                    var head = group.querySelector(':scope > .tt-ed__group-head');
+                    if (!head) return;
+
+                    var heading = head.querySelector('h3');
+                    var label = heading ? heading.textContent.trim() : 'Onderdeel ' + (index + 1);
+                    var existingId = group.id || '';
+                    var editorId = group.getAttribute('data-section-key') || slugify(label) + '-' + index;
+
+                    group.setAttribute('data-editor-id', editorId);
+                    if (!existingId) group.id = 'tt-ed-group-' + editorId;
+                    group.classList.add('tt-ed__component-view');
+                });
+
+                // Subpagina's krijgen een compacte inhoudsnavigatie. De homepage
+                // heeft hiervoor al de uitgebreidere sectie-sidebar.
+                if (!isHomeEditor) {
+                    var nav = document.createElement('nav');
+                    nav.className = 'tt-ed__quick-nav';
+                    nav.setAttribute('aria-label', 'Onderdelen van deze pagina');
+
+                    var navTitle = document.createElement('div');
+                    navTitle.className = 'tt-ed__quick-nav-title';
+                    navTitle.innerHTML = '<strong>Onderdelen</strong><span>Er wordt één onderdeel tegelijk getoond.</span>';
+                    nav.appendChild(navTitle);
+
+                    var links = document.createElement('div');
+                    links.className = 'tt-ed__quick-nav-links';
+                    groups.forEach(function (group) {
+                        var heading = group.querySelector(':scope > .tt-ed__group-head h3');
+                        if (!heading) return;
+                        var link = document.createElement('a');
+                        link.href = '#' + group.id;
+                        link.textContent = heading.textContent.trim();
+                        links.appendChild(link);
+                    });
+                    nav.appendChild(links);
+
+                    var firstGroup = form.querySelector('.tt-ed__group');
+                    if (firstGroup) form.insertBefore(nav, firstGroup);
+                }
+
+                function selectView(group, shouldScroll) {
+                    if (!group || groups.indexOf(group) === -1) return;
+
+                    groups.forEach(function (item) {
+                        var active = item === group;
+                        item.classList.toggle('is-active-view', active);
+                        item.setAttribute('aria-hidden', active ? 'false' : 'true');
+                    });
+
+                    form.querySelectorAll('.tt-ed__sidebar-jump, .tt-ed__quick-nav-links a').forEach(function (link) {
+                        var active = link.getAttribute('href') === '#' + group.id;
+                        link.classList.toggle('is-active', active);
+                        if (active) {
+                            link.setAttribute('aria-current', 'true');
+                        } else {
+                            link.removeAttribute('aria-current');
+                        }
+                        var row = link.closest('.tt-ed__sidebar-row');
+                        if (row) row.classList.toggle('is-active-component', active);
+                    });
+
+                    saveActiveView(group.id);
+
+                    // Editors die in een verborgen component zijn geïnitialiseerd
+                    // opnieuw laten meten zodra hun component zichtbaar wordt.
+                    window.requestAnimationFrame(function () {
+                        window.dispatchEvent(new Event('resize'));
+                        if (!window.tinymce || !window.tinymce.editors) return;
+                        window.tinymce.editors.forEach(function (editor) {
+                            if (!editor || !editor.getElement || !group.contains(editor.getElement())) return;
+                            try { editor.fire('ResizeEditor'); } catch (error) { /* Geen resize-hook beschikbaar. */ }
+                        });
+                    });
+
+                    if (shouldScroll) {
+                        window.requestAnimationFrame(function () {
+                            var target = isHomeEditor ? form.querySelector('.tt-ed__main') : form.querySelector('.tt-ed__quick-nav');
+                            if (!target) target = group;
+                            var top = target.getBoundingClientRect().top + window.scrollY - 46;
+                            window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+                        });
+                    }
+                }
+
+                form.addEventListener('click', function (event) {
+                    var link = event.target.closest('.tt-ed__sidebar-jump, .tt-ed__quick-nav-links a');
+                    if (!link || !form.contains(link)) return;
                     var href = link.getAttribute('href');
                     if (!href || href.charAt(0) !== '#') return;
-                    var target = document.querySelector(href);
-                    if (!target) return;
-                    e.preventDefault();
-                    var offset = 60; // WP admin bar
-                    var top = target.getBoundingClientRect().top + window.scrollY - offset;
-                    window.scrollTo({ top: top, behavior: 'smooth' });
+                    var group = document.getElementById(href.substring(1));
+                    if (!group) return;
+                    event.preventDefault();
+                    selectView(group, true);
                 });
+
+                form.classList.add('tt-ed__form--component-mode');
+
+                var initialGroup = null;
+                if (window.location.hash) {
+                    initialGroup = document.getElementById(window.location.hash.substring(1));
+                }
+                if (groups.indexOf(initialGroup) === -1) {
+                    initialGroup = null;
+                    var storedId = readActiveView();
+                    if (storedId) initialGroup = document.getElementById(storedId);
+                }
+                if (groups.indexOf(initialGroup) === -1) initialGroup = null;
+                selectView(initialGroup || groups[0], false);
             })();
         })();
         </script>
@@ -334,7 +480,7 @@ class TaxiTheme_Page_Editor {
             <div class="tt-ed__group">
                 <div class="tt-ed__group-head">
                     <div class="tt-ed__group-head-text">
-                        <h3><?php echo TaxiTheme_Icons::svg('edit', 20); ?> Page-titel</h3>
+                        <h3><?php echo TaxiTheme_Icons::svg('edit', 20); ?> Paginatitel</h3>
                         <p>De titel bovenaan de pagina (ook gebruikt in de browser-tab en zoekresultaten).</p>
                     </div>
                 </div>
@@ -370,6 +516,7 @@ class TaxiTheme_Page_Editor {
             </div>
         </form>
         <?php
+        self::render_image_picker_js();
     }
 
     public static function register_hidden_page() {
@@ -523,12 +670,12 @@ class TaxiTheme_Page_Editor {
         $post_id = (int) ($_GET['post'] ?? 0);
         $post    = $post_id ? get_post($post_id) : null;
         if (!$post || $post->post_type !== 'page') {
-            echo '<div class="wrap"><p>Ongeldige page.</p></div>';
+            echo '<div class="wrap"><p>Ongeldige pagina.</p></div>';
             return;
         }
         $role = get_post_meta($post_id, TaxiTheme_Installer::META_ROLE, true);
         if (!$role || !self::role_has_editor($role)) {
-            echo '<div class="wrap"><p>Deze page heeft geen TaxiTheme sectie-editor.</p></div>';
+            echo '<div class="wrap"><p>Deze pagina heeft geen TaxiTheme sectie-editor.</p></div>';
             return;
         }
 
@@ -536,11 +683,12 @@ class TaxiTheme_Page_Editor {
         ?>
         <div class="tt-ed">
             <div class="tt-ed__topbar">
-                <a href="<?php echo esc_url(admin_url('admin.php?page=' . TaxiTheme_Setup::WIZARD_SLUG . '&tab=pages')); ?>" class="tt-ed__back">← Terug naar Pages</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=' . TaxiTheme_Setup::WIZARD_SLUG . '&tab=pages')); ?>" class="tt-ed__back">← Terug naar pagina's</a>
                 <div class="tt-ed__title-block">
-                    <h1 class="tt-ed__title"><?php echo esc_html($post->post_title); ?> -pagina</h1>
+                    <h1 class="tt-ed__title"><?php echo esc_html($post->post_title); ?> bewerken</h1>
+                    <p class="tt-ed__subtitle">Pas de inhoud per onderdeel aan. Je wijzigingen worden pas zichtbaar nadat je ze opslaat.</p>
                 </div>
-                <a href="<?php echo esc_url(get_permalink($post_id)); ?>" target="_blank" class="tt-ed__view">Bekijk page ↗</a>
+                <a href="<?php echo esc_url(get_permalink($post_id)); ?>" target="_blank" rel="noopener noreferrer" class="tt-ed__view">Pagina bekijken ↗</a>
             </div>
 
 
@@ -572,6 +720,10 @@ class TaxiTheme_Page_Editor {
         if ($role === 'over-ons') {
             TaxiTheme_Page_Meta::ensure_over_ons_seeded($post_id);
         }
+        // Tarieven: eenmalig voorbeelddata inseeden (klant kan direct de layout zien).
+        if ($role === 'tarieven') {
+            TaxiTheme_Page_Meta::ensure_tarieven_seeded($post_id);
+        }
 
         $intro       = TaxiTheme_Page_Meta::get_intro($post_id);
         $sections    = TaxiTheme_Page_Meta::get_sections($post_id);
@@ -586,7 +738,7 @@ class TaxiTheme_Page_Editor {
 
             <div class="tt-ed__preset-note">
                 <?php echo TaxiTheme_Icons::svg('info', 16); ?>
-                Dit zijn de <strong>page-specifieke</strong> velden. Gedeelde secties (routes,
+                Dit zijn de <strong>paginaspecifieke</strong> velden. Gedeelde secties (routes,
                 contact-CTA, diensten) beheer je op de homepage-editor.
             </div>
 
@@ -613,7 +765,7 @@ class TaxiTheme_Page_Editor {
                 <div class="tt-ed__group-head">
                     <div class="tt-ed__group-head-text">
                         <h3><?php echo TaxiTheme_Icons::svg('edit', 20); ?> Intro-tekst <span class="tt-ed__hint" style="font-weight:400;font-size:0.85rem;color:#6b7280;">(optioneel)</span></h3>
-                        <p>Verschijnt onder de page-titel bovenaan de pagina. Laat leeg voor een minimalistische header met alleen de titel.</p>
+                        <p>Verschijnt onder de paginatitel bovenaan de pagina. Laat leeg voor een rustige paginakop met alleen de titel.</p>
                     </div>
                 </div>
                 <div class="tt-ed__grid">
@@ -635,7 +787,7 @@ class TaxiTheme_Page_Editor {
                     <div class="tt-ed__group-head">
                         <div class="tt-ed__group-head-text">
                             <h3><?php echo TaxiTheme_Icons::svg('check-circle', 20); ?> USP-kaartjes (max 4)</h3>
-                            <p>Verschijnen als kaartjes onder de header — overlappen met de rand. De page-header krijgt extra padding-bottom zodat de bg tot in het midden van de kaartjes doorloopt.</p>
+                            <p>Verschijnen als kaartjes onder de paginakop. Zet de schakelaar uit om deze hele rij te verbergen.</p>
                         </div>
                         <label class="tt-ed__toggle">
                             <input type="checkbox" name="over_ons[usps_enabled]" value="1" <?php checked($usps_enabled); ?>>
@@ -648,7 +800,7 @@ class TaxiTheme_Page_Editor {
                                 <div class="tt-ed__usp-num">USP <?php echo $i + 1; ?></div>
                                 <div class="tt-ed__usp-grid">
                                     <div class="tt-ed__field">
-                                        <label>Icon</label>
+                                        <label>Icoon</label>
                                         <select name="over_ons[usps][<?php echo $i; ?>][icon]">
                                             <option value="">— geen —</option>
                                             <?php foreach ($icon_options as $ico) : ?>
@@ -677,14 +829,14 @@ class TaxiTheme_Page_Editor {
                 // Probeer home page edit URL te vinden voor de link
                 $faq_home_id = TaxiTheme_Installer::get_page_id('home');
                 if ($faq_home_id) {
-                    $faq_home_edit_url = admin_url('post.php?post=' . $faq_home_id . '&action=edit');
+                    $faq_home_edit_url = self::edit_url($faq_home_id);
                 }
                 ?>
                 <div class="tt-ed__group">
                     <div class="tt-ed__group-head">
                         <div class="tt-ed__group-head-text">
                             <h3><?php echo TaxiTheme_Icons::svg('info', 20); ?> FAQ vragen (20 slots)</h3>
-                            <p>De eerste 5 komen van de <strong>homepage FAQ</strong> (readonly hier — bewerk ze op de home-editor). Slot 6-20 zijn extra vragen die alleen op de FAQ-pagina verschijnen.</p>
+                            <p>De eerste 5 komen van de <strong>homepage-FAQ</strong> (alleen-lezen op deze pagina). Vragen 6-20 verschijnen alleen op de FAQ-pagina.</p>
                         </div>
                     </div>
 
@@ -732,9 +884,150 @@ class TaxiTheme_Page_Editor {
 
                     <div class="tt-ed__faq-more">
                         <a href="<?php echo esc_url($faq_home_edit_url); ?>" class="tt-ed__faq-more-link">
-                            Home FAQ items bewerken op de home-editor
+                            Homepage-vragen bewerken
                             <?php echo TaxiTheme_Icons::svg('arrow-right', 14); ?>
                         </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($role === 'tarieven') : ?>
+                <?php
+                $tv_vehicles     = TaxiTheme_Page_Meta::get_tarieven_vehicles($post_id);
+                $tv_destinations = TaxiTheme_Page_Meta::get_tarieven_destinations($post_id);
+                $tv_zones        = TaxiTheme_Page_Meta::get_tarieven_zones($post_id);
+                ?>
+
+                <!-- Vervoerstypes -->
+                <div class="tt-ed__group">
+                    <div class="tt-ed__group-head">
+                        <div class="tt-ed__group-head-text">
+                            <h3><?php echo TaxiTheme_Icons::svg('car', 20); ?> Vervoerstypes <span class="tt-ed__hint" style="font-weight:400;font-size:0.85rem;color:#6b7280;">(max 4 — leeg = niet getoond)</span></h3>
+                            <p>Bijvoorbeeld <em>Personenauto</em>, <em>Busje</em> of <em>Rolstoelbus</em>. Elk type toont een foto + omschrijving + de 3 basistarieven.</p>
+                        </div>
+                    </div>
+                    <div class="tt-ed__usps">
+                        <?php foreach ($tv_vehicles as $i => $veh) : ?>
+                            <div class="tt-ed__usp-row">
+                                <div class="tt-ed__usp-num">Type <?php echo $i + 1; ?></div>
+                                <div class="tt-ed__usp-grid">
+                                    <div class="tt-ed__field">
+                                        <label>Titel <span class="tt-ed__hint">(leeg = kaart weg)</span></label>
+                                        <input type="text" name="page[tarieven_vehicles][<?php echo $i; ?>][title]" value="<?php echo esc_attr($veh['title']); ?>" placeholder="Bijv. Personenauto (max 4 personen)">
+                                    </div>
+                                    <div class="tt-ed__field">
+                                        <label>Foto</label>
+                                        <?php self::render_image_field('page[tarieven_vehicles][' . $i . '][image_id]', $veh['image_id']); ?>
+                                    </div>
+                                    <div class="tt-ed__field tt-ed__field--full">
+                                        <label>Omschrijving</label>
+                                        <textarea name="page[tarieven_vehicles][<?php echo $i; ?>][description]" rows="2" placeholder="Onze prijzen zijn transparant en zonder verrassingen."><?php echo esc_textarea($veh['description']); ?></textarea>
+                                    </div>
+                                    <div class="tt-ed__field">
+                                        <label>Starttarief</label>
+                                        <input type="text" name="page[tarieven_vehicles][<?php echo $i; ?>][starttarief]" value="<?php echo esc_attr($veh['starttarief']); ?>" placeholder="€ 4,15">
+                                    </div>
+                                    <div class="tt-ed__field">
+                                        <label>Kilometertarief</label>
+                                        <input type="text" name="page[tarieven_vehicles][<?php echo $i; ?>][kilometertarief]" value="<?php echo esc_attr($veh['kilometertarief']); ?>" placeholder="€ 3,05">
+                                    </div>
+                                    <div class="tt-ed__field">
+                                        <label>Tijdstarief</label>
+                                        <input type="text" name="page[tarieven_vehicles][<?php echo $i; ?>][tijdstarief]" value="<?php echo esc_attr($veh['tijdstarief']); ?>" placeholder="€ 0,50 / min">
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Bestemmingen -->
+                <div class="tt-ed__group">
+                    <div class="tt-ed__group-head">
+                        <div class="tt-ed__group-head-text">
+                            <h3><?php echo TaxiTheme_Icons::svg('map-pin', 20); ?> Bestemmingen <span class="tt-ed__hint" style="font-weight:400;font-size:0.85rem;color:#6b7280;">(bijv. luchthavens)</span></h3>
+                            <p>Één blok met een lijst bestemmingen en hun tarief. Bijvoorbeeld voor luchthavenvervoer.</p>
+                        </div>
+                    </div>
+                    <div class="tt-ed__tariff-intro">
+                        <div class="tt-ed__field-stack">
+                            <div class="tt-ed__field">
+                                <label>Sectie-titel <span class="tt-ed__hint">(leeg = hele blok weg)</span></label>
+                                <input type="text" name="page[tarieven_destinations][title]" value="<?php echo esc_attr($tv_destinations['title']); ?>" placeholder="Bijv. Luchthaven vervoer">
+                            </div>
+                            <div class="tt-ed__field">
+                                <label>Omschrijving <span class="tt-ed__hint">(optioneel)</span></label>
+                                <textarea name="page[tarieven_destinations][description]" rows="4" placeholder="Tarieven vanaf Middelburg naar de belangrijkste luchthavens."><?php echo esc_textarea($tv_destinations['description']); ?></textarea>
+                            </div>
+                        </div>
+                        <div class="tt-ed__field">
+                            <label>Foto</label>
+                            <?php self::render_image_field('page[tarieven_destinations][image_id]', $tv_destinations['image_id']); ?>
+                        </div>
+                    </div>
+                    <div class="tt-ed__tariff-destinations">
+                        <?php foreach ($tv_destinations['items'] as $i => $it) : ?>
+                            <div class="tt-ed__tariff-destination">
+                                <label>#<?php echo $i + 1; ?></label>
+                                <input type="text" name="page[tarieven_destinations][items][<?php echo $i; ?>][label]" value="<?php echo esc_attr($it['label']); ?>" placeholder="Bestemming">
+                                <input type="text" name="page[tarieven_destinations][items][<?php echo $i; ?>][price]" value="<?php echo esc_attr($it['price']); ?>" placeholder="Prijs (bv. €250)">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Regionale zones -->
+                <div class="tt-ed__group">
+                    <div class="tt-ed__group-head">
+                        <div class="tt-ed__group-head-text">
+                            <h3><?php echo TaxiTheme_Icons::svg('map-pin', 20); ?> Regionale zones <span class="tt-ed__hint" style="font-weight:400;font-size:0.85rem;color:#6b7280;">(gegroepeerde bestemmingen)</span></h3>
+                            <p>Voor lokale ritten met vaste richtprijzen — groepeer bestemmingen per categorie (bijv. <em>korte ritten</em>, <em>badplaatsen</em>, <em>andere Zeeuwse steden</em>). Max 4 groepen, elk max 8 bestemmingen.</p>
+                        </div>
+                    </div>
+                    <div class="tt-ed__grid">
+                        <div class="tt-ed__field">
+                            <label>Sectie-titel <span class="tt-ed__hint">(leeg = hele blok weg)</span></label>
+                            <input type="text" name="page[tarieven_zones][title]" value="<?php echo esc_attr($tv_zones['title']); ?>" placeholder="Bijv. Lokale ritten en richtprijzen">
+                        </div>
+                        <div class="tt-ed__field">
+                            <label>Ondertitel <span class="tt-ed__hint">(optioneel)</span></label>
+                            <input type="text" name="page[tarieven_zones][subtitle]" value="<?php echo esc_attr($tv_zones['subtitle']); ?>" placeholder="Plan uw rit eenvoudig met onze richtprijzen">
+                        </div>
+                    </div>
+                    <div class="tt-ed__tariff-zones">
+                        <?php foreach ($tv_zones['groups'] as $gi => $g) : ?>
+                            <div class="tt-ed__tariff-zone">
+                                <div class="tt-ed__tariff-zone-label">
+                                    <span>GROEP <?php echo $gi + 1; ?></span>
+                                </div>
+                                <div class="tt-ed__tariff-zone-head">
+                                    <div class="tt-ed__field">
+                                        <label>Icoon</label>
+                                        <select name="page[tarieven_zones][groups][<?php echo $gi; ?>][icon]">
+                                            <option value="">— geen —</option>
+                                            <?php foreach ($icon_options as $ico) : ?>
+                                                <option value="<?php echo esc_attr($ico); ?>" <?php selected($g['icon'], $ico); ?>><?php echo esc_html($ico); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="tt-ed__field">
+                                        <label>Groep-titel <span class="tt-ed__hint">(leeg = weg)</span></label>
+                                        <input type="text" name="page[tarieven_zones][groups][<?php echo $gi; ?>][title]" value="<?php echo esc_attr($g['title']); ?>" placeholder="Bijv. Korte ritten">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="tt-ed__tariff-rows-label">Bestemmingen in deze groep</label>
+                                    <div class="tt-ed__tariff-rows">
+                                        <?php foreach ($g['rows'] as $ri => $r) : ?>
+                                            <div class="tt-ed__tariff-row">
+                                                <input type="text" name="page[tarieven_zones][groups][<?php echo $gi; ?>][rows][<?php echo $ri; ?>][label]" value="<?php echo esc_attr($r['label']); ?>" placeholder="Bestemming">
+                                                <input type="text" name="page[tarieven_zones][groups][<?php echo $gi; ?>][rows][<?php echo $ri; ?>][price]" value="<?php echo esc_attr($r['price']); ?>" placeholder="€30">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             <?php endif; ?>
@@ -743,8 +1036,8 @@ class TaxiTheme_Page_Editor {
                 <div class="tt-ed__group">
                     <div class="tt-ed__group-head">
                         <div class="tt-ed__group-head-text">
-                            <h3><?php echo TaxiTheme_Icons::svg('briefcase', 20); ?> Diensten detail (per service)</h3>
-                            <p>Uitgebreide info per dienst — verschijnt alleen op deze Diensten-pagina. De basis-velden (icon, titel, korte tekst, link) beheer je op de homepage-editor.</p>
+                            <h3><?php echo TaxiTheme_Icons::svg('briefcase', 20); ?> Dienstdetails</h3>
+                            <p>Uitgebreide informatie per dienst voor de Diensten-pagina. De titel, korte tekst en het icoon beheer je in de homepage-editor.</p>
                         </div>
                     </div>
                     <div class="tt-ed__usps">
@@ -786,7 +1079,7 @@ class TaxiTheme_Page_Editor {
                 <div class="tt-ed__group-head">
                     <div class="tt-ed__group-head-text">
                         <h3><?php echo TaxiTheme_Icons::svg('phone', 20); ?> CTA-banner (onderaan de pagina)</h3>
-                        <p>Overschrijf de titel, subtitle en buttons voor deze specifieke pagina. Laat velden leeg om de standaard uit de homepage-editor / bedrijfsgegevens te gebruiken.</p>
+                            <p>Geef deze pagina eventueel een eigen titel en knoppen. Laat velden leeg om de standaard uit de homepage-editor te gebruiken.</p>
                     </div>
                 </div>
                 <div class="tt-ed__grid">
@@ -902,9 +1195,12 @@ class TaxiTheme_Page_Editor {
                 <!-- Left sidebar: sectie-lijst met toggle proxy + up/down + jump link -->
                 <aside class="tt-ed__sidebar" id="tt-ed-sidebar">
                     <div class="tt-ed__sidebar-head">
-                        <strong>Secties</strong>
-                        <button type="button" class="tt-ed__sidebar-toggle" title="Inklappen">−</button>
+                        <strong>Homepage-indeling</strong>
+                        <button type="button" class="tt-ed__sidebar-toggle" title="Navigatie inklappen" aria-label="Navigatie inklappen" aria-expanded="true">−</button>
                     </div>
+                    <div class="tt-ed__sidebar-section-label">Bovenkant</div>
+                    <a href="#tt-ed-section-hero" class="tt-ed__sidebar-static tt-ed__sidebar-jump">Hero</a>
+                    <div class="tt-ed__sidebar-section-label">Secties</div>
                     <ol class="tt-ed__sidebar-list">
                         <?php foreach ($current_order as $key) :
                             // Skip keys zonder editor-panel (bv. post-content is WP's default page editor)
@@ -917,10 +1213,10 @@ class TaxiTheme_Page_Editor {
                                 <a href="#tt-ed-section-<?php echo esc_attr($key); ?>" class="tt-ed__sidebar-jump">
                                     <?php echo esc_html($label); ?>
                                 </a>
-                                <button type="button" class="tt-ed__sidebar-btn tt-ed__sidebar-btn--up" data-dir="up" title="Omhoog">↑</button>
-                                <button type="button" class="tt-ed__sidebar-btn tt-ed__sidebar-btn--down" data-dir="down" title="Omlaag">↓</button>
+                                <button type="button" class="tt-ed__sidebar-btn tt-ed__sidebar-btn--up" data-dir="up" title="Omhoog" aria-label="<?php echo esc_attr($label); ?> omhoog verplaatsen">↑</button>
+                                <button type="button" class="tt-ed__sidebar-btn tt-ed__sidebar-btn--down" data-dir="down" title="Omlaag" aria-label="<?php echo esc_attr($label); ?> omlaag verplaatsen">↓</button>
                                 <?php if ($toggle_key) : ?>
-                                    <button type="button" class="tt-ed__sidebar-switch <?php echo $is_enabled ? 'is-on' : ''; ?>" title="Aan/uit">
+                                    <button type="button" class="tt-ed__sidebar-switch <?php echo $is_enabled ? 'is-on' : ''; ?>" title="Tonen of verbergen" aria-label="<?php echo esc_attr($label); ?> tonen of verbergen" aria-pressed="<?php echo $is_enabled ? 'true' : 'false'; ?>">
                                         <span class="tt-ed__sidebar-switch-track"><span class="tt-ed__sidebar-switch-thumb"></span></span>
                                     </button>
                                 <?php else : ?>
@@ -930,15 +1226,18 @@ class TaxiTheme_Page_Editor {
                             </li>
                         <?php endforeach; ?>
                     </ol>
+                    <div class="tt-ed__sidebar-section-label">Onderkant</div>
+                    <a href="#tt-ed-section-contact-cta" class="tt-ed__sidebar-static tt-ed__sidebar-jump">Contact CTA</a>
+                    <p class="tt-ed__sidebar-help">Klik op een naam om dat onderdeel te bewerken. Gebruik de pijlen voor de volgorde en de schakelaar voor tonen of verbergen.</p>
                 </aside>
 
                 <div class="tt-ed__main">
             <!-- Hero -->
-            <div class="tt-ed__group">
+            <div class="tt-ed__group" id="tt-ed-section-hero">
                 <div class="tt-ed__group-head">
                     <div class="tt-ed__group-head-text">
                         <h3><?php echo TaxiTheme_Icons::svg('target', 20); ?> Hero</h3>
-                        <p>Bovenste sectie met bedrijfsnaam en booking-formulier.</p>
+                        <p>Bovenste onderdeel met bedrijfsnaam en boekingsformulier.</p>
                     </div>
                 </div>
 
@@ -1362,7 +1661,7 @@ class TaxiTheme_Page_Editor {
                     <?php self::render_section_order_controls('spotlight'); ?>
                     <div class="tt-ed__group-head-text">
                         <h3><?php echo TaxiTheme_Icons::svg('star', 20); ?> Spotlight (1 prominente kaart)</h3>
-                        <p>Eén full-width kaart om je belangrijkste dienst extra te highlighten. Verschijnt vooral in preset "One-page".</p>
+                        <p>Eén brede kaart om je belangrijkste dienst extra te benadrukken. Vooral bedoeld voor de One-page-stijl.</p>
                     </div>
                     <label class="tt-ed__toggle">
                         <input type="checkbox" name="home[spotlight_enabled]" value="1" <?php checked($data['spotlight_enabled'], 1); ?>>
@@ -1542,7 +1841,7 @@ class TaxiTheme_Page_Editor {
 
                                 <?php if ($preset === 'simpel') : ?>
                                     <div class="tt-ed__field tt-ed__field--full">
-                                        <label>Afbeelding voor homepage-card <span class="tt-ed__hint">(optioneel — leeg = icon getoond)</span></label>
+                                        <label>Afbeelding voor homepagekaart <span class="tt-ed__hint">(optioneel — leeg = icoon getoond)</span></label>
                                         <?php self::render_image_field('home[services_items][' . $i . '][home_image_id]', $svc['home_image_id'] ?? 0); ?>
                                     </div>
                                 <?php else :
@@ -1898,7 +2197,7 @@ class TaxiTheme_Page_Editor {
             </div>
 
             <!-- Contact CTA -->
-            <div class="tt-ed__group">
+            <div class="tt-ed__group" id="tt-ed-section-contact-cta">
                 <div class="tt-ed__group-head">
                     <div class="tt-ed__group-head-text">
                         <h3><?php echo TaxiTheme_Icons::svg('phone', 20); ?> Contact CTA</h3>
@@ -1961,6 +2260,8 @@ class TaxiTheme_Page_Editor {
                 font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
                 padding: 32px 48px 60px;
                 color: #14161f;
+                max-width: 1600px;
+                margin: 0 auto;
             }
             .tt-ed * { box-sizing: border-box; }
 
@@ -1980,23 +2281,18 @@ class TaxiTheme_Page_Editor {
             }
             .tt-ed__back:hover { color: #14161f; }
             .tt-ed__title-block { text-align: center; }
-            .tt-ed__eyebrow {
-                display: inline-block;
-                padding: 4px 12px;
-                background: rgba(245, 184, 0, 0.15);
-                color: #c17d00;
-                border-radius: 999px;
-                font-size: 0.75rem;
-                font-weight: 700;
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
-                margin-bottom: 6px;
-            }
             .tt-ed__title {
                 font-size: 1.6rem;
                 font-weight: 800;
                 margin: 0;
                 letter-spacing: -0.025em;
+            }
+            .tt-ed__subtitle {
+                max-width: 620px;
+                margin: 7px auto 0;
+                color: #6b7280;
+                font-size: 0.86rem;
+                line-height: 1.5;
             }
             .tt-ed__view {
                 justify-self: end;
@@ -2038,8 +2334,18 @@ class TaxiTheme_Page_Editor {
                 margin-bottom: 16px;
                 box-shadow: 0 2px 8px -4px rgba(20, 22, 31, 0.06);
                 transition: box-shadow 0.15s;
+                scroll-margin-top: 32px;
             }
             .tt-ed__group:hover { box-shadow: 0 6px 20px -8px rgba(20, 22, 31, 0.12); }
+            .tt-ed__form--component-mode .tt-ed__component-view { display: none; }
+            .tt-ed__form--component-mode .tt-ed__component-view.is-active-view {
+                display: block;
+                animation: tt-ed-view-in 0.2s ease;
+            }
+            @keyframes tt-ed-view-in {
+                from { opacity: 0; transform: translateY(5px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
 
             .tt-ed__group-head {
                 display: grid;
@@ -2064,6 +2370,43 @@ class TaxiTheme_Page_Editor {
                 font-size: 0.9rem;
                 color: #6b7280;
                 margin: 0;
+            }
+
+            /* Compacte inhoudsnavigatie voor subpagina's. */
+            .tt-ed__quick-nav {
+                display: grid;
+                grid-template-columns: minmax(180px, 0.7fr) minmax(300px, 2fr);
+                gap: 18px;
+                align-items: center;
+                padding: 18px 20px;
+                margin: 0 0 18px;
+                background: #14161f;
+                color: #fff;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px -12px rgba(20, 22, 31, 0.4);
+            }
+            .tt-ed__quick-nav-title { display: flex; flex-direction: column; gap: 3px; }
+            .tt-ed__quick-nav-title strong { font-size: 0.92rem; }
+            .tt-ed__quick-nav-title span { color: #aeb3bf; font-size: 0.76rem; }
+            .tt-ed__quick-nav-links { display: flex; flex-wrap: wrap; gap: 7px; }
+            .tt-ed__quick-nav-links a {
+                display: inline-flex;
+                padding: 6px 10px;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 999px;
+                color: #fff;
+                font-size: 0.76rem;
+                font-weight: 600;
+                line-height: 1.2;
+                text-decoration: none;
+            }
+            .tt-ed__quick-nav-links a:hover,
+            .tt-ed__quick-nav-links a:focus-visible,
+            .tt-ed__quick-nav-links a.is-active {
+                color: #14161f;
+                background: #f5b800;
+                border-color: #f5b800;
+                outline: none;
             }
 
             /* Form fields */
@@ -2827,10 +3170,115 @@ class TaxiTheme_Page_Editor {
                 min-height: 100px;
                 padding: 10px;
             }
+
+            /* Tarieven-editor: ruime kaarten op desktop, logisch gestapeld op mobiel. */
+            .tt-ed__tariff-intro {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px 24px;
+                align-items: start;
+            }
+            .tt-ed__field-stack { display: flex; flex-direction: column; gap: 14px; }
+            .tt-ed__tariff-destinations {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 12px;
+                margin-top: 20px;
+            }
+            .tt-ed__tariff-destination,
+            .tt-ed__tariff-zone {
+                min-width: 0;
+                background: #fdfcf7;
+                border: 1px solid #f0ede2;
+                border-radius: 10px;
+            }
+            .tt-ed__tariff-destination {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                padding: 12px;
+            }
+            .tt-ed__tariff-destination label {
+                color: #6b7280;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .tt-ed__tariff-destination input,
+            .tt-ed__tariff-row input {
+                width: 100%;
+                min-width: 0;
+                padding: 8px 10px;
+                border: 1px solid #e6e2d5;
+                border-radius: 6px;
+                background: #fff;
+                font: inherit;
+                font-size: 0.85rem;
+            }
+            .tt-ed__tariff-destinations input:focus,
+            .tt-ed__tariff-rows input:focus {
+                border-color: #f5b800;
+                box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.15);
+                outline: none;
+            }
+            .tt-ed__tariff-zones {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+                margin-top: 16px;
+            }
+            .tt-ed__tariff-zone {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px;
+            }
+            .tt-ed__tariff-zone-label { display: flex; align-items: center; }
+            .tt-ed__tariff-zone-label span {
+                padding: 3px 8px;
+                border-radius: 5px;
+                background: #14161f;
+                color: #fff;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+            }
+            .tt-ed__tariff-zone-head {
+                display: grid;
+                grid-template-columns: 130px 1fr;
+                gap: 10px;
+            }
+            .tt-ed__tariff-zone-head .tt-ed__field { min-width: 0; }
+            .tt-ed__tariff-rows-label {
+                display: block;
+                margin-bottom: 6px;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+            .tt-ed__tariff-rows {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
+            }
+            .tt-ed__tariff-row {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 76px;
+                gap: 4px;
+                min-width: 0;
+            }
             @media (max-width: 1100px) {
                 .tt-ed__page-sections--grid {
                     grid-template-columns: 1fr;
                 }
+                .tt-ed__tariff-destinations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+                .tt-ed__tariff-zones { grid-template-columns: 1fr; }
+            }
+            @media (max-width: 700px) {
+                .tt-ed__tariff-intro,
+                .tt-ed__tariff-destinations,
+                .tt-ed__tariff-rows { grid-template-columns: 1fr; }
+                .tt-ed__tariff-zone-head { grid-template-columns: 1fr; }
             }
 
             /* ============ Home-editor layout met left sidebar ============ */
@@ -2856,7 +3304,10 @@ class TaxiTheme_Page_Editor {
                 padding: 8px;
             }
             .tt-ed__sidebar.is-collapsed .tt-ed__sidebar-list,
-            .tt-ed__sidebar.is-collapsed .tt-ed__sidebar-head strong {
+            .tt-ed__sidebar.is-collapsed .tt-ed__sidebar-head strong,
+            .tt-ed__sidebar.is-collapsed .tt-ed__sidebar-section-label,
+            .tt-ed__sidebar.is-collapsed .tt-ed__sidebar-static,
+            .tt-ed__sidebar.is-collapsed .tt-ed__sidebar-help {
                 display: none;
             }
             .tt-ed__sidebar.is-collapsed + .tt-ed__main { /* no effect, layout is grid */ }
@@ -2895,6 +3346,27 @@ class TaxiTheme_Page_Editor {
                 flex-direction: column;
                 gap: 4px;
             }
+            .tt-ed__sidebar-section-label {
+                margin: 14px 8px 7px;
+                color: #9ca3af;
+                font-size: 0.66rem;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+            .tt-ed__sidebar-static {
+                display: block;
+                padding: 9px 10px;
+                border: 1px solid #f0ede2;
+                border-radius: 8px;
+                background: #fff;
+            }
+            .tt-ed__sidebar-static.is-active {
+                color: #14161f;
+                border-color: #f5b800;
+                background: #fff8e5;
+                box-shadow: inset 3px 0 0 #f5b800;
+            }
             .tt-ed__sidebar-row {
                 display: grid;
                 grid-template-columns: 1fr auto auto auto;
@@ -2909,6 +3381,11 @@ class TaxiTheme_Page_Editor {
             }
             .tt-ed__sidebar-row.is-enabled { opacity: 1; }
             .tt-ed__sidebar-row:hover { background: #fff8e5; }
+            .tt-ed__sidebar-row.is-active-component {
+                background: #fff8e5;
+                border-color: #f5b800;
+                box-shadow: inset 3px 0 0 #f5b800;
+            }
             .tt-ed__sidebar-btn {
                 display: inline-flex;
                 align-items: center;
@@ -2970,6 +3447,13 @@ class TaxiTheme_Page_Editor {
                 white-space: nowrap;
             }
             .tt-ed__sidebar-jump:hover { color: #c17d00; }
+            .tt-ed__sidebar-jump.is-active { color: #14161f; }
+            .tt-ed__sidebar-help {
+                margin: 10px 4px 2px;
+                color: #8a8f99;
+                font-size: 0.68rem;
+                line-height: 1.5;
+            }
 
             /* Visual feedback bij verplaatsen */
             .tt-ed__group--moved {
@@ -2989,6 +3473,7 @@ class TaxiTheme_Page_Editor {
                     position: static;
                     max-height: none;
                 }
+                .tt-ed__quick-nav { grid-template-columns: 1fr; }
             }
 
             /* Actions card */
@@ -3047,6 +3532,7 @@ class TaxiTheme_Page_Editor {
                 .tt-ed__topbar { grid-template-columns: 1fr; text-align: left; gap: 12px; }
                 .tt-ed__back, .tt-ed__view { justify-self: start; }
                 .tt-ed__title-block { text-align: left; }
+                .tt-ed__subtitle { margin-left: 0; }
                 .tt-ed__grid { grid-template-columns: 1fr; }
                 .tt-ed__usps,
                 .tt-ed__features { grid-template-columns: 1fr; }

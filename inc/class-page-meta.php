@@ -41,6 +41,16 @@ class TaxiTheme_Page_Meta {
     ];
     const META_OVER_ONS_USPS = '_taxitheme_over_ons_usps';
 
+    // Tarieven-pagina uitbreiding — rijke prijs-blokken.
+    // Zie template/tarieven.php voor render, en class-page-editor.php voor UI.
+    const META_TARIEVEN_VEHICLES     = '_taxitheme_tarieven_vehicles';
+    const META_TARIEVEN_DESTINATIONS = '_taxitheme_tarieven_destinations';
+    const META_TARIEVEN_ZONES        = '_taxitheme_tarieven_zones';
+    const TARIEVEN_VEHICLES_MAX      = 4;
+    const TARIEVEN_DEST_ITEMS_MAX    = 10;
+    const TARIEVEN_ZONES_GROUPS_MAX  = 4;
+    const TARIEVEN_ZONES_ROWS_MAX    = 8;
+
     /**
      * Intro-tekst voor de page. Losse regels = paragrafen (lege regels splitten).
      */
@@ -122,6 +132,72 @@ class TaxiTheme_Page_Meta {
             if ($v === '') delete_post_meta($post_id, $meta_key);
             else update_post_meta($post_id, $meta_key, $v);
         }
+
+        // Tarieven — vervoerstypes (4 slots)
+        if (isset($input['tarieven_vehicles']) && is_array($input['tarieven_vehicles'])) {
+            $out = [];
+            for ($i = 0; $i < self::TARIEVEN_VEHICLES_MAX; $i++) {
+                $v = $input['tarieven_vehicles'][$i] ?? [];
+                $out[$i] = [
+                    'title'         => sanitize_text_field($v['title'] ?? ''),
+                    'description'   => sanitize_textarea_field($v['description'] ?? ''),
+                    'image_id'      => (int) ($v['image_id'] ?? 0),
+                    'starttarief'   => sanitize_text_field($v['starttarief'] ?? ''),
+                    'kilometertarief' => sanitize_text_field($v['kilometertarief'] ?? ''),
+                    'tijdstarief'   => sanitize_text_field($v['tijdstarief'] ?? ''),
+                ];
+            }
+            update_post_meta($post_id, self::META_TARIEVEN_VEHICLES, $out);
+        }
+
+        // Tarieven — bestemmingen (1 blok, dynamische items)
+        if (isset($input['tarieven_destinations']) && is_array($input['tarieven_destinations'])) {
+            $d = $input['tarieven_destinations'];
+            $items_in = isset($d['items']) && is_array($d['items']) ? $d['items'] : [];
+            $items = [];
+            for ($i = 0; $i < self::TARIEVEN_DEST_ITEMS_MAX; $i++) {
+                $it = $items_in[$i] ?? [];
+                $items[$i] = [
+                    'label' => sanitize_text_field($it['label'] ?? ''),
+                    'price' => sanitize_text_field($it['price'] ?? ''),
+                ];
+            }
+            update_post_meta($post_id, self::META_TARIEVEN_DESTINATIONS, [
+                'title'       => sanitize_text_field($d['title'] ?? ''),
+                'description' => sanitize_textarea_field($d['description'] ?? ''),
+                'image_id'    => (int) ($d['image_id'] ?? 0),
+                'items'       => $items,
+            ]);
+        }
+
+        // Tarieven — regionale zones (1 blok, groepen met rows)
+        if (isset($input['tarieven_zones']) && is_array($input['tarieven_zones'])) {
+            $z = $input['tarieven_zones'];
+            $groups_in = isset($z['groups']) && is_array($z['groups']) ? $z['groups'] : [];
+            $groups = [];
+            for ($i = 0; $i < self::TARIEVEN_ZONES_GROUPS_MAX; $i++) {
+                $g = $groups_in[$i] ?? [];
+                $rows_in = isset($g['rows']) && is_array($g['rows']) ? $g['rows'] : [];
+                $rows = [];
+                for ($j = 0; $j < self::TARIEVEN_ZONES_ROWS_MAX; $j++) {
+                    $r = $rows_in[$j] ?? [];
+                    $rows[$j] = [
+                        'label' => sanitize_text_field($r['label'] ?? ''),
+                        'price' => sanitize_text_field($r['price'] ?? ''),
+                    ];
+                }
+                $groups[$i] = [
+                    'icon'  => sanitize_key($g['icon'] ?? ''),
+                    'title' => sanitize_text_field($g['title'] ?? ''),
+                    'rows'  => $rows,
+                ];
+            }
+            update_post_meta($post_id, self::META_TARIEVEN_ZONES, [
+                'title'    => sanitize_text_field($z['title'] ?? ''),
+                'subtitle' => sanitize_textarea_field($z['subtitle'] ?? ''),
+                'groups'   => $groups,
+            ]);
+        }
     }
 
     /**
@@ -172,6 +248,246 @@ class TaxiTheme_Page_Meta {
         return array_values(array_filter(self::get_over_ons_usps($post_id), function ($u) {
             return !empty($u['title']) || !empty($u['text']);
         }));
+    }
+
+    // ================================================================
+    //  Tarieven-pagina — vervoerstypes, bestemmingen, regionale zones
+    // ================================================================
+
+    /**
+     * 4 vervoerstype-slots. Elk: title + description + image + starttarief/km/tijd.
+     */
+    public static function get_tarieven_vehicles($post_id) {
+        $stored = get_post_meta($post_id, self::META_TARIEVEN_VEHICLES, true);
+        if (!is_array($stored)) $stored = [];
+        $out = [];
+        for ($i = 0; $i < self::TARIEVEN_VEHICLES_MAX; $i++) {
+            $v = $stored[$i] ?? [];
+            $out[$i] = [
+                'title'         => isset($v['title'])         ? (string) $v['title']         : '',
+                'description'   => isset($v['description'])   ? (string) $v['description']   : '',
+                'image_id'      => isset($v['image_id'])      ? (int)    $v['image_id']      : 0,
+                'starttarief'   => isset($v['starttarief'])   ? (string) $v['starttarief']   : '',
+                'kilometertarief' => isset($v['kilometertarief']) ? (string) $v['kilometertarief'] : '',
+                'tijdstarief'   => isset($v['tijdstarief'])   ? (string) $v['tijdstarief']   : '',
+            ];
+        }
+        return $out;
+    }
+
+    public static function get_visible_tarieven_vehicles($post_id) {
+        return array_values(array_filter(self::get_tarieven_vehicles($post_id), function ($v) {
+            return !empty($v['title']);
+        }));
+    }
+
+    /**
+     * Bestemmingen-blok: 1 blok met sectie-titel/desc/foto + max 10 items (label/prijs).
+     */
+    public static function get_tarieven_destinations($post_id) {
+        $stored = get_post_meta($post_id, self::META_TARIEVEN_DESTINATIONS, true);
+        if (!is_array($stored)) $stored = [];
+        $items_stored = isset($stored['items']) && is_array($stored['items']) ? $stored['items'] : [];
+        $items = [];
+        for ($i = 0; $i < self::TARIEVEN_DEST_ITEMS_MAX; $i++) {
+            $it = $items_stored[$i] ?? [];
+            $items[$i] = [
+                'label' => isset($it['label']) ? (string) $it['label'] : '',
+                'price' => isset($it['price']) ? (string) $it['price'] : '',
+            ];
+        }
+        return [
+            'title'       => isset($stored['title'])       ? (string) $stored['title']       : '',
+            'description' => isset($stored['description']) ? (string) $stored['description'] : '',
+            'image_id'    => isset($stored['image_id'])    ? (int)    $stored['image_id']    : 0,
+            'items'       => $items,
+        ];
+    }
+
+    /**
+     * Defaults voor de Tarieven-pagina — realistische voorbeelddata zodat de
+     * klant direct ziet hoe alles er uit ziet, en het als startpunt kan editen.
+     */
+    public static function tarieven_defaults() {
+        $city = TaxiTheme_Company_Info::get('city') ?: 'uw regio';
+        return [
+            'vehicles' => [
+                [
+                    'title'           => 'Personenauto',
+                    'description'     => 'Comfortabele wagen voor maximaal 4 personen. Ideaal voor stadsritten, luchthavenvervoer en zakelijke afspraken.',
+                    'starttarief'     => '€ 4,15',
+                    'kilometertarief' => '€ 3,05',
+                    'tijdstarief'     => '€ 0,50 / min',
+                ],
+                [
+                    'title'           => 'Busje',
+                    'description'     => 'Ruime bus voor 5 tot 8 personen. Extra bagageruimte en comfort voor groepen.',
+                    'starttarief'     => '€ 8,44',
+                    'kilometertarief' => '€ 3,85',
+                    'tijdstarief'     => '€ 0,57 / min',
+                ],
+            ],
+            'destinations' => [
+                'title'       => 'Luchthaven vervoer',
+                'description' => 'Vaste tarieven vanaf ' . $city . ' naar de belangrijkste luchthavens.',
+                'items' => [
+                    ['label' => 'Schiphol (Amsterdam)', 'price' => 'Vanaf €250'],
+                    ['label' => 'Rotterdam The Hague',  'price' => 'Vanaf €220'],
+                    ['label' => 'Eindhoven',            'price' => 'Vanaf €240'],
+                    ['label' => 'Brussel (Zaventem)',   'price' => 'Vanaf €240'],
+                    ['label' => 'Antwerpen',            'price' => 'Vanaf €180'],
+                    ['label' => 'Charleroi',            'price' => 'Vanaf €290'],
+                ],
+            ],
+            'zones' => [
+                'title'    => 'Lokale ritten en richtprijzen vanuit ' . $city,
+                'subtitle' => 'Plan uw rit eenvoudig met onze richtprijzen. Voor een exacte prijs kunt u altijd contact opnemen.',
+                'groups' => [
+                    [
+                        'icon'  => 'car',
+                        'title' => 'Korte ritten naar nabijgelegen dorpen',
+                        'rows' => [
+                            ['label' => 'Koudekerke / Oost-Souburg', 'price' => '€25'],
+                            ['label' => 'Arnemuiden / Sint Laurens', 'price' => '€30'],
+                            ['label' => 'Grijpskerke, Kleverskerke', 'price' => '€35'],
+                            ['label' => 'Ritthem',                   'price' => '€35'],
+                            ['label' => 'Serooskerke of Veere',      'price' => '€35'],
+                            ['label' => 'Vlissingen',                'price' => '€30'],
+                        ],
+                    ],
+                    [
+                        'icon'  => 'map-pin',
+                        'title' => 'Ritten naar populaire badplaatsen',
+                        'rows' => [
+                            ['label' => 'Biggekerke / Dishoek',        'price' => '€40'],
+                            ['label' => 'Gapinge',                     'price' => '€40'],
+                            ['label' => 'Oostkapelle / Zoutelande',    'price' => '€45'],
+                            ['label' => 'Aagtekerke',                  'price' => '€45'],
+                            ['label' => 'Vrouwenpolder',               'price' => '€50'],
+                            ['label' => 'Domburg',                     'price' => '€55'],
+                            ['label' => 'Westkapelle',                 'price' => '€65'],
+                        ],
+                    ],
+                    [
+                        'icon'  => 'briefcase',
+                        'title' => 'Ritten naar andere Zeeuwse steden',
+                        'rows' => [
+                            ['label' => 'Kamperland',        'price' => '€70'],
+                            ['label' => 'Goes / Kortgene',   'price' => '€85'],
+                            ['label' => 'Colijnsplaat',      'price' => '€95'],
+                        ],
+                    ],
+                    [
+                        'icon'  => 'users',
+                        'title' => 'Busvervoer (5-8 personen)',
+                        'rows' => [
+                            ['label' => 'Toeslag boven standaardtarief', 'price' => 'op aanvraag'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Vul de tarieven-pagina met defaults uit tarieven_defaults().
+     * Idempotent via post_meta flag.
+     */
+    public static function ensure_tarieven_seeded($post_id, $force = false) {
+        if (!$force && get_post_meta($post_id, '_taxitheme_tarieven_seeded', true)) {
+            return false;
+        }
+        $defaults = self::tarieven_defaults();
+
+        // Vervoerstypes
+        $vehicles = [];
+        for ($i = 0; $i < self::TARIEVEN_VEHICLES_MAX; $i++) {
+            $v = $defaults['vehicles'][$i] ?? [];
+            $vehicles[$i] = [
+                'title'           => $v['title']           ?? '',
+                'description'     => $v['description']     ?? '',
+                'image_id'        => 0,
+                'starttarief'     => $v['starttarief']     ?? '',
+                'kilometertarief' => $v['kilometertarief'] ?? '',
+                'tijdstarief'     => $v['tijdstarief']     ?? '',
+            ];
+        }
+        update_post_meta($post_id, self::META_TARIEVEN_VEHICLES, $vehicles);
+
+        // Bestemmingen
+        $dest_items = [];
+        for ($i = 0; $i < self::TARIEVEN_DEST_ITEMS_MAX; $i++) {
+            $it = $defaults['destinations']['items'][$i] ?? [];
+            $dest_items[$i] = [
+                'label' => $it['label'] ?? '',
+                'price' => $it['price'] ?? '',
+            ];
+        }
+        update_post_meta($post_id, self::META_TARIEVEN_DESTINATIONS, [
+            'title'       => $defaults['destinations']['title'],
+            'description' => $defaults['destinations']['description'],
+            'image_id'    => 0,
+            'items'       => $dest_items,
+        ]);
+
+        // Regionale zones
+        $zone_groups = [];
+        for ($i = 0; $i < self::TARIEVEN_ZONES_GROUPS_MAX; $i++) {
+            $g = $defaults['zones']['groups'][$i] ?? [];
+            $rows = [];
+            for ($j = 0; $j < self::TARIEVEN_ZONES_ROWS_MAX; $j++) {
+                $r = $g['rows'][$j] ?? [];
+                $rows[$j] = [
+                    'label' => $r['label'] ?? '',
+                    'price' => $r['price'] ?? '',
+                ];
+            }
+            $zone_groups[$i] = [
+                'icon'  => $g['icon']  ?? '',
+                'title' => $g['title'] ?? '',
+                'rows'  => $rows,
+            ];
+        }
+        update_post_meta($post_id, self::META_TARIEVEN_ZONES, [
+            'title'    => $defaults['zones']['title'],
+            'subtitle' => $defaults['zones']['subtitle'],
+            'groups'   => $zone_groups,
+        ]);
+
+        update_post_meta($post_id, '_taxitheme_tarieven_seeded', 1);
+        return true;
+    }
+
+    /**
+     * Regionale zones — sectie-titel + subtitle + max 5 groepen, per groep icon + title + max 8 rows.
+     */
+    public static function get_tarieven_zones($post_id) {
+        $stored = get_post_meta($post_id, self::META_TARIEVEN_ZONES, true);
+        if (!is_array($stored)) $stored = [];
+        $groups_stored = isset($stored['groups']) && is_array($stored['groups']) ? $stored['groups'] : [];
+        $groups = [];
+        for ($i = 0; $i < self::TARIEVEN_ZONES_GROUPS_MAX; $i++) {
+            $g = $groups_stored[$i] ?? [];
+            $rows_stored = isset($g['rows']) && is_array($g['rows']) ? $g['rows'] : [];
+            $rows = [];
+            for ($j = 0; $j < self::TARIEVEN_ZONES_ROWS_MAX; $j++) {
+                $r = $rows_stored[$j] ?? [];
+                $rows[$j] = [
+                    'label' => isset($r['label']) ? (string) $r['label'] : '',
+                    'price' => isset($r['price']) ? (string) $r['price'] : '',
+                ];
+            }
+            $groups[$i] = [
+                'icon'  => isset($g['icon'])  ? sanitize_key($g['icon']) : '',
+                'title' => isset($g['title']) ? (string) $g['title'] : '',
+                'rows'  => $rows,
+            ];
+        }
+        return [
+            'title'    => isset($stored['title'])    ? (string) $stored['title']    : '',
+            'subtitle' => isset($stored['subtitle']) ? (string) $stored['subtitle'] : '',
+            'groups'   => $groups,
+        ];
     }
 
     /**

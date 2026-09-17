@@ -67,7 +67,12 @@ p { margin: 0 0 1em; }
     padding: 0 24px;
 }
 
-/* Header — donker navy */
+/*
+ * Safe-area support voor iPhone notch / Dynamic Island / home indicator.
+ * viewport-fit=cover in <meta> laat de page-bg edge-to-edge doorlopen; hier
+ * zorgen we dat de INHOUD (nav, container padding, footer) niet onder de
+ * notch of home-indicator verdwijnt. Backgrounds blijven full-bleed.
+ */
 .tt-header {
     background: var(--tt-nav);
     color: var(--tt-nav-fg);
@@ -75,6 +80,7 @@ p { margin: 0 0 1em; }
     top: 0;
     z-index: 10;
     box-shadow: var(--tt-shadow);
+    padding-top: env(safe-area-inset-top);
 }
 .tt-header__inner {
     display: flex;
@@ -82,6 +88,16 @@ p { margin: 0 0 1em; }
     justify-content: space-between;
     padding: 20px 0;
     gap: 40px;
+}
+/* Footer krijgt extra bottom-padding voor iPhone home indicator */
+.tt-footer {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+}
+/* Container krijgt safe-area padding op zijkanten (voor landscape mode
+   waar de notch links of rechts zit) — additief met de 24px die er al staat. */
+.tt-container {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
 }
 .tt-brand {
     font-weight: 800;
@@ -373,6 +389,46 @@ p { margin: 0 0 1em; }
 .tt-footer__legal a { color: rgba(255, 255, 255, 0.7); text-decoration: none; }
 .tt-footer__legal a:hover { color: #fff; opacity: 1; }
 .tt-footer__legal-sep { color: rgba(255, 255, 255, 0.3); }
+
+/* Breadcrumbs — auto-gegenereerd op sub-pages, boven de page-header title.
+   Neutrale basis-styling; presets kunnen overschrijven voor bg-contrast. */
+.tt-breadcrumbs {
+    margin-bottom: 16px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+.tt-breadcrumbs__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    align-items: center;
+}
+.tt-breadcrumbs__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.tt-breadcrumbs__link {
+    color: var(--tt-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+.tt-breadcrumbs__link:hover {
+    color: var(--tt-fg);
+    text-decoration: underline;
+}
+.tt-breadcrumbs__sep {
+    color: var(--tt-muted);
+    opacity: 0.6;
+    font-size: 0.9em;
+}
+.tt-breadcrumbs__current {
+    color: var(--tt-fg);
+    font-weight: 600;
+}
 
 /* Legal-content: leesbare prose voor privacy/voorwaarden */
 .tt-legal-content {
@@ -1872,6 +1928,248 @@ a.tt-contact-info__card:hover {
     white-space: nowrap;
     letter-spacing: -0.02em;
     flex-shrink: 0;
+}
+
+/*
+ * Tarieven-pagina — rijke prijs-blokken
+ * Drie types: vervoerstypes (car cards), bestemmingen (list), regionale zones (grouped).
+ * Neutrale basis-styling; presets kunnen overschrijven in eigen tarieven-CSS.
+ */
+
+/* Vervoerstypes: 2-koloms grid, elke kaart intern verticaal gestackt
+   (foto top → titel + omschrijving → tarieven onderaan als 3-koloms rij). */
+.tt-tv-vehicles { padding: 60px 0; }
+.tt-tv-vehicles__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.tt-tv-vehicle {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 16px;
+    overflow: hidden;
+}
+.tt-tv-vehicle__image {
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f5f9;
+    margin: -24px -24px 20px;
+    border-radius: 16px 16px 0 0;
+}
+.tt-tv-vehicle__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-tv-vehicle__body {
+    min-width: 0;
+    margin-bottom: 20px;
+}
+.tt-tv-vehicle__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: var(--tt-fg);
+}
+.tt-tv-vehicle__desc {
+    color: var(--tt-muted);
+    line-height: 1.55;
+    margin: 0;
+    font-size: 0.94rem;
+}
+.tt-tv-vehicle__rates {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--tt-line);
+    margin-top: auto;
+}
+.tt-tv-rate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+.tt-tv-rate__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(var(--tt-accent-rgb, 15, 23, 42), 0.08);
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+.tt-tv-rate__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tt-tv-rate__label {
+    font-size: 0.72rem;
+    color: var(--tt-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+.tt-tv-rate__value {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--tt-fg);
+    margin-top: 2px;
+}
+
+/* Bestemmingen: kop + kaart met foto links + verticale lijst */
+.tt-tv-destinations { padding: 60px 0; background: var(--tt-bg); }
+.tt-tv-destinations__head { text-align: left; }
+.tt-tv-destinations__card {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: start;
+    padding: 32px;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.tt-tv-destinations__image {
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+.tt-tv-destinations__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.tt-tv-destinations__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 24px;
+}
+.tt-tv-dest-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+}
+.tt-tv-dest-item__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+.tt-tv-dest-item__body { display: flex; flex-direction: column; }
+.tt-tv-dest-item__label {
+    font-weight: 600;
+    color: var(--tt-fg);
+    font-size: 0.98rem;
+}
+.tt-tv-dest-item__price {
+    color: var(--tt-muted);
+    font-size: 0.88rem;
+    margin-top: 2px;
+}
+
+/* Regionale zones: grid van groepen met icoon + bullet-lijst */
+.tt-tv-zones { padding: 60px 0; }
+.tt-tv-zones__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+@media (max-width: 1080px) {
+    .tt-tv-zones__grid { grid-template-columns: repeat(2, 1fr); }
+}
+.tt-tv-zone {
+    padding: 24px;
+    background: var(--tt-surface);
+    border: 1px solid var(--tt-line);
+    border-radius: 14px;
+}
+.tt-tv-zone__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.tt-tv-zone__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(var(--tt-accent-rgb, 15, 23, 42), 0.08);
+    color: var(--tt-accent);
+    flex-shrink: 0;
+}
+.tt-tv-zone__title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--tt-fg);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+.tt-tv-zone__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.tt-tv-zone__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--tt-line);
+    font-size: 0.92rem;
+}
+.tt-tv-zone__row:last-child { border-bottom: none; }
+.tt-tv-zone__label { color: var(--tt-fg); }
+.tt-tv-zone__price { color: var(--tt-muted); font-weight: 600; white-space: nowrap; }
+
+/* Mobile: alle blokken stacken naar 1-kolom */
+@media (max-width: 780px) {
+    .tt-tv-vehicle {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+    }
+    .tt-tv-destinations__card {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 20px;
+    }
+    .tt-tv-destinations__list { grid-template-columns: 1fr; }
+    .tt-tv-zones__grid { grid-template-columns: 1fr; }
 }
 
 /* Extra content */

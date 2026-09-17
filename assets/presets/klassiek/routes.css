@@ -1,0 +1,9 @@
+/*
+ * Klassiek — routes
+ * Base gebruikt --tt-fg (donker) op --tt-accent (blauw) → onleesbaar.
+ * --tt-accent-fg is de palette-eigen contrast-kleur (wit op blauwe accent),
+ * dus die geeft altijd goed leesbare tekst ongeacht welke palette actief is.
+ */
+.tt-preset-klassiek .tt-routes__price {
+    color: var(--tt-accent-fg);
+}
