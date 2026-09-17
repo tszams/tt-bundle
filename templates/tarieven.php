@@ -78,16 +78,25 @@ $vehicles = TaxiTheme_Page_Meta::get_visible_tarieven_vehicles($page_id);
 if (!empty($vehicles)) : ?>
     <section class="tt-section tt-tv-vehicles">
         <div class="tt-container">
+            <?php $vehicles_heading = TaxiTheme_Page_Meta::get_tarieven_vehicles_heading($page_id); ?>
+            <div class="tt-tv-vehicles__head">
+                <span class="tt-tv-vehicles__eyebrow">Taxisoorten</span>
+                <h2><?php echo esc_html($vehicles_heading['title']); ?></h2>
+                <p><?php echo nl2br(esc_html($vehicles_heading['description'])); ?></p>
+            </div>
             <div class="tt-tv-vehicles__grid">
-                <?php foreach ($vehicles as $veh) :
+                <?php foreach ($vehicles as $vehicle_index => $veh) :
                     $img_url = $veh['image_id'] ? wp_get_attachment_image_url($veh['image_id'], 'large') : '';
                 ?>
-                    <article class="tt-tv-vehicle">
-                        <?php if ($img_url) : ?>
-                            <div class="tt-tv-vehicle__image">
+                    <article class="tt-tv-vehicle <?php echo $img_url ? 'has-image' : 'is-placeholder'; ?>">
+                        <div class="tt-tv-vehicle__image">
+                            <?php if ($img_url) : ?>
                                 <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($veh['title']); ?>" loading="lazy">
-                            </div>
-                        <?php endif; ?>
+                            <?php else : ?>
+                                <span class="tt-tv-vehicle__placeholder"><?php echo TaxiTheme_Icons::svg('car', 48); ?></span>
+                            <?php endif; ?>
+                            <span class="tt-tv-vehicle__number"><?php echo esc_html(str_pad((string) ($vehicle_index + 1), 2, '0', STR_PAD_LEFT)); ?></span>
+                        </div>
                         <div class="tt-tv-vehicle__body">
                             <h3 class="tt-tv-vehicle__title"><?php echo esc_html($veh['title']); ?></h3>
                             <?php if ($veh['description']) : ?>
@@ -142,10 +151,9 @@ if (!empty($destinations['title']) && !empty($dest_items)) :
                         <img src="<?php echo esc_url($dest_img); ?>" alt="<?php echo esc_attr($destinations['title']); ?>" loading="lazy">
                     </div>
                 <?php endif; ?>
-                <ul class="tt-tv-destinations__list">
+                <ul class="tt-tv-destinations__list<?php echo count($dest_items) > 6 ? ' has-many-items' : ''; ?>">
                     <?php foreach ($dest_items as $it) : ?>
                         <li class="tt-tv-dest-item">
-                            <span class="tt-tv-dest-item__icon"><?php echo TaxiTheme_Icons::svg('plane', 18); ?></span>
                             <div class="tt-tv-dest-item__body">
                                 <span class="tt-tv-dest-item__label"><?php echo esc_html($it['label']); ?></span>
                                 <?php if ($it['price']) : ?>

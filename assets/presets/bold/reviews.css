@@ -25,8 +25,8 @@
     stroke: var(--tt-bold-faint);
 }
 .tt-preset-bold .tt-reviews__star.is-filled svg {
-    fill: var(--tt-accent);
-    stroke: var(--tt-accent);
+    fill: var(--tt-review-star);
+    stroke: var(--tt-review-star);
 }
 .tt-preset-bold .tt-reviews__text {
     color: var(--tt-bold-text-soft);

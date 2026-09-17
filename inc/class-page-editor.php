@@ -1090,6 +1090,7 @@ class TaxiTheme_Page_Editor {
 
             <?php if ($role === 'tarieven') : ?>
                 <?php
+                $tv_vehicles_heading = TaxiTheme_Page_Meta::get_tarieven_vehicles_heading($post_id);
                 $tv_vehicles     = TaxiTheme_Page_Meta::get_tarieven_vehicles($post_id);
                 $tv_destinations = TaxiTheme_Page_Meta::get_tarieven_destinations($post_id);
                 $tv_zones        = TaxiTheme_Page_Meta::get_tarieven_zones($post_id);
@@ -1101,6 +1102,16 @@ class TaxiTheme_Page_Editor {
                         <div class="tt-ed__group-head-text">
                             <h3><?php echo TaxiTheme_Icons::svg('car', 20); ?> Vervoerstypes <span class="tt-ed__hint" style="font-weight:400;font-size:0.85rem;color:#6b7280;">(max 4 — leeg = niet getoond)</span></h3>
                             <p>Bijvoorbeeld <em>Personenauto</em>, <em>Busje</em> of <em>Rolstoelbus</em>. Elk type toont een foto + omschrijving + de 3 basistarieven.</p>
+                        </div>
+                    </div>
+                    <div class="tt-ed__grid" style="margin-bottom:20px;">
+                        <div class="tt-ed__field">
+                            <label>Sectietitel</label>
+                            <input type="text" name="page[tarieven_vehicles_heading][title]" value="<?php echo esc_attr($tv_vehicles_heading['title']); ?>" placeholder="Kies de taxi die bij je rit past">
+                        </div>
+                        <div class="tt-ed__field tt-ed__field--full">
+                            <label>Introductie</label>
+                            <textarea name="page[tarieven_vehicles_heading][description]" rows="3" placeholder="Leg kort uit welke voertuigen beschikbaar zijn."><?php echo esc_textarea($tv_vehicles_heading['description']); ?></textarea>
                         </div>
                     </div>
                     <div class="tt-ed__usps">
@@ -1178,7 +1189,7 @@ class TaxiTheme_Page_Editor {
                     <div class="tt-ed__group-head">
                         <div class="tt-ed__group-head-text">
                             <h3><?php echo TaxiTheme_Icons::svg('map-pin', 20); ?> Regionale zones <span class="tt-ed__hint" style="font-weight:400;font-size:0.85rem;color:#6b7280;">(gegroepeerde bestemmingen)</span></h3>
-                            <p>Voor lokale ritten met vaste richtprijzen — groepeer bestemmingen per categorie (bijv. <em>korte ritten</em>, <em>badplaatsen</em>, <em>andere Zeeuwse steden</em>). Max 4 groepen, elk max 8 bestemmingen.</p>
+                            <p>Voor lokale ritten met vaste richtprijzen — groepeer bestemmingen per categorie (bijv. <em>binnen de stad</em>, <em>luchthaven</em>, <em>evenementen</em>, <em>omliggende gemeenten</em>). Max 4 groepen, elk max 8 bestemmingen.</p>
                         </div>
                     </div>
                     <div class="tt-ed__grid">

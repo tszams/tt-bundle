@@ -56,3 +56,23 @@
 .tt-preset-bold.tt-role-tarieven .tt-tv-zone::before { height: 6px; }
 .tt-preset-bold.tt-role-tarieven .tt-tv-zone__count { color: rgba(255, 255, 255, 0.48); }
 .tt-preset-bold.tt-role-tarieven .tt-tv-zone__row { border-color: #2b3241; }
+
+/* Taxisoorten — grote kop, harde kaarten en compacte prijsmodules. */
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicles__head h2 {
+    color: #fff;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicles__head p { color: rgba(255, 255, 255, 0.62); }
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle:hover { border-color: var(--tt-accent); }
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle__image {
+    background: #191e2a;
+    border-radius: 6px 6px 0 0;
+}
+.tt-preset-bold.tt-role-tarieven .tt-tv-vehicle__number,
+.tt-preset-bold.tt-role-tarieven .tt-tv-rate { border-radius: 4px; }
+.tt-preset-bold.tt-role-tarieven .tt-tv-rate {
+    background: #191e2a;
+    border-color: #2b3241;
+}

@@ -190,6 +190,7 @@ class TaxiTheme_Page_Meta {
     // Tarieven-pagina uitbreiding — rijke prijs-blokken.
     // Zie template/tarieven.php voor render, en class-page-editor.php voor UI.
     const META_TARIEVEN_VEHICLES     = '_taxitheme_tarieven_vehicles';
+    const META_TARIEVEN_VEHICLES_HEADING = '_taxitheme_tarieven_vehicles_heading';
     const META_TARIEVEN_DESTINATIONS = '_taxitheme_tarieven_destinations';
     const META_TARIEVEN_ZONES        = '_taxitheme_tarieven_zones';
     const TARIEVEN_VEHICLES_MAX      = 4;
@@ -282,6 +283,14 @@ class TaxiTheme_Page_Meta {
         }
 
         // Tarieven — vervoerstypes (4 slots)
+        if (isset($input['tarieven_vehicles_heading']) && is_array($input['tarieven_vehicles_heading'])) {
+            $heading = $input['tarieven_vehicles_heading'];
+            update_post_meta($post_id, self::META_TARIEVEN_VEHICLES_HEADING, [
+                'title'       => sanitize_text_field($heading['title'] ?? ''),
+                'description' => sanitize_textarea_field($heading['description'] ?? ''),
+            ]);
+        }
+
         if (isset($input['tarieven_vehicles']) && is_array($input['tarieven_vehicles'])) {
             $out = [];
             for ($i = 0; $i < self::TARIEVEN_VEHICLES_MAX; $i++) {
@@ -405,6 +414,19 @@ class TaxiTheme_Page_Meta {
     /**
      * 4 vervoerstype-slots. Elk: title + description + image + starttarief/km/tijd.
      */
+    public static function get_tarieven_vehicles_heading($post_id) {
+        $stored = get_post_meta($post_id, self::META_TARIEVEN_VEHICLES_HEADING, true);
+        if (!is_array($stored)) $stored = [];
+        return [
+            'title' => !empty($stored['title'])
+                ? (string) $stored['title']
+                : 'Kies de taxi die bij je rit past',
+            'description' => !empty($stored['description'])
+                ? (string) $stored['description']
+                : 'Van een comfortabele personenauto tot een ruim busje: bekijk per voertuig de actuele basistarieven.',
+        ];
+    }
+
     public static function get_tarieven_vehicles($post_id) {
         $stored = get_post_meta($post_id, self::META_TARIEVEN_VEHICLES, true);
         if (!is_array($stored)) $stored = [];
@@ -493,36 +515,36 @@ class TaxiTheme_Page_Meta {
                 'groups' => [
                     [
                         'icon'  => 'car',
-                        'title' => 'Korte ritten naar nabijgelegen dorpen',
+                        'title' => 'Binnen Amsterdam',
                         'rows' => [
-                            ['label' => 'Koudekerke / Oost-Souburg', 'price' => '€25'],
-                            ['label' => 'Arnemuiden / Sint Laurens', 'price' => '€30'],
-                            ['label' => 'Grijpskerke, Kleverskerke', 'price' => '€35'],
-                            ['label' => 'Ritthem',                   'price' => '€35'],
-                            ['label' => 'Serooskerke of Veere',      'price' => '€35'],
-                            ['label' => 'Vlissingen',                'price' => '€30'],
+                            ['label' => 'Centrum',           'price' => '€15'],
+                            ['label' => 'Amsterdam-Zuid',    'price' => '€20'],
+                            ['label' => 'Amsterdam-Noord',   'price' => '€22'],
+                            ['label' => 'Amsterdam-West',    'price' => '€18'],
+                            ['label' => 'Amsterdam-Oost',    'price' => '€20'],
+                            ['label' => 'Zuidoost (Bijlmer)', 'price' => '€28'],
                         ],
                     ],
                     [
                         'icon'  => 'map-pin',
-                        'title' => 'Ritten naar populaire badplaatsen',
+                        'title' => 'Randgemeenten',
                         'rows' => [
-                            ['label' => 'Biggekerke / Dishoek',        'price' => '€40'],
-                            ['label' => 'Gapinge',                     'price' => '€40'],
-                            ['label' => 'Oostkapelle / Zoutelande',    'price' => '€45'],
-                            ['label' => 'Aagtekerke',                  'price' => '€45'],
-                            ['label' => 'Vrouwenpolder',               'price' => '€50'],
-                            ['label' => 'Domburg',                     'price' => '€55'],
-                            ['label' => 'Westkapelle',                 'price' => '€65'],
+                            ['label' => 'Amstelveen',   'price' => '€35'],
+                            ['label' => 'Diemen',       'price' => '€30'],
+                            ['label' => 'Zaandam',      'price' => '€45'],
+                            ['label' => 'Purmerend',    'price' => '€55'],
+                            ['label' => 'Haarlem',      'price' => '€55'],
+                            ['label' => 'Hoofddorp',    'price' => '€45'],
                         ],
                     ],
                     [
                         'icon'  => 'briefcase',
-                        'title' => 'Ritten naar andere Zeeuwse steden',
+                        'title' => 'Evenementen & locaties',
                         'rows' => [
-                            ['label' => 'Kamperland',        'price' => '€70'],
-                            ['label' => 'Goes / Kortgene',   'price' => '€85'],
-                            ['label' => 'Colijnsplaat',      'price' => '€95'],
+                            ['label' => 'RAI Amsterdam',        'price' => '€22'],
+                            ['label' => 'Ziggo Dome / Arena',   'price' => '€28'],
+                            ['label' => 'AFAS Live',            'price' => '€28'],
+                            ['label' => 'Johan Cruijff Arena',  'price' => '€28'],
                         ],
                     ],
                     [

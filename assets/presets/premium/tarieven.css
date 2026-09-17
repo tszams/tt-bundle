@@ -21,8 +21,10 @@
     grid-template-columns: 1fr;
     padding: 34px;
 }
+.tt-preset-premium.tt-role-tarieven .tt-tv-destinations__list.has-many-items {
+    grid-template-columns: none;
+}
 .tt-preset-premium.tt-role-tarieven .tt-tv-dest-item {
-    grid-template-columns: 44px minmax(0, 1fr);
     border: 0;
     border-bottom: 1px solid #e5e7eb;
     border-radius: 0;
@@ -52,4 +54,33 @@
     .tt-preset-premium.tt-role-tarieven .tt-tv-destinations__card {
         grid-template-columns: 1fr;
     }
+    .tt-preset-premium.tt-role-tarieven .tt-tv-destinations__list.has-many-items {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Taxisoorten — ruim editorial raster met verfijnde prijsmodules. */
+.tt-preset-premium.tt-role-tarieven .tt-tv-vehicles { background: #f6f7f9; }
+.tt-preset-premium.tt-role-tarieven .tt-tv-vehicles__eyebrow { font-weight: 600; }
+.tt-preset-premium.tt-role-tarieven .tt-tv-vehicles__head h2 {
+    color: #0f172a;
+    font-weight: 700;
+}
+.tt-preset-premium.tt-role-tarieven .tt-tv-vehicle {
+    background: #fff;
+    border: 0;
+    border-radius: 24px;
+    box-shadow: 0 30px 80px -52px rgba(15, 23, 42, 0.5);
+}
+.tt-preset-premium.tt-role-tarieven .tt-tv-vehicle__image {
+    background: #eef1f4;
+    border-radius: 24px 24px 0 0;
+}
+.tt-preset-premium.tt-role-tarieven .tt-tv-vehicle__number {
+    background: #0f172a;
+    color: #fff;
+}
+.tt-preset-premium.tt-role-tarieven .tt-tv-rate {
+    background: #f8fafc;
+    border-color: #eef1f4;
 }

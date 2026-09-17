@@ -1170,6 +1170,7 @@ p { margin: 0 0 1em; }
     gap: 14px;
 }
 .tt-reviews__stars {
+    --tt-review-star: #f5b800;
     display: inline-flex;
     gap: 2px;
 }
@@ -1180,8 +1181,8 @@ p { margin: 0 0 1em; }
     display: block;
 }
 .tt-reviews__star.is-filled svg {
-    fill: var(--tt-accent);
-    stroke: var(--tt-accent);
+    fill: var(--tt-review-star);
+    stroke: var(--tt-review-star);
 }
 .tt-reviews__text {
     color: var(--tt-fg);
@@ -2115,30 +2116,88 @@ a.tt-contact-info__card:hover {
 
 /* Vervoerstypes: 2-koloms grid, elke kaart intern verticaal gestackt
    (foto top → titel + omschrijving → tarieven onderaan als 3-koloms rij). */
-.tt-tv-vehicles { padding: 60px 0; }
+.tt-tv-vehicles {
+    padding: clamp(72px, 8vw, 112px) 0;
+    background: var(--tt-bg);
+}
+.tt-tv-vehicles__head {
+    max-width: 760px;
+    margin: 0 auto 44px;
+    text-align: center;
+}
+.tt-tv-vehicles__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--tt-accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.tt-tv-vehicles__eyebrow::before {
+    content: "";
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+}
+.tt-tv-vehicles__head h2 {
+    margin: 0 0 14px;
+    color: var(--tt-fg);
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    letter-spacing: -0.045em;
+}
+.tt-tv-vehicles__head p {
+    max-width: 660px;
+    margin: 0 auto;
+    color: var(--tt-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
 .tt-tv-vehicles__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    max-width: 1100px;
+    gap: 28px;
+    max-width: 1160px;
     margin: 0 auto;
 }
 .tt-tv-vehicle {
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    min-width: 0;
+    padding: 28px;
     background: var(--tt-surface);
     border: 1px solid var(--tt-line);
-    border-radius: 16px;
+    border-radius: 22px;
     overflow: hidden;
+    box-shadow: 0 22px 55px -42px rgba(15, 23, 42, 0.48);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tt-tv-vehicle:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--tt-accent) 45%, var(--tt-line));
+    box-shadow: 0 30px 65px -42px rgba(15, 23, 42, 0.58);
+}
+.tt-tv-vehicle:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc(50% - 14px);
+    justify-self: center;
+}
+.tt-tv-vehicle:last-child:nth-child(odd):only-child {
+    width: min(100%, 760px);
 }
 .tt-tv-vehicle__image {
-    aspect-ratio: 16 / 9;
-    border-radius: 12px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 8.5;
     overflow: hidden;
-    background: #f1f5f9;
-    margin: -24px -24px 20px;
-    border-radius: 16px 16px 0 0;
+    background:
+        radial-gradient(circle at 75% 20%, color-mix(in srgb, var(--tt-accent) 18%, transparent), transparent 42%),
+        color-mix(in srgb, var(--tt-surface) 76%, var(--tt-line));
+    margin: -28px -28px 24px;
+    border-radius: 22px 22px 0 0;
 }
 .tt-tv-vehicle__image img {
     width: 100%;
@@ -2146,12 +2205,40 @@ a.tt-contact-info__card:hover {
     object-fit: cover;
     display: block;
 }
+.tt-tv-vehicle__placeholder {
+    display: inline-flex;
+    color: var(--tt-accent);
+    opacity: 0.8;
+}
+.tt-tv-vehicle__placeholder svg {
+    width: 64px;
+    height: 64px;
+    stroke-width: 1.35;
+}
+.tt-tv-vehicle__number {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: var(--tt-accent);
+    color: var(--tt-accent-fg);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    box-shadow: 0 8px 20px -10px rgba(var(--tt-accent-rgb), 0.85);
+}
 .tt-tv-vehicle__body {
     min-width: 0;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 .tt-tv-vehicle__title {
-    font-size: 1.35rem;
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem);
     font-weight: 800;
     letter-spacing: -0.02em;
     margin: 0 0 8px;
@@ -2161,22 +2248,27 @@ a.tt-contact-info__card:hover {
     color: var(--tt-muted);
     line-height: 1.55;
     margin: 0;
-    font-size: 0.94rem;
+    font-size: 0.96rem;
 }
 .tt-tv-vehicle__rates {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    padding-top: 22px;
     border-top: 1px solid var(--tt-line);
     margin-top: auto;
 }
 .tt-tv-rate {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    align-items: start;
+    gap: 9px;
+    min-width: 0;
+    padding: 11px 10px;
+    background: color-mix(in srgb, var(--tt-bg) 52%, var(--tt-surface));
+    border: 1px solid color-mix(in srgb, var(--tt-line) 82%, transparent);
+    border-radius: 12px;
+    text-align: left;
 }
 .tt-tv-rate__icon {
     display: inline-flex;
@@ -2184,28 +2276,40 @@ a.tt-contact-info__card:hover {
     justify-content: center;
     width: 36px;
     height: 36px;
+    align-self: start;
     border-radius: 50%;
     background: rgba(var(--tt-accent-rgb, 15, 23, 42), 0.08);
     color: var(--tt-accent);
     flex-shrink: 0;
 }
+.tt-tv-rate__icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
 .tt-tv-rate__body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    min-width: 0;
 }
 .tt-tv-rate__label {
-    font-size: 0.72rem;
+    font-size: 0.64rem;
     color: var(--tt-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    line-height: 1.25;
+    white-space: nowrap;
 }
 .tt-tv-rate__value {
-    font-size: 1.02rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 800;
     color: var(--tt-fg);
-    margin-top: 2px;
+    margin-top: 3px;
+    line-height: 1.25;
+    white-space: nowrap;
 }
 
 /* Bestemmingen: visuele routekaart met foto en compacte prijslijst */
@@ -2259,11 +2363,14 @@ a.tt-contact-info__card:hover {
     gap: 10px;
     align-content: center;
 }
+.tt-tv-destinations__list.has-many-items {
+    grid-template-columns: none;
+    grid-template-rows: repeat(6, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+}
 .tt-tv-dest-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 12px;
-    align-items: center;
+    display: block;
     min-width: 0;
     padding: 14px;
     border: 1px solid color-mix(in srgb, var(--tt-line) 78%, transparent);
@@ -2275,17 +2382,6 @@ a.tt-contact-info__card:hover {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--tt-accent) 55%, var(--tt-line));
     background: var(--tt-surface);
-}
-.tt-tv-dest-item__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: color-mix(in srgb, var(--tt-accent) 12%, transparent);
-    color: var(--tt-accent);
-    flex-shrink: 0;
 }
 .tt-tv-dest-item__body { display: flex; flex-direction: column; min-width: 0; }
 .tt-tv-dest-item__label {
@@ -2401,12 +2497,30 @@ a.tt-contact-info__card:hover {
     white-space: nowrap;
 }
 
+@media (max-width: 900px) {
+    .tt-tv-vehicles__grid {
+        grid-template-columns: 1fr;
+        max-width: 680px;
+    }
+    .tt-tv-vehicle:last-child:nth-child(odd) { width: 100%; }
+}
+
 /* Mobile: alle blokken stacken naar 1-kolom */
 @media (max-width: 780px) {
+    .tt-tv-vehicles { padding: 64px 0; }
+    .tt-tv-vehicles__head {
+        margin-bottom: 30px;
+        text-align: left;
+    }
+    .tt-tv-vehicles__head p { font-size: 0.98rem; }
     .tt-tv-vehicle {
         grid-template-columns: 1fr;
-        gap: 20px;
         padding: 20px;
+        border-radius: 16px;
+    }
+    .tt-tv-vehicle__image {
+        margin: -20px -20px 20px;
+        border-radius: 16px 16px 0 0;
     }
     .tt-tv-destinations__card {
         grid-template-columns: 1fr;
@@ -2416,9 +2530,19 @@ a.tt-contact-info__card:hover {
     .tt-tv-destinations__card.has-image { padding: 0; }
     .tt-tv-destinations__image { min-height: 0; aspect-ratio: 16 / 10; }
     .tt-tv-destinations__card.has-image .tt-tv-destinations__list { padding: 20px; }
-    .tt-tv-destinations__list { grid-template-columns: 1fr; }
+    .tt-tv-destinations__list,
+    .tt-tv-destinations__list.has-many-items {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        grid-auto-flow: row;
+        grid-auto-columns: auto;
+    }
     .tt-tv-zones__grid { grid-template-columns: 1fr; }
     .tt-tv-zone { padding: 22px; }
+}
+@media (max-width: 560px) {
+    .tt-tv-vehicle__rates { grid-template-columns: 1fr; }
+    .tt-tv-rate { padding: 12px 14px; }
 }
 
 /* Extra content */

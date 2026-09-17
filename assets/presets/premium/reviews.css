@@ -31,8 +31,8 @@
     stroke: #d0d5dc;
 }
 .tt-preset-premium .tt-reviews__star.is-filled svg {
-    fill: var(--tt-accent);
-    stroke: var(--tt-accent);
+    fill: var(--tt-review-star);
+    stroke: var(--tt-review-star);
 }
 .tt-preset-premium .tt-reviews__text {
     color: #334155;

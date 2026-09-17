@@ -13,7 +13,6 @@
 }
 .tt-preset-simpel.tt-role-tarieven .tt-tv-destinations__image,
 .tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item,
-.tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item__icon,
 .tt-preset-simpel.tt-role-tarieven .tt-tv-dest-item__price,
 .tt-preset-simpel.tt-role-tarieven .tt-tv-zone,
 .tt-preset-simpel.tt-role-tarieven .tt-tv-zone__icon {
@@ -42,3 +41,25 @@
     padding: 24px;
 }
 .tt-preset-simpel.tt-role-tarieven .tt-tv-zone::before { display: none; }
+
+/* Taxisoorten — vlak en functioneel, zonder schaduw of ronde hoeken. */
+.tt-preset-simpel.tt-role-tarieven .tt-tv-vehicle {
+    background: var(--tt-surface);
+    border-color: var(--tt-line);
+    border-radius: 0;
+    box-shadow: none;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-vehicle:hover {
+    transform: none;
+    border-color: var(--tt-accent);
+    box-shadow: none;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-vehicle__image,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-vehicle__number,
+.tt-preset-simpel.tt-role-tarieven .tt-tv-rate {
+    border-radius: 0;
+}
+.tt-preset-simpel.tt-role-tarieven .tt-tv-rate {
+    background: var(--tt-bg);
+    border-color: var(--tt-line);
+}

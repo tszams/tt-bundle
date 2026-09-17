@@ -11,7 +11,6 @@
     background: #fffdf8;
     border-color: #e9e0ca;
 }
-.tt-preset-klassiek.tt-role-tarieven .tt-tv-dest-item__icon,
 .tt-preset-klassiek.tt-role-tarieven .tt-tv-zone__icon {
     background: #fff4ce;
 }
@@ -26,4 +25,21 @@
     left: 24px;
     right: 24px;
     height: 3px;
+}
+
+/* Taxisoorten — warme kaarten met rustige tariefvlakken. */
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-vehicles {
+    background: var(--tt-bg);
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-vehicle {
+    background: var(--tt-surface);
+    border-color: var(--tt-line);
+    box-shadow: 0 24px 60px -46px rgba(76, 58, 20, 0.55);
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-vehicle__image {
+    background: color-mix(in srgb, var(--tt-accent) 10%, var(--tt-bg));
+}
+.tt-preset-klassiek.tt-role-tarieven .tt-tv-rate {
+    background: color-mix(in srgb, var(--tt-bg) 82%, var(--tt-surface));
+    border-color: var(--tt-line);
 }
