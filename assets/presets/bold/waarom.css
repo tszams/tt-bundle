@@ -1,0 +1,24 @@
+/* Bold — mobiele afbeelding met overlappende contentkaart. */
+@media (max-width: 700px) {
+    .tt-preset-bold .tt-waarom.has-image .tt-waarom__inner {
+        display: block;
+    }
+    .tt-preset-bold .tt-waarom__image {
+        aspect-ratio: 16 / 10;
+        max-width: 100%;
+        border-radius: 8px;
+    }
+    .tt-preset-bold .tt-waarom.has-image .tt-waarom__body {
+        position: relative;
+        z-index: 1;
+        width: calc(100% - 24px);
+        margin: -31% auto 0;
+        padding: 26px 22px 28px;
+        background: var(--tt-bold-surface);
+        border: 1px solid var(--tt-bold-line-strong);
+        border-radius: 8px;
+        box-shadow: 12px 12px 0 color-mix(in srgb, var(--tt-accent) 16%, transparent);
+    }
+    .tt-preset-bold .tt-waarom__body h2 { margin-bottom: 8px; }
+    .tt-preset-bold .tt-waarom__body .tt-muted { margin-bottom: 22px; }
+}

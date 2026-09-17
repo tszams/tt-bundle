@@ -842,6 +842,37 @@ class TaxiTheme_Page_Editor {
                 TaxiTheme_Home_Content::save($home);
             }
 
+            // Tarieven-page: synchroniseer routes-editor terug naar home-content
+            // (gedeelde data — home én tarieven tonen dezelfde routes).
+            if ($role === 'tarieven' && (
+                isset($_POST['page_extra']['routes_items']) ||
+                isset($_POST['page_extra']['routes_title']) ||
+                isset($_POST['page_extra']['routes_subtitle']) ||
+                array_key_exists('routes_enabled', $_POST['page_extra'] ?? [])
+            )) {
+                $home = TaxiTheme_Home_Content::all();
+                if (isset($_POST['page_extra']['routes_title'])) {
+                    $home['routes_title'] = sanitize_text_field(wp_unslash($_POST['page_extra']['routes_title']));
+                }
+                if (isset($_POST['page_extra']['routes_subtitle'])) {
+                    $home['routes_subtitle'] = sanitize_text_field(wp_unslash($_POST['page_extra']['routes_subtitle']));
+                }
+                $home['routes_enabled'] = !empty($_POST['page_extra']['routes_enabled']) ? 1 : 0;
+                if (isset($_POST['page_extra']['routes_items']) && is_array($_POST['page_extra']['routes_items'])) {
+                    $incoming = $_POST['page_extra']['routes_items'];
+                    for ($i = 0; $i < 12; $i++) {
+                        if (!isset($home['routes_items'][$i])) {
+                            $home['routes_items'][$i] = ['from' => '', 'to' => '', 'price' => ''];
+                        }
+                        if (!isset($incoming[$i])) continue;
+                        $home['routes_items'][$i]['from']  = sanitize_text_field(wp_unslash($incoming[$i]['from']  ?? ''));
+                        $home['routes_items'][$i]['to']    = sanitize_text_field(wp_unslash($incoming[$i]['to']    ?? ''));
+                        $home['routes_items'][$i]['price'] = sanitize_text_field(wp_unslash($incoming[$i]['price'] ?? ''));
+                    }
+                }
+                TaxiTheme_Home_Content::save($home);
+            }
+
             // FAQ-page: save de extra vragen in een APARTE array (faq_page_items).
             // Deze items renderen alleen op de FAQ-pagina — niet op home. 15 slots.
             if ($role === 'faq' && isset($_POST['page_extra']['faq_page_items'])) {
@@ -1094,7 +1125,66 @@ class TaxiTheme_Page_Editor {
                 $tv_vehicles     = TaxiTheme_Page_Meta::get_tarieven_vehicles($post_id);
                 $tv_destinations = TaxiTheme_Page_Meta::get_tarieven_destinations($post_id);
                 $tv_zones        = TaxiTheme_Page_Meta::get_tarieven_zones($post_id);
+                $tv_routes_data  = $home_data;
                 ?>
+
+                <!-- Vaste routes (gedeeld met homepage) -->
+                <div class="tt-ed__group">
+                    <div class="tt-ed__group-head">
+                        <div class="tt-ed__group-head-text">
+                            <h3><?php echo TaxiTheme_Icons::svg('euro', 20); ?> Vaste route prijzen</h3>
+                            <p>Populaire ritten met vaste prijs (bv. <em>Amsterdam Centrum → Schiphol</em>). <strong>Gedeeld met de homepage</strong> — een wijziging hier is ook op de homepage zichtbaar.</p>
+                        </div>
+                        <label class="tt-ed__toggle">
+                            <input type="checkbox" name="page_extra[routes_enabled]" value="1" <?php checked(!empty($tv_routes_data['routes_enabled'])); ?>>
+                            <span class="tt-ed__toggle-track"><span class="tt-ed__toggle-thumb"></span></span>
+                        </label>
+                    </div>
+                    <div class="tt-ed__grid">
+                        <div class="tt-ed__field">
+                            <label>Titel</label>
+                            <input type="text" name="page_extra[routes_title]" value="<?php echo esc_attr($tv_routes_data['routes_title'] ?? ''); ?>" placeholder="Vaste route prijzen">
+                        </div>
+                        <div class="tt-ed__field">
+                            <label>Ondertitel</label>
+                            <input type="text" name="page_extra[routes_subtitle]" value="<?php echo esc_attr($tv_routes_data['routes_subtitle'] ?? ''); ?>" placeholder="Transparante tarieven voor populaire ritten.">
+                        </div>
+                    </div>
+                    <div class="tt-ed__routes-cols" style="margin-top:16px;">
+                        <div class="tt-ed__routes">
+                            <?php for ($i = 0; $i < 6; $i++) :
+                                $r = $tv_routes_data['routes_items'][$i] ?? ['from' => '', 'to' => '', 'price' => ''];
+                            ?>
+                                <div class="tt-ed__route-row">
+                                    <span class="tt-ed__route-num"><?php echo $i + 1; ?></span>
+                                    <input type="text" name="page_extra[routes_items][<?php echo $i; ?>][from]" value="<?php echo esc_attr($r['from']); ?>" placeholder="Ophaal">
+                                    <span class="tt-ed__route-arrow">→</span>
+                                    <input type="text" name="page_extra[routes_items][<?php echo $i; ?>][to]" value="<?php echo esc_attr($r['to']); ?>" placeholder="Bestemming">
+                                    <div class="tt-ed__price-wrap">
+                                        <span class="tt-ed__price-prefix">€</span>
+                                        <input type="text" name="page_extra[routes_items][<?php echo $i; ?>][price]" value="<?php echo esc_attr($r['price']); ?>" placeholder="45">
+                                    </div>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                        <div class="tt-ed__routes">
+                            <?php for ($i = 6; $i < 12; $i++) :
+                                $r = $tv_routes_data['routes_items'][$i] ?? ['from' => '', 'to' => '', 'price' => ''];
+                            ?>
+                                <div class="tt-ed__route-row">
+                                    <span class="tt-ed__route-num"><?php echo $i + 1; ?></span>
+                                    <input type="text" name="page_extra[routes_items][<?php echo $i; ?>][from]" value="<?php echo esc_attr($r['from']); ?>" placeholder="Ophaal">
+                                    <span class="tt-ed__route-arrow">→</span>
+                                    <input type="text" name="page_extra[routes_items][<?php echo $i; ?>][to]" value="<?php echo esc_attr($r['to']); ?>" placeholder="Bestemming">
+                                    <div class="tt-ed__price-wrap">
+                                        <span class="tt-ed__price-prefix">€</span>
+                                        <input type="text" name="page_extra[routes_items][<?php echo $i; ?>][price]" value="<?php echo esc_attr($r['price']); ?>" placeholder="45">
+                                    </div>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Vervoerstypes -->
                 <div class="tt-ed__group">
@@ -1472,16 +1562,15 @@ class TaxiTheme_Page_Editor {
                 <?php endforeach; ?>
             </div>
 
-            <div class="tt-ed__layout">
+            <div class="tt-ed__layout tt-ed__layout--subpage">
                 <!-- Left sidebar: sectie-lijst met toggle proxy + up/down + jump link -->
-                <aside class="tt-ed__sidebar" id="tt-ed-sidebar">
+                <aside class="tt-ed__sidebar tt-ed__sidebar--subpage" id="tt-ed-sidebar" aria-label="Onderdelen van deze pagina">
                     <div class="tt-ed__sidebar-head">
-                        <strong>Homepage-indeling</strong>
+                        <strong>Paginaonderdelen</strong>
                         <button type="button" class="tt-ed__sidebar-toggle" title="Navigatie inklappen" aria-label="Navigatie inklappen" aria-expanded="true">−</button>
                     </div>
-                    <div class="tt-ed__sidebar-section-label">Bovenkant</div>
+                    <div class="tt-ed__sidebar-section-label">Inhoud</div>
                     <a href="#tt-ed-section-hero" class="tt-ed__sidebar-static tt-ed__sidebar-jump">Hero</a>
-                    <div class="tt-ed__sidebar-section-label">Secties</div>
                     <ol class="tt-ed__sidebar-list">
                         <?php foreach ($current_order as $key) :
                             // Skip keys zonder editor-panel (bv. post-content is WP's default page editor)
@@ -1507,9 +1596,8 @@ class TaxiTheme_Page_Editor {
                             </li>
                         <?php endforeach; ?>
                     </ol>
-                    <div class="tt-ed__sidebar-section-label">Onderkant</div>
                     <a href="#tt-ed-section-contact-cta" class="tt-ed__sidebar-static tt-ed__sidebar-jump">Contact CTA</a>
-                    <p class="tt-ed__sidebar-help">Klik op een naam om dat onderdeel te bewerken. Gebruik de pijlen voor de volgorde en de schakelaar voor tonen of verbergen.</p>
+                    <p class="tt-ed__sidebar-help">Klik om te bewerken. Gebruik de pijlen voor de volgorde en de schakelaar voor tonen of verbergen.</p>
                 </aside>
 
                 <div class="tt-ed__main">
@@ -3679,10 +3767,14 @@ class TaxiTheme_Page_Editor {
             }
             .tt-ed__sidebar-static {
                 display: block;
-                padding: 9px 10px;
+                padding: 8px 10px;
                 border: 1px solid #f0ede2;
                 border-radius: 8px;
-                background: #fff;
+                background: #fdfcf7;
+            }
+            .tt-ed__sidebar-static + .tt-ed__sidebar-list,
+            .tt-ed__sidebar-list + .tt-ed__sidebar-static {
+                margin-top: 4px;
             }
             .tt-ed__sidebar-static.is-active {
                 color: #14161f;

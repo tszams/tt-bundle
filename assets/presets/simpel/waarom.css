@@ -1,0 +1,24 @@
+/* Simpel — dezelfde overlap, uitgevoerd als vlakke kaart. */
+@media (max-width: 700px) {
+    .tt-preset-simpel .tt-waarom.has-image .tt-waarom__inner {
+        display: block;
+    }
+    .tt-preset-simpel .tt-waarom__image {
+        aspect-ratio: 16 / 10;
+        max-width: 100%;
+        border-radius: 0;
+    }
+    .tt-preset-simpel .tt-waarom.has-image .tt-waarom__body {
+        position: relative;
+        z-index: 1;
+        width: calc(100% - 16px);
+        margin: -31% auto 0;
+        padding: 26px 22px 28px;
+        background: var(--tt-scheme-card, var(--tt-surface));
+        border: 1px solid var(--tt-scheme-line, var(--tt-line));
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .tt-preset-simpel .tt-waarom__body h2 { margin-bottom: 8px; }
+    .tt-preset-simpel .tt-waarom__body .tt-muted { margin-bottom: 22px; }
+}

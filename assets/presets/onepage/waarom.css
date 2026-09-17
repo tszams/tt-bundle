@@ -35,11 +35,33 @@
 @media (max-width: 700px) {
     .tt-preset-onepage .tt-waarom__inner,
     .tt-preset-onepage .tt-waarom.has-image .tt-waarom__inner {
-        grid-template-columns: 1fr;
-        padding: 28px;
-        gap: 24px;
+        display: block;
+        padding: 0 24px;
+        background: transparent;
+        border: 0;
+    }
+    .tt-preset-onepage .tt-home-component[class*="tt-section-scheme--"] .tt-waarom.has-image .tt-waarom__inner {
+        background: transparent;
+    }
+    .tt-preset-onepage .tt-waarom__image {
+        aspect-ratio: 16 / 10;
+        max-width: 100%;
+    }
+    .tt-preset-onepage .tt-waarom.has-image .tt-waarom__body {
+        position: relative;
+        z-index: 1;
+        width: calc(100% - 24px);
+        margin: -31% auto 0;
+        padding: 26px 22px 28px;
+        background: var(--tt-scheme-card, rgba(255, 255, 255, 0.08));
+        border: 1px solid var(--tt-scheme-line, rgba(255, 255, 255, 0.14));
+        border-radius: 20px;
+        box-shadow: 0 24px 55px -34px rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(18px);
     }
     .tt-preset-onepage .tt-check {
         grid-template-columns: 1fr;
     }
+    .tt-preset-onepage .tt-waarom__body h2 { margin-bottom: 8px; }
+    .tt-preset-onepage .tt-waarom__body .tt-muted { margin-bottom: 22px; }
 }
